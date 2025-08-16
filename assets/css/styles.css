@@ -1,0 +1,197 @@
+    /* ---------- Theme ---------- */
+    :root {
+    --wb-primary: #1E3A8A;       
+    --wb-primary-600: #172554;   
+    --wb-accent: #0EA5E9;      
+    --wb-bg: #0F172A;            
+    --wb-surface: #1E293B;       
+    --wb-text-dark: #F1F5F9;     
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+    background-color: var(--wb-bg);
+    color: var(--wb-text-dark);
+    }
+
+
+    /* ---------- Navbar (apply class="navbar wb-navbar") ---------- */
+    /* Navbar base */
+    .wb-navbar {
+    background-color: var(--wb-surface);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    /* Brand + links */
+    .wb-navbar .navbar-brand { color: #fff !important; }
+
+    /* Make active + hover match with rounded corners */
+    .wb-navbar .nav-link {
+    color: var(--wb-text-dark);
+    padding: .5rem .9rem;
+    border-radius: 999px;
+    }
+    .wb-navbar .nav-link:hover,
+    .wb-navbar .nav-link.active {
+    color: #fff;
+    background-color: var(--wb-primary);
+    border-radius: 999px;
+    }
+
+    /* ✅ MOBILE COLLAPSE FIX */
+    @media (max-width: 991.98px) {
+    .wb-navbar .navbar-collapse {
+        background: var(--wb-surface);      /* was #fff */
+        border-radius: .75rem;
+        padding: .75rem;
+        margin-top: .5rem;
+        box-shadow: 0 12px 24px rgba(0,0,0,.35);
+    }
+    /* Make items breathe, but not massive */
+    .wb-navbar .navbar-nav .nav-item + .nav-item { margin-top: .35rem; }
+    .wb-navbar .nav-link { padding: .55rem 1rem; }  /* slightly smaller pills on mobile */
+    }
+
+    /* Hamburger icon color -> navy/sky */
+    .wb-navbar .navbar-toggler { border-color: rgba(255,255,255,.25); }
+    .wb-navbar .navbar-toggler:focus { box-shadow: 0 0 0 .15rem rgba(14,165,233,.25); }
+    .wb-navbar .navbar-toggler-icon{
+    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(14,165,233,0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+
+    /* ---------- Hero ---------- */
+    .hero {
+    background: linear-gradient(160deg, var(--wb-surface) 0%, var(--wb-bg) 100%);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .text-accent {
+    color: var(--wb-accent);
+    }
+
+    .hero .display-5 { letter-spacing: .2px; }
+    .hero-cta { gap: .75rem; }
+
+    /* ---------- Cards ---------- */
+    .card.wb-card {
+    background: #fff;
+    border: 1px solid rgba(106,13,173,.15);
+    transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card.wb-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    }
+
+    /* Feature icon chip */
+    .card-icon {
+    width: 3rem; height: 3rem;
+    display: grid; place-items: center;
+    border-radius: .75rem;
+    color: #fff; font-size: 1.35rem;
+    background: linear-gradient(135deg, var(--wb-primary), var(--wb-accent));
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn-primary {
+    background-color: var(--wb-primary);
+    border-color: var(--wb-primary);
+    }
+    .btn-primary:hover,
+    .btn-primary:focus {
+    background-color: var(--wb-primary-600);
+    border-color: var(--wb-primary-600);
+    }
+
+    /* ---------- Forms ---------- */
+    .form-control:focus {
+    border-color: var(--wb-primary);
+    box-shadow: 0 0 0 .2rem rgba(106,13,173,.2);
+    }
+
+    /* ---------- Footer ---------- */
+    .footer-small { font-size: .9rem; color: #6c757d; }
+    footer { background: #fff; }
+
+    /* ---------- Utilities ---------- */
+    .rounded-4 { border-radius: 1rem !important; }
+
+    /* Motion respect */
+    @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    }
+
+
+    /* ===== 3D Rotating Cube ===== */
+.wb-cube-wrap {
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Responsive size via CSS var */
+  --cube-size: clamp(240px, 36vw, 360px); /* ↑ was 220px; helps tiny phones */
+  width: var(--cube-size);
+  height: var(--cube-size);
+  margin-inline: auto;
+}
+
+.wb-cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: wb-rotate 16s linear infinite;
+}
+
+/* Pause on hover (nice UX) */
+.wb-cube-wrap:hover .wb-cube { animation-play-state: paused; }
+
+/* Faces: no padding, hide overflow, rounded */
+.wb-face {
+  position: absolute;
+  inset: 0;
+  padding: 0;                 /* ensure no inner gap */
+  display: block;
+  background: var(--wb-surface);
+  border: 1px solid rgba(255,255,255,.12);
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 12px 30px rgba(0,0,0,.5);
+}
+
+/* Face depth */
+:root { --cube-translate: calc(var(--cube-size) / 2); }
+
+/* Place faces */
+.wb-front  { transform: translateZ(var(--cube-translate)); }
+.wb-back   { transform: rotateY(180deg) translateZ(var(--cube-translate)); }
+.wb-right  { transform: rotateY(90deg)  translateZ(var(--cube-translate)); }
+.wb-left   { transform: rotateY(-90deg) translateZ(var(--cube-translate)); }
+.wb-top    { transform: rotateX(90deg)  translateZ(var(--cube-translate)); }
+.wb-bottom { transform: rotateX(-90deg) translateZ(var(--cube-translate)); }
+
+/* Posters: fill face edge-to-edge */
+.wb-face img {
+  position: absolute;         /* ← important */
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* crop to fill */
+  object-position: center;
+  display: block;             /* remove inline baseline gap */
+}
+
+/* Rotation */
+@keyframes wb-rotate {
+  0%   { transform: rotateX(0deg)   rotateY(0deg); }
+  25%  { transform: rotateX(0deg)   rotateY(90deg); }
+  50%  { transform: rotateX(0deg)   rotateY(180deg); }
+  75%  { transform: rotateX(0deg)   rotateY(270deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .wb-cube { animation: none; }
+}
+
