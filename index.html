@@ -20,7 +20,7 @@
     .wb-cube {
       position: relative; width: 100%; height: 100%;
       transform-style: preserve-3d;
-      animation: wb-rotateY 12s linear infinite; /* 12s full spin -> 3s per 90° */
+      animation: wb-rotateY 12s linear infinite; 
     }
     .wb-cube-wrap:hover .wb-cube { animation-play-state: paused; }
 
@@ -115,7 +115,7 @@
           </div>
         </div>
 
-        <!-- Right side: creative rotating cube -->
+    
         <div class="col-12 col-lg-6">
         <div class="wb-cube-wrap">
         <div id="wbCube" class="wb-cube" aria-label="Rotating movie posters cube">
@@ -179,11 +179,9 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Navbar highlight + Login button
@@ -209,9 +207,8 @@
       onScroll(); window.addEventListener('scroll', onScroll);
     })();
 
-    // Rotating cube: swap posters every 90° (3s)
+    // Rotating cube
     (function() {
-      // wait until DOM is ready
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", initCube);
       } else {
@@ -253,7 +250,7 @@
 
         assignImages();
 
-        const STEP_MS = 3000; // 12s animation / 4 sides = 3s
+        const STEP_MS = 3000; 
         setInterval(() => {
           offset = (offset + 1) % posters.length;
           assignImages();
