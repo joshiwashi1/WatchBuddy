@@ -57,33 +57,34 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input id="firstName" name="firstName" type="text" class="form-control" required>
+                    <input id="firstName" name="firstName" type="text" class="form-control" required autocomplete="given-name">
                     </div>
                     <div class="col-md-6">
                     <label for="middleName" class="form-label">Middle Name <span class="text-muted">(optional)</span></label>
-                    <input id="middleName" name="middleName" type="text" class="form-control">
+                    <input id="middleName" name="middleName" type="text" class="form-control" autocomplete="additional-name">
                     </div>
                     <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input id="lastName" name="lastName" type="text" class="form-control" required>
+                    <input id="lastName" name="lastName" type="text" class="form-control" required autocomplete="family-name">
                     </div>
                     <div class="col-md-6">
                     <label for="suffix" class="form-label">Suffix</label>
-                    <input id="suffix" name="suffix" type="text" class="form-control" placeholder="Jr., Sr., III">
+                    <input id="suffix" name="suffix" type="text" class="form-control" placeholder="Jr., Sr., III" autocomplete="honorific-suffix">
                     </div>
                     <div class="col-12">
                     <label for="email" class="form-label">Email</label>
-                    <input id="email" name="email" type="email" class="form-control" required>
+                    <input id="email" name="email" type="email" class="form-control" required autocomplete="email">
                     </div>
                     <div class="col-md-6">
                     <label for="password" class="form-label">Password</label>
-                    <input id="password" name="password" type="password" class="form-control" required minlength="6">
+                    <input id="password" name="password" type="password" class="form-control" required minlength="6" autocomplete="new-password">
                     <div class="form-text">At least 6 characters.</div>
                     </div>
                     <div class="col-md-6">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input id="confirmPassword" name="confirmPassword" type="password" class="form-control" required>
+                    <input id="confirmPassword" name="confirmPassword" type="password" class="form-control" required autocomplete="new-password">
                     </div>
+
                 </div>
 
                 <div class="d-grid d-sm-flex gap-2 mt-4">
@@ -123,11 +124,9 @@
     (function () {
         const page = document.body.dataset.page;
 
-        // Highlight nav links
         if (page === "home") document.getElementById("navHome")?.classList.add("active");
         if (page === "register") document.getElementById("navRegister")?.classList.add("active");
 
-        // Toggle login button style
         const loginBtn = document.getElementById("loginBtn");
         if (loginBtn) {
         if (page === "login") {
