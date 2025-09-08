@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WatchBuddy | Dashboard</title>
+
+  <!-- Icons & Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Optional: your site stylesheet -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+
+<body data-page="dashboard">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.html">
+        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
+        WatchBuddy
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="mainNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link active" href="dashboard.html"><i class="bi bi-house-door me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person me-1"></i>Profile</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle fs-5"></i><span>John Doe</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="profile.html">Profile Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="index.html">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="container-fluid py-4">
+    <!-- Welcome -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <h1 class="h3 fw-bold mb-1">Welcome back, John! 🎬</h1>
+        <p class="text-muted">Manage your movie watchlist and discover your next favorite film.</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon to-watch mx-auto"><i class="bi bi-bookmark-plus"></i></div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="toWatchCount">0</div>
+              <div class="text-muted small">To Watch</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon watching mx-auto"><i class="bi bi-play-circle"></i></div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="watchingCount">0</div>
+              <div class="text-muted small">Watching</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon completed mx-auto"><i class="bi bi-check-circle"></i></div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="completedCount">0</div>
+              <div class="text-muted small">Completed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon mx-auto" style="background: linear-gradient(135deg, var(--wb-primary), var(--wb-accent));">
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="avgRating">—</div>
+              <div class="text-muted small">Avg Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <section class="mb-4">
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="searchInput" class="form-label">Search Movies</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by title…">
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <label for="statusFilter" class="form-label">Status</label>
+          <select id="statusFilter" class="form-select">
+            <option value="">All Status</option>
+            <option value="to-watch">To Watch</option>
+            <option value="watching">Watching</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <label for="sortFilter" class="form-label">Sort By</label>
+          <select id="sortFilter" class="form-select">
+            <option value="recent">Recently Added</option>
+            <option value="title">Title (A–Z)</option>
+            <option value="rating">Rating (High–Low)</option>
+          </select>
+        </div>
+        <div class="col-12 col-lg-4 d-flex gap-2 justify-content-lg-end">
+          <button class="btn btn-outline-primary" id="resetBtn"><i class="bi bi-arrow-clockwise me-1"></i>Reset</button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
+            <i class="bi bi-plus-lg me-1"></i>Add Movie
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Movies Grid -->
+    <section aria-live="polite">
+      <div class="row g-4" id="moviesContainer">
+        <!-- Example cards -->
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 movie-item" data-status="watching" data-title="The Dark Knight" data-rating="5" data-ts="1735689600">
+          <div class="card movie-card h-100">
+            <div class="position-relative">
+              <img src="https://via.placeholder.com/480x720/1e293b/94a3b8?text=The+Dark+Knight" alt="The Dark Knight poster" class="movie-poster" />
+              <span class="status-badge badge-watching">Watching</span>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title fw-bold mb-2">The Dark Knight</h6>
+              <p class="card-text small mb-3">When the menace known as the Joker wreaks havoc…</p>
+              <div class="mt-auto d-flex align-items-center justify-content-between">
+                <div class="rating-stars text-warning" aria-label="Rating: 5 out of 5">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Card actions">
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><button class="dropdown-item" type="button"><i class="bi bi-pencil me-2"></i>Edit</button></li>
+                    <li><button class="dropdown-item" type="button"><i class="bi bi-eye me-2"></i>Mark as Completed</button></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item text-danger" type="button"><i class="bi bi-trash me-2"></i>Delete</button></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 movie-item" data-status="to-watch" data-title="Inception" data-rating="0" data-ts="1735603200">
+          <div class="card movie-card h-100">
+            <div class="position-relative">
+              <img src="https://via.placeholder.com/480x720/1e293b/94a3b8?text=Inception" alt="Inception poster" class="movie-poster" />
+              <span class="status-badge badge-to-watch">To Watch</span>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title fw-bold mb-2">Inception</h6>
+              <p class="card-text small mb-3">A thief who steals corporate secrets through dream-sharing…</p>
+              <div class="mt-auto d-flex align-items-center justify-content-between">
+                <span class="text-muted small">Not rated yet</span>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Card actions">
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><button class="dropdown-item" type="button"><i class="bi bi-pencil me-2"></i>Edit</button></li>
+                    <li><button class="dropdown-item" type="button"><i class="bi bi-play me-2"></i>Start Watching</button></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item text-danger" type="button"><i class="bi bi-trash me-2"></i>Delete</button></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 movie-item" data-status="completed" data-title="Interstellar" data-rating="4" data-ts="1735516800">
+          <div class="card movie-card h-100">
+            <div class="position-relative">
+              <img src="https://via.placeholder.com/480x720/1e293b/94a3b8?text=Interstellar" alt="Interstellar poster" class="movie-poster" />
+              <span class="status-badge badge-completed">Completed</span>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title fw-bold mb-2">Interstellar</h6>
+              <p class="card-text small mb-3">A team of explorers travel through a wormhole…</p>
+              <div class="mt-auto d-flex align-items-center justify-content-between">
+                <div class="rating-stars text-warning" aria-label="Rating: 4 out of 5">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                </div>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Card actions">
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><button class="dropdown-item" type="button"><i class="bi bi-pencil me-2"></i>Edit</button></li>
+                    <li><button class="dropdown-item" type="button"><i class="bi bi-chat me-2"></i>View Review</button></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item text-danger" type="button"><i class="bi bi-trash me-2"></i>Delete</button></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Empty state -->
+      <div id="emptyState" class="empty-state d-none">
+        <div class="empty-state-icon"><i class="bi bi-film"></i></div>
+        <h3 class="h5 fw-bold mb-1">No movies found</h3>
+        <p class="text-muted mb-3">Try adjusting your filters or add your first movie to get started.</p>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
+          <i class="bi bi-plus-lg me-2"></i>Add Your First Movie
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add Movie Modal (UI only; demo add in JS) -->
+  <div class="modal fade" id="addMovieModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Add New Movie</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addMovieForm" novalidate>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label" for="movieTitle">Movie Title</label>
+                <input type="text" id="movieTitle" class="form-control" placeholder="Enter movie title" required>
+                <div class="invalid-feedback">Please enter a title.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="movieDesc">Description</label>
+                <textarea id="movieDesc" class="form-control" rows="3" placeholder="Brief description (optional)"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="movieStatus">Status</label>
+                <select id="movieStatus" class="form-select" required>
+                  <option value="to-watch">To Watch</option>
+                  <option value="watching">Watching</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="movieRating">Rating</label>
+                <select id="movieRating" class="form-select">
+                  <option value="0" selected>Not rated</option>
+                  <option value="1">★☆☆☆☆ (1)</option>
+                  <option value="2">★★☆☆☆ (2)</option>
+                  <option value="3">★★★☆☆ (3)</option>
+                  <option value="4">★★★★☆ (4)</option>
+                  <option value="5">★★★★★ (5)</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="moviePoster">Poster Image (optional)</label>
+                <input type="file" id="moviePoster" class="form-control" accept="image/*">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="addMovieBtn" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Movie</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <div class="quick-actions">
+    <button class="fab" data-bs-toggle="modal" data-bs-target="#addMovieModal" title="Add Movie"><i class="bi bi-plus-lg"></i></button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Navbar shadow
+    (function(){
+      const nav = document.querySelector('.wb-navbar');
+      if (!nav) return;
+      const onScroll = () => nav.classList.toggle('navbar-shadow', window.scrollY > 8);
+      onScroll(); window.addEventListener('scroll', onScroll);
+    })();
+
+    const moviesContainer = document.getElementById('moviesContainer');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Debounce utility for nicer typing
+    function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
+
+    function currentMovies(){
+      return Array.from(moviesContainer.querySelectorAll('.movie-item'));
+    }
+
+    function applyFilters(){
+      const q = (searchInput.value || '').toLowerCase().trim();
+      const status = statusFilter.value;
+      const sort = sortFilter.value;
+
+      let items = currentMovies();
+      let visible = [];
+
+      // Filter
+      items.forEach(card=>{
+        const title = (card.dataset.title || '').toLowerCase();
+        const st = card.dataset.status || '';
+        const matches = (!q || title.includes(q)) && (!status || st === status);
+        card.style.display = matches ? '' : 'none';
+        if(matches) visible.push(card);
+      });
+
+      // Sort
+      if (sort === 'title') {
+        visible.sort((a,b)=> (a.dataset.title||'').localeCompare(b.dataset.title||''));
+      } else if (sort === 'rating') {
+        visible.sort((a,b)=> parseInt(b.dataset.rating||'0',10) - parseInt(a.dataset.rating||'0',10));
+      } else {
+        // recent (by timestamp if provided)
+        visible.sort((a,b)=> parseInt(b.dataset.ts||'0',10) - parseInt(a.dataset.ts||'0',10));
+      }
+
+      // Reorder DOM
+      visible.forEach(v=> moviesContainer.appendChild(v));
+
+      // Empty state
+      const hasItems = visible.length > 0;
+      emptyState.classList.toggle('d-none', hasItems);
+      moviesContainer.classList.toggle('d-none', !hasItems);
+
+      // Update stats after filter (optional: set to all movies instead if you prefer)
+      updateStats();
+      updateAverageRating();
+    }
+
+    function resetFilters(){
+      searchInput.value = '';
+      statusFilter.value = '';
+      sortFilter.value = 'recent';
+      applyFilters();
+    }
+
+    // Stats
+    function updateStats(){
+      const all = currentMovies().filter(el => el.style.display !== 'none');
+      const count = st => all.filter(el => el.dataset.status === st).length;
+      document.getElementById('toWatchCount').textContent = count('to-watch');
+      document.getElementById('watchingCount').textContent = count('watching');
+      document.getElementById('completedCount').textContent = count('completed');
+    }
+
+    function updateAverageRating(){
+      const visible = currentMovies().filter(el => el.style.display !== 'none');
+      const nums = visible.map(el => parseInt(el.dataset.rating||'0',10)).filter(n => n>0);
+      const avg = nums.length ? (nums.reduce((a,b)=>a+b,0)/nums.length) : null;
+      document.getElementById('avgRating').textContent = avg ? avg.toFixed(1) : '—';
+    }
+
+    // Add Movie (demo: adds to DOM)
+    document.getElementById('addMovieBtn')?.addEventListener('click', async ()=>{
+      const form = document.getElementById('addMovieForm');
+      const title = document.getElementById('movieTitle').value.trim();
+      const desc  = document.getElementById('movieDesc').value.trim();
+      const status= document.getElementById('movieStatus').value;
+      const rating= parseInt(document.getElementById('movieRating').value,10);
+      const file  = document.getElementById('moviePoster').files[0];
+
+      // basic validation
+      if (!title) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      // Make a local preview URL if an image is provided
+      let posterURL = `https://via.placeholder.com/480x720/1e293b/94a3b8?text=${encodeURIComponent(title)}`;
+      if (file) {
+        posterURL = URL.createObjectURL(file);
+      }
+
+      const ts = Math.floor(Date.now()/1000);
+      const ratingStars = rating > 0
+        ? '<span class="text-warning" aria-label="Rating: '+rating+' out of 5">' + '★★★★★'.slice(0, rating).replaceAll('★','<i class="bi bi-star-fill"></i>') + '☆☆☆☆☆'.slice(0, 5-rating).replaceAll('☆','<i class="bi bi-star"></i>') + '</span>'
+        : '<span class="text-muted small">Not rated yet</span>';
+
+      const statusBadgeClass = status === 'completed' ? 'badge-completed' : (status === 'watching' ? 'badge-watching' : 'badge-to-watch');
+      const statusLabel = status === 'completed' ? 'Completed' : (status === 'watching' ? 'Watching' : 'To Watch');
+
+      const col = document.createElement('div');
+      col.className = 'col-12 col-sm-6 col-lg-4 col-xl-3 movie-item';
+      col.dataset.status = status;
+      col.dataset.title  = title;
+      col.dataset.rating = String(rating || 0);
+      col.dataset.ts     = String(ts);
+      col.innerHTML = `
+        <div class="card movie-card h-100">
+          <div class="position-relative">
+            <img src="${posterURL}" alt="${title} poster" class="movie-poster" />
+            <span class="status-badge ${statusBadgeClass}">${statusLabel}</span>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h6 class="card-title fw-bold mb-2">${title}</h6>
+            ${desc ? `<p class="card-text small mb-3">${desc}</p>` : `<p class="card-text small mb-3 text-muted">No description provided.</p>`}
+            <div class="mt-auto d
+            <div class="mt-auto d-flex align-items-center justify-content-between">
+              ${rating > 0 ? `
+                <div class="rating-stars text-warning" aria-label="Rating: ${rating} out of 5">
+                  ${'<i class="bi bi-star-fill"></i>'.repeat(rating)}${'<i class="bi bi-star"></i>'.repeat(5-rating)}
+                </div>
+              ` : `<span class="text-muted small">Not rated yet</span>`}
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Card actions">
+                  <i class="bi bi-three-dots"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><button class="dropdown-item" type="button"><i class="bi bi-pencil me-2"></i>Edit</button></li>
+                  ${status !== 'completed'
+                    ? `<li><button class="dropdown-item" type="button"><i class="bi bi-eye me-2"></i>Mark as Completed</button></li>`
+                    : `<li><button class="dropdown-item" type="button"><i class="bi bi-arrow-counterclockwise me-2"></i>Mark as To Watch</button></li>`
+                  }
+                  <li><hr class="dropdown-divider"></li>
+                  <li><button class="dropdown-item text-danger" type="button"><i class="bi bi-trash me-2"></i>Delete</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      moviesContainer.prepend(col); // show new first
+      // Close modal + reset
+      const modalEl = document.getElementById('addMovieModal');
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.hide();
+      document.getElementById('addMovieForm').reset();
+      document.getElementById('addMovieForm').classList.remove('was-validated');
+
+      // Re-apply filters & stats
+      applyFilters();
+
+      // Release object URL when image loads (avoid memory leak)
+      if (file) {
+        const img = col.querySelector('img.movie-poster');
+        img.addEventListener('load', () => URL.revokeObjectURL(posterURL), { once: true });
+      }
+    });
+
+    // Events
+    const debouncedFilter = debounce(applyFilters, 200);
+    searchInput.addEventListener('input', debouncedFilter);
+    statusFilter.addEventListener('change', applyFilters);
+    sortFilter.addEventListener('change', applyFilters);
+    resetBtn.addEventListener('click', (e)=>{ e.preventDefault(); resetFilters(); });
+
+    // Keyboard UX: Enter in search focuses list
+    searchInput.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const firstVisible = currentMovies().find(el => el.style.display !== 'none');
+        firstVisible?.querySelector('.dropdown-toggle')?.focus();
+      }
+    });
+
+    // Initial render
+    applyFilters();
+  </script>
+</body>
+</html>
