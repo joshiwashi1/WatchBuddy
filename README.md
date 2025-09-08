@@ -6,6 +6,7 @@ Group Member:
 Josh Rassell V. Lejarzo
 
 Screenshots:
+
 index.html
 <img width="1893" height="937" alt="image" src="https://github.com/user-attachments/assets/de886bfe-46af-43e2-b36f-0ec8433d6da3" />
 register.html
