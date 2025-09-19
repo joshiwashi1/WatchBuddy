@@ -1,0 +1,515 @@
+:root {
+  /* Core palette */
+  --wb-primary: #1E3A8A;
+  /* Navy */
+  --wb-primary-600: #172554;
+  /* Deeper navy */
+  --wb-accent: #0EA5E9;
+  /* Sky */
+  --wb-bg: #0F172A;
+  /* Page background */
+  --wb-surface: #1E293B;
+  /* Cards / surfaces */
+  --wb-text: #F1F5F9;
+  /* Main text (white-ish) */
+  --wb-text-muted: #9AA3B2;
+  /* Muted text */
+  --wb-border: rgba(255, 255, 255, .10);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  background-color: var(--wb-bg);
+  color: var(--wb-text);
+}
+
+/* Make all form labels white */
+label {
+  color: var(--wb-text);  /* uses your white-ish text token */
+}
+
+/* Make placeholders white too */
+.form-control::placeholder {
+  color: var(--wb-text);
+  opacity: 0.8;  /* slightly dimmer than labels for distinction */
+}
+
+
+/* ---------- Navbar ---------- */
+.wb-navbar {
+  background-color: var(--wb-surface);
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.navbar-shadow {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
+}
+
+.wb-navbar .navbar-brand {
+  color: #fff !important;
+}
+
+.wb-navbar .nav-link {
+  color: var(--wb-text);
+  padding: .5rem .9rem;
+  border-radius: 999px;
+}
+
+.wb-navbar .nav-link:hover,
+.wb-navbar .nav-link.active {
+  color: #fff;
+  background-color: var(--wb-primary);
+}
+
+@media (max-width: 991.98px) {
+  .wb-navbar .navbar-collapse {
+    background: var(--wb-surface);
+    border-radius: .75rem;
+    padding: .75rem;
+    margin-top: .5rem;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, .35);
+  }
+
+  .wb-navbar .navbar-nav .nav-item+.nav-item {
+    margin-top: .35rem;
+  }
+
+  .wb-navbar .nav-link {
+    padding: .55rem 1rem;
+  }
+}
+
+/* Hamburger icon tinted with accent */
+.wb-navbar .navbar-toggler {
+  border-color: rgba(255, 255, 255, .25);
+}
+
+.wb-navbar .navbar-toggler:focus {
+  box-shadow: 0 0 0 .15rem rgba(14, 165, 233, .25);
+}
+
+.wb-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(14,165,233,0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  background: linear-gradient(160deg, var(--wb-surface) 0%, var(--wb-bg) 100%);
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.text-accent {
+  color: var(--wb-accent);
+}
+
+.hero .display-5 {
+  letter-spacing: .2px;
+}
+
+.hero-cta {
+  gap: .75rem;
+}
+
+/* ---------- Cards ---------- */
+.card.wb-card {
+  background: var(--wb-surface);
+  border: 1px solid var(--wb-border);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.card.wb-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .25);
+  border-color: rgba(255, 255, 255, .18);
+}
+
+/* Feature icon chip */
+.card-icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: .75rem;
+  color: #fff;
+  font-size: 1.35rem;
+  background: linear-gradient(135deg, var(--wb-primary), var(--wb-accent));
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all .3s ease;
+}
+
+.btn-primary {
+  background-color: var(--wb-primary);
+  border-color: var(--wb-primary);
+  box-shadow: 0 2px 8px rgba(30, 58, 138, .25);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--wb-primary-600);
+  border-color: var(--wb-primary-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, .35);
+}
+
+.btn-outline-primary {
+  color: var(--wb-accent);
+  border-color: var(--wb-accent);
+}
+
+.btn-outline-primary:hover {
+  background: var(--wb-accent);
+  border-color: var(--wb-accent);
+  color: #0B1220;
+}
+
+/* ---------- Forms ---------- */
+.form-control,
+.form-select,
+.input-group-text {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid var(--wb-border);
+  color: var(--wb-text);
+  border-radius: 12px;
+  padding: .75rem 1rem;
+  transition: all .3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(14, 165, 233, .6);
+  box-shadow: 0 0 0 .2rem rgba(14, 165, 233, .18);
+  color: var(--wb-text);
+  transform: translateY(-1px);
+}
+
+.form-control::placeholder {
+  color: var(--wb-text-muted);
+}
+
+.input-group-text {
+  background: rgba(255, 255, 255, .06) !important;
+  border-color: var(--wb-border) !important;
+  color: var(--wb-text-muted) !important;
+  border-radius: 12px 0 0 12px !important;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background: var(--wb-surface);
+  border-top: 1px solid var(--wb-border);
+}
+
+.footer-small {
+  font-size: .9rem;
+  color: var(--wb-text-muted);
+}
+
+/* ---------- Utilities ---------- */
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+.text-muted {
+  color: var(--wb-text-muted) !important;
+}
+
+.badge-soft {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid var(--wb-border);
+  color: var(--wb-text);
+}
+
+/* ---------- Rotating Cube ---------- */
+.wb-cube-wrap {
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --cube-size: clamp(240px, 36vw, 360px);
+  width: var(--cube-size);
+  height: var(--cube-size);
+  margin-inline: auto;
+}
+
+.wb-cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: wb-rotate 16s linear infinite;
+}
+
+.wb-cube-wrap:hover .wb-cube {
+  animation-play-state: paused;
+}
+
+.wb-face {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  display: block;
+  background: var(--wb-surface);
+  border: 1px solid var(--wb-border);
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .5);
+}
+
+:root {
+  --cube-translate: calc(var(--cube-size) / 2);
+}
+
+.wb-front {
+  transform: translateZ(var(--cube-translate));
+}
+
+.wb-back {
+  transform: rotateY(180deg) translateZ(var(--cube-translate));
+}
+
+.wb-right {
+  transform: rotateY(90deg) translateZ(var(--cube-translate));
+}
+
+.wb-left {
+  transform: rotateY(-90deg) translateZ(var(--cube-translate));
+}
+
+.wb-top {
+  transform: rotateX(90deg) translateZ(var(--cube-translate));
+}
+
+.wb-bottom {
+  transform: rotateX(-90deg) translateZ(var(--cube-translate));
+}
+
+.wb-face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@keyframes wb-rotate {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+
+  25% {
+    transform: rotateX(0deg) rotateY(90deg);
+  }
+
+  50% {
+    transform: rotateX(0deg) rotateY(180deg);
+  }
+
+  75% {
+    transform: rotateX(0deg) rotateY(270deg);
+  }
+
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wb-cube {
+    animation: none;
+  }
+}
+
+/* ---------- Dashboard / Movies ---------- */
+.stats-card,
+.movie-card,
+.search-filters,
+.modal-content,
+.dropdown-menu {
+  background: var(--wb-surface) !important;
+  border: 1px solid var(--wb-border) !important;
+  border-radius: 16px;
+  transition: all .3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.stats-card:hover,
+.movie-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .25);
+  border-color: rgba(255, 255, 255, .18);
+}
+
+.stats-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  background: linear-gradient(135deg, var(--wb-primary), var(--wb-accent));
+}
+
+.to-watch {
+  background: #6C757D;
+  color: #fff;
+}
+
+.watching {
+  background: var(--wb-accent);
+  color: #0B1220;
+}
+
+.completed {
+  background: #059669;
+  color: #fff;
+}
+
+.movie-poster {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  background: #475569;
+  transition: transform .4s ease;
+}
+
+.movie-card:hover .movie-poster {
+  transform: scale(1.02);
+}
+
+.status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: .7rem;
+  font-weight: 600;
+  padding: .3rem .8rem;
+  border-radius: 20px;
+  border: none;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+}
+
+.badge-to-watch {
+  background: rgba(108, 117, 125, .9);
+  color: #fff;
+}
+
+.badge-watching {
+  background: rgba(14, 165, 233, .9);
+  color: #0B1220;
+}
+
+.badge-completed {
+  background: rgba(5, 150, 105, .9);
+  color: #fff;
+}
+
+.rating-stars {
+  color: #F59E0B;
+}
+
+.dropdown-item {
+  color: var(--wb-text);
+  border-radius: 8px;
+  margin: .2rem;
+  transition: .2s;
+}
+
+.dropdown-item:hover {
+  background: rgba(14, 165, 233, .12);
+  color: var(--wb-text);
+  transform: translateX(2px);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--wb-text-muted);
+  border: 1px dashed var(--wb-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .02);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: .4;
+  color: var(--wb-text-muted);
+}
+
+.quick-actions {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+.fab {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--wb-accent);
+  color: #0B1220;
+  border: none;
+  font-size: 1.6rem;
+  box-shadow: 0 8px 25px rgba(14, 165, 233, .3);
+  transition: all .3s ease;
+}
+
+.fab:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* ---------- Motion respect ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* ---------- Typography ---------- */
+.h3,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Poppins, sans-serif;
+}
+
+
+/* To Watch count = red */
+.stats-card .to-watch ~ div .h4 {
+  color: #ffffff; /* same as your .to-watch background */
+}
+
+/* Watching count = accent (blue/sky) */
+.stats-card .watching ~ div .h4 {
+  color: #ffffff; /* uses your accent token */
+}
+
+/* Completed count = green */
+.stats-card .completed ~ div .h4 {
+  color: #ffffff; /* same as your .completed background */
+}
+
+/* Average Rating count = golden yellow */
+#avgRating {
+  color: #ffffff; /* same shade you use for rating stars */
+}

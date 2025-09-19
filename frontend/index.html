@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WatchBuddy | Home</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Orbitron:wght@700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ===== Navbar (shared) ===== */
+    .wb-navbar {
+      background: rgba(10, 14, 26, 0.95) !important;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(45, 55, 72, 0.3);
+      transition: all .2s ease;
+      min-height: 72px;
+    }
+
+    .wb-navbar.navbar-shadow {
+      background: rgba(10, 14, 26, 0.98) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      border-bottom-color: rgba(45, 55, 72, 0.6);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .navbar-brand img {
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+      transition: all .2s ease;
+    }
+
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+
+    .navbar-dark .navbar-toggler {
+      border-color: rgba(255, 255, 255, .25);
+    }
+
+    .navbar-dark .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .nav-link {
+      color: var(--wb-text-muted, #94a3b8) !important;
+      font-weight: 500;
+      padding: 0.75rem 1rem !important;
+      border-radius: 10px;
+      margin: 0 0.25rem;
+      transition: all .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .nav-link:hover {
+      color: var(--wb-text, #fff) !important;
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active {
+      color: var(--wb-accent, #0EA5E9) !important;
+      background: rgba(6, 182, 212, 0.15);
+      position: relative;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 2px;
+      background: var(--wb-accent, #0EA5E9);
+      border-radius: 1px;
+    }
+
+    /* Dropdown look like Home */
+    .dropdown-menu {
+      background: var(--wb-panel, #1E293B) !important;
+      border: 1px solid var(--wb-border, rgba(148, 163, 184, .25)) !important;
+      border-radius: 12px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .45);
+      padding: 0.75rem 0;
+    }
+
+    .dropdown-item {
+      color: var(--wb-text, #fff) !important;
+      padding: 0.75rem 1.25rem;
+      font-weight: 500;
+      transition: all .12s ease;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(59, 130, 246, 0.1) !important;
+      color: var(--wb-text, #fff) !important;
+      transform: translateX(4px);
+    }
+
+    .wb-cube-wrap {
+      perspective: 1200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      --cube-size: clamp(220px, 36vw, 360px);
+      width: var(--cube-size);
+      height: var(--cube-size);
+      margin-inline: auto;
+    }
+
+    .wb-cube {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      animation: wb-rotateY 12s linear infinite;
+    }
+
+    .wb-cube-wrap:hover .wb-cube {
+      animation-play-state: paused;
+    }
+
+    .wb-face {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: var(--wb-surface);
+      border: 1px solid rgba(255, 255, 255, .12);
+      overflow: hidden;
+      border-radius: 1rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .5);
+    }
+
+    .wb-face img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    :root {
+      --cube-translate: calc(var(--cube-size) / 2);
+    }
+
+    .wb-front {
+      transform: translateZ(var(--cube-translate));
+    }
+
+    .wb-back {
+      transform: rotateY(180deg) translateZ(var(--cube-translate));
+    }
+
+    .wb-right {
+      transform: rotateY(90deg) translateZ(var(--cube-translate));
+    }
+
+    .wb-left {
+      transform: rotateY(-90deg) translateZ(var(--cube-translate));
+    }
+
+    .wb-top {
+      transform: rotateX(90deg) translateZ(var(--cube-translate));
+    }
+
+    .wb-bottom {
+      transform: rotateX(-90deg) translateZ(var(--cube-translate));
+    }
+
+    @keyframes wb-rotateY {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      25% {
+        transform: rotateY(90deg);
+      }
+
+      50% {
+        transform: rotateY(180deg);
+      }
+
+      75% {
+        transform: rotateY(270deg);
+      }
+
+      100% {
+        transform: rotateY(360deg);
+      }
+    }
+
+    .text-accent {
+      color: var(--wb-accent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wb-cube {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body data-page="home">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
+        WatchBuddy
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="mainNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <!-- Home (Index) -->
+          <li class="nav-item">
+            <a class="nav-link" href="index.html"><i class="bi bi-house-door me-1"></i>Home</a>
+          </li>
+
+          <!-- Register -->
+          <li class="nav-item">
+            <a class="nav-link" href="register.html"><i class="bi bi-person-plus me-1"></i>Register</a>
+          </li>
+
+          <!-- Login (button-style) -->
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-outline-primary px-3" href="login.html"><i
+                class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="py-5 hero text-light">
+    <div class="container">
+      <div class="row align-items-center gy-5">
+        <!-- Left side: text content -->
+        <div class="col-12 col-lg-6">
+          <span class="badge px-3 py-2 rounded-pill"
+            style="background: linear-gradient(135deg, var(--wb-primary), var(--wb-accent));">
+            🎬 WatchBuddy
+          </span>
+
+          <h1 class="display-4 fw-bold mt-3">
+            Organize Your <span class="text-accent">Movie Journey</span>
+          </h1>
+
+          <p class="lead mt-3 text-white">
+            No more forgetting what to watch next. Track, review, and rate your favorite movies in one place.
+          </p>
+
+
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <a class="btn btn-primary btn-lg px-4" href="register.html">
+              <i class="bi bi-person-plus me-2"></i> Get Started
+            </a>
+            <a class="btn btn-outline-primary btn-lg px-4" href="login.html">
+              <i class="bi bi-box-arrow-in-right me-2"></i> Login
+            </a>
+          </div>
+        </div>
+
+
+        <div class="col-12 col-lg-6">
+          <div class="wb-cube-wrap">
+            <div id="wbCube" class="wb-cube" aria-label="Rotating movie posters cube">
+              <div class="wb-face wb-front"><img alt=""></div>
+              <div class="wb-face wb-back"><img alt=""></div>
+              <div class="wb-face wb-right"><img alt=""></div>
+              <div class="wb-face wb-left"><img alt=""></div>
+              <div class="wb-face wb-top"><img alt=""></div>
+              <div class="wb-face wb-bottom"><img alt=""></div>
+            </div>
+          </div>
+          <p class="text-center mt-3 text-primary small">Your personalized movie watchlist</p>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="h3 fw-bold text-center mb-4">What You Can Do</h2>
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card wb-card h-100">
+            <div class="card-body">
+              <div class="card-icon"><i class="bi bi-pin"></i></div>
+              <h5 class="card-title mt-3 text-light">Smart Watchlist</h5>
+              <p class="card-text text-secondary">Add movies with title, description, status, and an optional poster.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card wb-card h-100">
+            <div class="card-body">
+              <div class="card-icon"><i class="bi bi-star"></i></div>
+              <h5 class="card-title mt-3 text-light">Reviews & Ratings</h5>
+              <p class="card-text text-secondary">Write personal reviews and rate each movie after watching.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card wb-card h-100">
+            <div class="card-body">
+              <div class="card-icon"><i class="bi bi-search"></i></div>
+              <h5 class="card-title mt-3 text-light">Search & Filter</h5>
+              <p class="card-text text-secondary">Quickly find titles and filter by status: To Watch, Watching,
+                Completed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-top py-4">
+    <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center">
+      <span class="text-muted footer-small">© <span id="year"></span> WatchBuddy</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function () {
+      // get current page filename (e.g., "login.html")
+      const path = location.pathname.split("/").pop() || "index.html";
+
+      // loop through all nav links
+      document.querySelectorAll(".navbar .nav-link, .navbar .btn").forEach(link => {
+        const href = link.getAttribute("href");
+        if (!href) return;
+
+        const target = href.split("/").pop();
+
+        if (target === path) {
+          link.classList.add("active");
+
+          // if it's the login button, style as primary
+          if (link.classList.contains("btn")) {
+            link.classList.remove("btn-outline-primary");
+            link.classList.add("btn-primary");
+          }
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    })();
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Navbar highlight + Login button
+    (function () {
+      const page = document.body.dataset.page;
+      document.getElementById("navHome")?.classList.toggle("active", page === "home");
+      document.getElementById("navRegister")?.classList.toggle("active", page === "register");
+
+      const loginBtn = document.getElementById("loginBtn");
+      if (loginBtn) {
+        const onLogin = page === "login";
+        loginBtn.classList.toggle("btn-primary", onLogin);
+        loginBtn.classList.toggle("active", onLogin);
+        loginBtn.classList.toggle("btn-outline-primary", !onLogin);
+      }
+    })();
+
+    // Navbar shadow on scroll
+    (function () {
+      const nav = document.querySelector('.wb-navbar');
+      if (!nav) return;
+      const onScroll = () => nav.classList.toggle('navbar-shadow', window.scrollY > 8);
+      onScroll(); window.addEventListener('scroll', onScroll);
+    })();
+
+    // Rotating cube
+    (function () {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCube);
+      } else {
+        initCube();
+      }
+
+      function initCube() {
+        const posters = [
+          'assets/img/poster1.jpg',
+          'assets/img/poster2.jpg',
+          'assets/img/poster3.jpg',
+          'assets/img/poster4.jpg',
+        ];
+
+        // Preload
+        posters.forEach(src => { const i = new Image(); i.src = src; });
+
+        const cube = document.getElementById('wbCube');
+        if (!cube) return;
+
+        const faceMap = {
+          'wb-front': cube.querySelector('.wb-front img'),
+          'wb-right': cube.querySelector('.wb-right img'),
+          'wb-back': cube.querySelector('.wb-back img'),
+          'wb-left': cube.querySelector('.wb-left img'),
+          'wb-top': cube.querySelector('.wb-top img'),
+          'wb-bottom': cube.querySelector('.wb-bottom img'),
+        };
+
+        let offset = 0;
+        function assignImages() {
+          faceMap['wb-front'].src = posters[(offset + 0) % posters.length];
+          faceMap['wb-right'].src = posters[(offset + 1) % posters.length];
+          faceMap['wb-back'].src = posters[(offset + 2) % posters.length];
+          faceMap['wb-left'].src = posters[(offset + 3) % posters.length];
+          faceMap['wb-top'].src = posters[(offset + 4) % posters.length];
+          faceMap['wb-bottom'].src = posters[(offset + 5) % posters.length];
+        }
+
+        assignImages();
+
+        const STEP_MS = 3000;
+        setInterval(() => {
+          offset = (offset + 1) % posters.length;
+          assignImages();
+        }, STEP_MS);
+      }
+    })();
+  </script>
+</body>
+
+</html>

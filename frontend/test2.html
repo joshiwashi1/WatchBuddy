@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WatchBuddy | User Profile</title>
+
+  <!-- Icons & Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- Optional site stylesheet (uses your existing dark variables if present) -->
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <style>
+    /* Fallback colors if your styles.css isn't loaded */
+    :root {
+      --wb-primary: #1E3A8A;        /* Indigo-800 */
+      --wb-primary-600: #172554;    /* Indigo-950 */
+      --wb-accent: #0EA5E9;         /* Sky-500 */
+      --wb-bg: #0F172A;             /* Slate-950 */
+      --wb-surface: #1E293B;        /* Slate-800 */
+      --wb-surface-2: #0b1220;      /* Deeper panel */
+      --wb-text: #E5E7EB;           /* Slate-200 */
+      --wb-text-dim: #9CA3AF;       /* Gray-400 */
+      --wb-success: #22C55E;
+      --wb-warning: #F59E0B;
+      --wb-danger: #EF4444;
+    }
+    body{background:var(--wb-bg); color:var(--wb-text); font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";}
+
+    /* Navbar */
+    .wb-navbar{background:var(--wb-surface); border-bottom:1px solid rgba(255,255,255,.08);} 
+    .navbar-brand{font-family:'Orbitron', sans-serif; letter-spacing:.5px;}
+
+    /* Header (cover) */
+    .profile-cover{
+      background: linear-gradient(180deg, rgba(14,165,233,.15), rgba(23,37,84,.5)), url('assets/img/cover.jpg') center/cover no-repeat;
+      min-height: 180px; border-radius: 1rem; position: relative; overflow:hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    /* Avatar */
+    .avatar-wrap{ position:absolute; left:1.25rem; bottom:-42px; }
+    .avatar{ width:96px; height:96px; border-radius:50%; border:4px solid var(--wb-bg); object-fit:cover; background:#111827; }
+
+    /* Card shells */
+    .wb-card{ background:var(--wb-surface); border:1px solid rgba(255,255,255,.08); border-radius:1rem; }
+    .wb-card-ghost{ background:var(--wb-surface-2); border:1px solid rgba(255,255,255,.06); border-radius:1rem; }
+
+    /* Stat pill */
+    .stat-pill{display:flex; gap:.75rem; align-items:center; padding:1rem; border-radius:.875rem; border:1px solid rgba(255,255,255,.06);}
+    .stat-pill i{font-size:1.25rem;}
+
+    .text-dim{ color: var(--wb-text-dim)!important; }
+
+    .form-control, .form-select, .form-check-input{
+      background: #0b1220; border-color: rgba(255,255,255,.08); color: var(--wb-text);
+    }
+    .form-control::placeholder{ color: rgba(229,231,235,.5); }
+    .form-control:focus{ box-shadow: 0 0 0 .25rem rgba(14,165,233,.15); border-color: var(--wb-accent); }
+
+    .nav-tabs{border-color: rgba(255,255,255,.08);} 
+    .nav-tabs .nav-link{ color:var(--wb-text-dim); border:0; }
+    .nav-tabs .nav-link.active{ color:#fff; background:transparent; border-bottom:2px solid var(--wb-accent); }
+
+    .btn-primary{ background: var(--wb-primary); border-color: var(--wb-primary); }
+    .btn-outline-light{ border-color: rgba(255,255,255,.25); color:#fff; }
+    .btn-outline-light:hover{ background: rgba(255,255,255,.08); }
+
+    @media (max-width: 576px){
+      .avatar-wrap{ position:static; margin-top:-48px; margin-bottom:.5rem; }
+      .profile-cover{ min-height: 140px; }
+    }
+  </style>
+</head>
+
+<body data-page="profile" class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg wb-navbar sticky-top" data-bs-theme="dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="40" height="40" class="me-2 rounded-circle" />
+        WatchBuddy
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExample">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-grid"></i> Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-person"></i> Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="watchlist.html"><i class="bi bi-collection"></i> Watchlist</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="container my-4 my-lg-5">
+    <!-- Cover + Avatar + Quick Actions -->
+    <section class="position-relative">
+      <div class="profile-cover w-100"></div>
+
+      <!-- Avatar + name row -->
+      <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between px-3 px-sm-4" style="margin-top:-32px;">
+        <div class="d-flex align-items-end gap-3">
+          <div class="avatar-wrap">
+            <img id="avatarImg" class="avatar" src="assets/img/default-avatar.png" alt="User avatar" />
+          </div>
+          <div class="pb-2">
+            <h1 class="h4 mb-1">Ellyza Sherynn <span class="badge text-bg-primary ms-2">Pro</span></h1>
+            <div class="text-dim small">@joshiwashi1 · Kuching, MY</div>
+          </div>
+        </div>
+        <div class="d-flex gap-2 pb-2">
+          <label class="btn btn-outline-light btn-sm">
+            <i class="bi bi-image"></i> Change Avatar
+            <input id="avatarInput" type="file" accept="image/*" hidden />
+          </label>
+          <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i> Edit Profile</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats + About -->
+    <section class="row g-4 mt-4">
+      <div class="col-12 col-lg-8">
+        <div class="wb-card p-3 p-md-4">
+          <ul class="nav nav-tabs border-0" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab">Activity</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="lists-tab" data-bs-toggle="tab" data-bs-target="#lists" type="button" role="tab">Lists</button>
+            </li>
+          </ul>
+
+          <div class="tab-content pt-3">
+            <!-- Overview -->
+            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+              <div class="row g-3 g-md-4">
+                <div class="col-6 col-md-3">
+                  <div class="stat-pill">
+                    <i class="bi bi-bookmark-plus text-dim"></i>
+                    <div>
+                      <div class="small text-dim">To Watch</div>
+                      <div class="h5 mb-0" id="statToWatch">12</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="stat-pill">
+                    <i class="bi bi-play-circle text-dim"></i>
+                    <div>
+                      <div class="small text-dim">Watching</div>
+                      <div class="h5 mb-0" id="statWatching">3</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="stat-pill">
+                    <i class="bi bi-check2-circle text-dim"></i>
+                    <div>
+                      <div class="small text-dim">Completed</div>
+                      <div class="h5 mb-0" id="statCompleted">48</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="stat-pill">
+                    <i class="bi bi-star text-dim"></i>
+                    <div>
+                      <div class="small text-dim">Avg. Rating</div>
+                      <div class="h5 mb-0" id="statAvg">4.3</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h2 class="h6 text-dim mb-2">About</h2>
+                <div class="wb-card-ghost p-3">
+                  <p class="mb-2">Accounting student • UI tinkerer • Movie night curator. I love heist films, slow-burn series, and anything Studio Ghibli inspired ✨</p>
+                  <div class="d-flex flex-wrap gap-2 small">
+                    <span class="badge text-bg-secondary">Forensic Accounting</span>
+                    <span class="badge text-bg-secondary">UI/UX</span>
+                    <span class="badge text-bg-secondary">Kuching</span>
+                    <span class="badge text-bg-secondary">Matcha & Mango</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h2 class="h6 text-dim mb-2">Recently Watched</h2>
+                <div class="row g-3">
+                  <!-- Example poster cards -->
+                  <div class="col-6 col-md-3">
+                    <div class="wb-card overflow-hidden">
+                      <img src="assets/img/posters/poster-01.jpg" class="w-100" alt="Poster 1" />
+                      <div class="p-2 d-flex align-items-center justify-content-between">
+                        <span class="small">Inception</span>
+                        <span class="small"><i class="bi bi-star-fill"></i> 4.5</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="wb-card overflow-hidden">
+                      <img src="assets/img/posters/poster-02.jpg" class="w-100" alt="Poster 2" />
+                      <div class="p-2 d-flex align-items-center justify-content-between">
+                        <span class="small">Dune: Part II</span>
+                        <span class="small"><i class="bi bi-star-fill"></i> 4.0</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="wb-card overflow-hidden">
+                      <img src="assets/img/posters/poster-03.jpg" class="w-100" alt="Poster 3" />
+                      <div class="p-2 d-flex align-items-center justify-content-between">
+                        <span class="small">Whiplash</span>
+                        <span class="small"><i class="bi bi-star-fill"></i> 5.0</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="wb-card overflow-hidden">
+                      <img src="assets/img/posters/poster-04.jpg" class="w-100" alt="Poster 4" />
+                      <div class="p-2 d-flex align-items-center justify-content-between">
+                        <span class="small">Spirited Away</span>
+                        <span class="small"><i class="bi bi-star-fill"></i> 4.8</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Activity -->
+            <div class="tab-pane fade" id="activity" role="tabpanel">
+              <div class="wb-card-ghost p-3">
+                <div class="d-flex gap-3 align-items-start">
+                  <i class="bi bi-clock-history mt-1 text-dim"></i>
+                  <div>
+                    <div class="small">You rated <strong>"Oppenheimer"</strong> <i class="bi bi-star-fill"></i> 4.0</div>
+                    <div class="text-dim small">2 days ago</div>
+                  </div>
+                </div>
+                <hr class="border-secondary-subtle" />
+                <div class="d-flex gap-3 align-items-start">
+                  <i class="bi bi-plus-circle mt-1 text-dim"></i>
+                  <div>
+                    <div class="small">Added <strong>"Kimi no Na wa"</strong> to <em>To Watch</em></div>
+                    <div class="text-dim small">3 days ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reviews -->
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+              <div class="wb-card-ghost p-3">
+                <div class="d-flex gap-3">
+                  <img src="assets/img/posters/poster-05.jpg" alt="Movie" width="54" height="80" class="rounded" />
+                  <div>
+                    <div class="d-flex align-items-center gap-2">
+                      <strong>La La Land</strong>
+                      <span class="small text-dim"><i class="bi bi-star-fill"></i> 4.2</span>
+                    </div>
+                    <p class="small mb-1">Whimsical, heartbreaking, and gorgeous. The score lives rent-free in my head.</p>
+                    <div class="text-dim small">Reviewed on 10 Sep 2025</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lists -->
+            <div class="tab-pane fade" id="lists" role="tabpanel">
+              <div class="wb-card-ghost p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h3 class="h6 mb-0">Custom Lists</h3>
+                  <a href="#" class="btn btn-outline-light btn-sm"><i class="bi bi-plus"></i> New List</a>
+                </div>
+                <div class="row g-3">
+                  <div class="col-12 col-md-6">
+                    <div class="wb-card p-3">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <div class="fw-semibold">Cozy Rainy-Day Picks</div>
+                          <div class="small text-dim">12 items · Updated 2d ago</div>
+                        </div>
+                        <i class="bi bi-chevron-right text-dim"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="wb-card p-3">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <div class="fw-semibold">Heist & Thriller</div>
+                          <div class="small text-dim">8 items · Updated 5d ago</div>
+                        </div>
+                        <i class="bi bi-chevron-right text-dim"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="col-12 col-lg-4">
+        <!-- Quick profile form -->
+        <div class="wb-card p-3 p-md-4">
+          <h2 class="h6 text-dim mb-3">Profile Settings</h2>
+          <form id="profileForm">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-control" id="displayName" placeholder="Your name" value="Ellyza Sherynn" />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text">@</span>
+                  <input type="text" class="form-control" id="username" value="joshiwashi1" />
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Bio</label>
+                <textarea class="form-control" rows="3" id="bio" placeholder="Tell us about you…">Accounting student • UI tinkerer • Movie night curator.</textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" id="location" placeholder="City, Country" value="Kuching, Malaysia" />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Website</label>
+                <input type="url" class="form-control" id="website" placeholder="https://" />
+              </div>
+              <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="privacySwitch" checked />
+                  <label class="form-check-label" for="privacySwitch">Make profile public</label>
+                </div>
+                <button class="btn btn-primary" type="submit"><i class="bi bi-save"></i> Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Connections -->
+        <div class="wb-card p-3 p-md-4 mt-3">
+          <h2 class="h6 text-dim mb-3">Connected Accounts</h2>
+          <div class="d-flex flex-column gap-2">
+            <button class="btn btn-outline-light w-100"><i class="bi bi-github"></i> Connect GitHub</button>
+            <button class="btn btn-outline-light w-100"><i class="bi bi-google"></i> Connect Google</button>
+            <button class="btn btn-outline-light w-100"><i class="bi bi-discord"></i> Connect Discord</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-auto py-4 text-center text-dim small">
+    Made with ❤️ for movie lovers · © <span id="year"></span> WatchBuddy
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Year stamp
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Avatar preview
+    const fileInput = document.getElementById('avatarInput');
+    const avatarImg = document.getElementById('avatarImg');
+    fileInput?.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => { avatarImg.src = reader.result; };
+      reader.readAsDataURL(file);
+    });
+
+    // Demo submit
+    document.getElementById('profileForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const payload = {
+        displayName: document.getElementById('displayName').value.trim(),
+        username: document.getElementById('username').value.trim(),
+        bio: document.getElementById('bio').value.trim(),
+        location: document.getElementById('location').value.trim(),
+        website: document.getElementById('website').value.trim(),
+        isPublic: document.getElementById('privacySwitch').checked,
+      };
+      console.log('Profile payload →', payload);
+      // TODO: POST to your backend API e.g. fetch(`${API}/api/profile`, { method:'PUT', body: JSON.stringify(payload) ... })
+      const toast = document.createElement('div');
+      toast.className = 'position-fixed bottom-0 end-0 m-3 wb-card p-3';
+      toast.textContent = 'Profile saved (demo)';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 1600);
+    });
+  </script>
+</body>
+</html>

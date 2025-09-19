@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WatchBuddy | Login</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Orbitron:wght@700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ===== Navbar (shared) ===== */
+    .wb-navbar {
+      background: rgba(10, 14, 26, 0.95) !important;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(45, 55, 72, 0.3);
+      transition: all .2s ease;
+      min-height: 72px;
+    }
+
+    .wb-navbar.navbar-shadow {
+      background: rgba(10, 14, 26, 0.98) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      border-bottom-color: rgba(45, 55, 72, 0.6);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .navbar-brand img {
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+      transition: all .2s ease;
+    }
+
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+
+    .navbar-dark .navbar-toggler {
+      border-color: rgba(255, 255, 255, .25);
+    }
+
+    .navbar-dark .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .nav-link {
+      color: var(--wb-text-muted, #94a3b8) !important;
+      font-weight: 500;
+      padding: 0.75rem 1rem !important;
+      border-radius: 10px;
+      margin: 0 0.25rem;
+      transition: all .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .nav-link:hover {
+      color: var(--wb-text, #fff) !important;
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active {
+      color: var(--wb-accent, #0EA5E9) !important;
+      background: rgba(6, 182, 212, 0.15);
+      position: relative;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 2px;
+      background: var(--wb-accent, #0EA5E9);
+      border-radius: 1px;
+    }
+
+    /* Dropdown look like Home */
+    .dropdown-menu {
+      background: var(--wb-panel, #1E293B) !important;
+      border: 1px solid var(--wb-border, rgba(148, 163, 184, .25)) !important;
+      border-radius: 12px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .45);
+      padding: 0.75rem 0;
+    }
+
+    .dropdown-item {
+      color: var(--wb-text, #fff) !important;
+      padding: 0.75rem 1.25rem;
+      font-weight: 500;
+      transition: all .12s ease;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(59, 130, 246, 0.1) !important;
+      color: var(--wb-text, #fff) !important;
+      transform: translateX(4px);
+    }
+  </style>
+
+</head>
+
+<body data-page="login" class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
+        WatchBuddy
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="mainNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <!-- Home (Index) -->
+          <li class="nav-item">
+            <a class="nav-link" href="index.html"><i class="bi bi-house-door me-1"></i>Home</a>
+          </li>
+
+          <!-- Register -->
+          <li class="nav-item">
+            <a class="nav-link" href="register.html"><i class="bi bi-person-plus me-1"></i>Register</a>
+          </li>
+
+          <!-- Login (button-style) -->
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-outline-primary px-3" href="login.html"><i
+                class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="py-4 hero">
+    <div class="container">
+      <h1 class="h3 fw-bold mb-0"><i class="bi bi-box-arrow-in-right me-2"></i>Login</h1>
+    </div>
+  </header>
+
+  <!-- Form -->
+  <main class="container my-4 flex-grow-1">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card wb-card">
+          <div class="card-body">
+            <form id="loginForm" novalidate>
+              <div id="formAlert" class="d-none"></div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input id="email" name="email" type="email" class="form-control" required autocomplete="email">
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                  <input id="password" name="password" type="password" class="form-control" required
+                    autocomplete="current-password">
+                  <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                    <i class="bi bi-eye" id="eyeIcon"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input id="remember" class="form-check-input" type="checkbox">
+                  <label for="remember" class="form-check-label text-light">Remember me</label>
+                </div>
+                <a href="forgot.html" class="small"><i class="bi bi-envelope-open me-1"></i>Forgot Password?</a>
+              </div>
+
+              <div class="d-grid">
+                <button id="submitBtn" type="submit" class="btn btn-primary">
+                  <i class="bi bi-unlock me-2"></i>Login
+                </button>
+              </div>
+            </form>
+            <p class="mt-3 text-muted">Don’t have an account? <a href="register.html">Register</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-top py-4 mt-auto">
+    <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center">
+      <span class="text-muted footer-small">© <span id="year"></span> WatchBuddy</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+
+    // Year + navbar shadow
+    document.getElementById('year').textContent = new Date().getFullYear();
+    (function () {
+      const nav = document.querySelector('.wb-navbar');
+      if (!nav) return;
+      const onScroll = () => nav.classList.toggle('navbar-shadow', window.scrollY > 8);
+      onScroll(); window.addEventListener('scroll', onScroll);
+    })();
+
+    // Active nav styling
+    (function () {
+      const page = document.body.dataset.page;
+      if (page === "home") document.getElementById("navHome")?.classList.add("active");
+      if (page === "register") document.getElementById("navRegister")?.classList.add("active");
+      const loginBtn = document.getElementById("loginBtn");
+      if (loginBtn) {
+        if (page === "login") {
+          loginBtn.classList.remove("btn-outline-primary");
+          loginBtn.classList.add("btn-primary", "active");
+        } else {
+          loginBtn.classList.remove("btn-primary", "active");
+          loginBtn.classList.add("btn-outline-primary");
+        }
+      }
+    })();
+  </script>
+<script>
+  (function () {
+    // highlight current nav
+    const path = location.pathname.split("/").pop() || "index.html";
+    document.querySelectorAll(".navbar .nav-link, .navbar .btn").forEach(link => {
+      const href = link.getAttribute("href"); if (!href) return;
+      const target = href.split("/").pop();
+      if (target === path) {
+        link.classList.add("active");
+        if (link.classList.contains("btn")) {
+          link.classList.remove("btn-outline-primary");
+          link.classList.add("btn-primary");
+        }
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  })();
+
+  (function () {
+    // ✅ dynamic API base — works on localhost and on your phone (192.168.1.3)
+    const API_BASE = `${location.protocol}//${location.host}/watchbuddy/backend/public`;
+
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const remember = document.getElementById('remember');
+    const alertBox = document.getElementById('formAlert');
+
+    // Show success message if redirected from registration
+    (function showRegisteredMessage() {
+      const justRegistered = new URLSearchParams(location.search).get('registered') === '1'
+        || sessionStorage.getItem('registrationSuccess') === 'true';
+      if (justRegistered) {
+        setAlert('Account created successfully. You can log in now 🎉', 'success');
+        sessionStorage.removeItem('registrationSuccess');
+      }
+    })();
+
+    // Toggle password visibility
+    if (togglePassword && eyeIcon) {
+      togglePassword.addEventListener('click', function () {
+        const type = password.type === 'password' ? 'text' : 'password';
+        password.type = type;
+        eyeIcon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+      });
+    }
+
+    function setAlert(message, type = 'danger') {
+      alertBox.className = `alert alert-${type} mb-3`;
+      alertBox.textContent = message;
+    }
+    function clearAlert() {
+      alertBox.className = 'd-none';
+      alertBox.textContent = '';
+    }
+    function validate() {
+      const errs = {};
+      const emailVal = (email.value || '').trim().toLowerCase();
+      const passVal = password.value || '';
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailVal) errs.email = 'Email is required';
+      else if (!emailRe.test(emailVal)) errs.email = 'Please enter a valid email';
+      if (!passVal) errs.password = 'Password is required';
+      return errs;
+    }
+
+    async function onSubmit(e) {
+      e.preventDefault();
+      clearAlert();
+
+      const errs = validate();
+      email.classList.toggle('is-invalid', !!errs.email);
+      password.classList.toggle('is-invalid', !!errs.password);
+      if (errs.email || errs.password) {
+        setAlert(errs.email || errs.password);
+        return;
+      }
+
+      const original = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Logging in...`;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          credentials: 'include', // keep cookies!
+          body: JSON.stringify({
+            email: (email.value || '').trim().toLowerCase(),
+            password: password.value || ''
+          })
+        });
+
+        const raw = await res.text();
+        let data; try { data = JSON.parse(raw); } catch { data = { ok:false, error:`Non-JSON: ${raw.slice(0,200)}` }; }
+
+        if (!res.ok || data?.ok === false) {
+          setAlert(data?.error || data?.message || `Login failed (${res.status})`);
+          return;
+        }
+
+        // "Remember me" flag (session itself is in PHP cookie)
+        if (remember.checked) localStorage.setItem('wbRemember', '1');
+        else localStorage.removeItem('wbRemember');
+
+        // Verify session
+        const meRes = await fetch(`${API_BASE}/api/me`, { credentials: 'include' });
+        const me = await meRes.json().catch(() => null);
+        if (me?.ok && me.user) sessionStorage.setItem('wbUser', JSON.stringify(me.user));
+
+        setAlert('Login successful! Redirecting...', 'success');
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+
+      } catch (err) {
+        console.error(err);
+        setAlert('Network error. Please try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = original;
+      }
+    }
+
+    form.addEventListener('submit', onSubmit);
+  })();
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WatchBuddy | Profile</title>
+
+  <!-- Icons & Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Site stylesheet -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Inline tweaks to mirror your dashboard look/feel -->
+  <style>
+    :root {
+      color-scheme: dark;
+      --wb-hover-bg: rgba(14, 165, 233, .28);
+      --wb-hover-text: #ffffff;
+      --wb-active-bg: rgba(14, 165, 233, .38);
+    }
+
+    .wb-navbar {
+      background: rgba(10, 14, 26, 0.95) !important;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(45, 55, 72, 0.3);
+      transition: all .2s ease;
+      min-height: 72px;
+    }
+
+    .wb-navbar.navbar-shadow {
+      background: rgba(10, 14, 26, 0.98) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      border-bottom-color: rgba(45, 55, 72, 0.6);
+    }
+
+    .nav-link { color: var(--wb-text-muted, #94a3b8) !important; font-weight: 500; padding: 0.75rem 1rem !important; border-radius: 10px; margin: 0 0.25rem; transition: all .2s ease; display: inline-flex; align-items: center; gap: .5rem; }
+    .nav-link:hover, .nav-link:focus-visible { color: var(--wb-hover-text) !important; background: var(--wb-hover-bg) !important; transform: translateY(-1px); outline: none; }
+    .nav-link.active { color: var(--wb-hover-text) !important; background: var(--wb-active-bg) !important; position: relative; box-shadow: inset 0 0 0 1px rgba(14, 165, 233, .55); }
+    .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 30px; height: 2px; background: var(--wb-accent, #0EA5E9); border-radius: 1px; }
+
+    .navbar-shadow { box-shadow: 0 10px 24px rgba(0,0,0,.15); }
+
+    /* Cards/inputs match dashboard */
+    .card, .wb-panel { background: var(--wb-panel); border: 1px solid var(--wb-border); }
+    .form-control, .form-select { background-color: var(--wb-surface); color: var(--wb-text); border-color: var(--wb-border); }
+    .form-control:focus, .form-select:focus { background-color: var(--wb-surface); color: var(--wb-text); border-color: var(--wb-accent); box-shadow: 0 0 0 .25rem rgba(14,165,233,.25); }
+
+    /* Avatar */
+    .avatar-lg { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,.18); background:#0b1220; }
+    .cover { position: relative; border-radius: .75rem; overflow: hidden; background: linear-gradient(180deg, rgba(14,165,233,.15), rgba(23,37,84,.5)), url('assets/img/cover.jpg') center/cover no-repeat; min-height: 180px; }
+
+    /* Stats icons (reuse dashboard styles) */
+    .stats-icon { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 1.25rem; background: var(--wb-surface); }
+    .stats-icon.to-watch { background: rgba(14,165,233,.2); color:#7dd3fc; }
+    .stats-icon.watching { background: rgba(180,83,9,.2); color:#fdba74; }
+    .stats-icon.completed { background: rgba(34,197,94,.2); color:#86efac; }
+  </style>
+</head>
+
+<body data-page="profile">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.html">
+        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
+        WatchBuddy
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="mainNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-house-door me-1"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="profile.html"><i class="bi bi-person me-1"></i>Profile</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle fs-5"></i><span id="userName">—</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="profile.html">Profile Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item" id="logoutBtn" type="button">Logout</button></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="container-fluid py-4">
+    <!-- Header -->
+    <section class="cover mb-5">
+      <div class="container py-4 position-relative" style="min-height: 180px;">
+        <div class="d-flex flex-column flex-md-row align-items-md-end gap-3">
+          <div>
+            <img id="avatarImg" src="assets/img/default-avatar.png" alt="Avatar" class="avatar-lg">
+          </div>
+          <div class="mb-2">
+            <h1 class="h3 fw-bold mb-1" id="displayNameHead">—</h1>
+            <div class="text-muted"><span id="usernameHead">@—</span> · <span id="locationHead">—</span></div>
+          </div>
+          <div class="ms-auto d-flex gap-2">
+            <label class="btn btn-outline-primary btn-sm mb-0">
+              <i class="bi bi-image me-1"></i> Change Avatar
+              <input id="avatarInput" type="file" accept="image/*" hidden>
+            </label>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+              <i class="bi bi-pencil-square me-1"></i> Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <section class="container">
+      <div class="row g-4">
+        <!-- Left: About + Stats + Recent Activity -->
+        <div class="col-12 col-xl-8">
+          <!-- About -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h2 class="h5 fw-bold mb-3">About</h2>
+              <p id="bioText" class="mb-2 text-body-secondary">—</p>
+              <div class="d-flex flex-wrap gap-2" id="tagsWrap"></div>
+            </div>
+          </div>
+
+          <!-- Stats (matches dashboard style) -->
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="card h-100">
+                <div class="card-body text-center d-grid gap-2">
+                  <div class="stats-icon to-watch mx-auto"><i class="bi bi-bookmark-plus"></i></div>
+                  <div>
+                    <div class="h4 fw-bold mb-0" id="statToWatch">0</div>
+                    <div class="text-muted small">To Watch</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="card h-100">
+                <div class="card-body text-center d-grid gap-2">
+                  <div class="stats-icon watching mx-auto"><i class="bi bi-play-circle"></i></div>
+                  <div>
+                    <div class="h4 fw-bold mb-0" id="statWatching">0</div>
+                    <div class="text-muted small">Watching</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="card h-100">
+                <div class="card-body text-center d-grid gap-2">
+                  <div class="stats-icon completed mx-auto"><i class="bi bi-check-circle"></i></div>
+                  <div>
+                    <div class="h4 fw-bold mb-0" id="statCompleted">0</div>
+                    <div class="text-muted small">Completed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Reviews -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h5 fw-bold mb-0">Recent Reviews</h2>
+                <a href="dashboard.html" class="btn btn-outline-primary btn-sm"><i class="bi bi-collection me-1"></i>Go to Watchlist</a>
+              </div>
+              <div id="reviewsList" class="vstack gap-3">
+                <!-- Filled by JS -->
+              </div>
+              <div id="reviewsEmpty" class="text-center py-4 d-none text-muted">No reviews yet.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Settings quick form -->
+        <div class="col-12 col-xl-4">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="h5 fw-bold mb-3">Quick Settings</h2>
+              <form id="quickForm" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="displayName">Display Name</label>
+                  <input id="displayName" type="text" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="username">Username</label>
+                  <div class="input-group">
+                    <span class="input-group-text">@</span>
+                    <input id="username" type="text" class="form-control" required>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="location">Location</label>
+                  <input id="location" type="text" class="form-control" placeholder="City, Country">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="website">Website</label>
+                  <input id="website" type="url" class="form-control" placeholder="https://">
+                </div>
+                <div class="form-check form-switch mb-3">
+                  <input class="form-check-input" type="checkbox" id="isPublic">
+                  <label class="form-check-label" for="isPublic">Make profile public</label>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-secondary" type="button" id="resetQuick">Reset</button>
+                  <button class="btn btn-primary" type="submit"><i class="bi bi-save me-1"></i>Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-body">
+              <h2 class="h6 fw-bold mb-3">Account</h2>
+              <button class="btn btn-outline-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#passwordModal"><i class="bi bi-shield-lock me-1"></i> Change Password</button>
+              <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash me-1"></i> Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Edit Profile Modal (full form) -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Edit Profile</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editForm" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="fullName">Full Name</label>
+                <input id="fullName" type="text" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="email">Email</label>
+                <input id="email" type="email" class="form-control" disabled>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="bio">Bio</label>
+                <textarea id="bio" class="form-control" rows="3" placeholder="Tell us about you…"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="tags">Interests / Tags (comma separated)</label>
+                <input id="tags" type="text" class="form-control" placeholder="e.g., Ghibli, Heist, Thriller">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="timezone">Timezone</label>
+                <input id="timezone" type="text" class="form-control" placeholder="Asia/Kuching">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="saveEditBtn"><i class="bi bi-save me-1"></i>Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Change Password</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="passwordForm" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="currentPass">Current Password</label>
+              <input id="currentPass" type="password" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="newPass">New Password</label>
+              <input id="newPass" type="password" class="form-control" minlength="6" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="confirmPass">Confirm New Password</label>
+              <input id="confirmPass" type="password" class="form-control" minlength="6" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="savePassBtn"><i class="bi bi-shield-lock me-1"></i>Update Password</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Account Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete Account</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0">Are you sure you want to permanently delete your account?</p>
+          <p class="small text-muted mb-0">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-danger" id="confirmDeleteAccount"><i class="bi bi-trash me-1"></i>Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    /* ================= CONFIG ================= */
+    const API_BASE = `${location.origin}/watchbuddy/backend/public`;
+
+    /* ================= UTILITIES (copied from dashboard style) ================= */
+    function qs(sel, root = document) { return root.querySelector(sel); }
+    function qsa(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
+
+    async function api(path, options = {}) {
+      const res = await fetch(`${API_BASE}${path}`, {
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        ...options,
+      });
+      if (res.status === 401) { location.href = 'login.html?expired=1'; throw new Error('Unauthorized'); }
+      return res;
+    }
+
+    /* ================= AUTH / USER ================= */
+    async function loadCurrentUser() {
+      const r = await api('/api/me', { method: 'GET' });
+      const data = await r.json();
+      if (!data?.ok || !data?.user) { location.href = 'login.html'; return null; }
+
+      const user = data.user;
+      const first = user.firstName || (user.fullName ? user.fullName.split(' ')[0] : '') || (user.email ? user.email.split('@')[0] : 'User');
+      qs('#userName').textContent = first;
+
+      // Populate heads
+      qs('#displayNameHead').textContent = user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim() || first;
+      qs('#usernameHead').textContent = `@${user.username || (user.email ? user.email.split('@')[0] : first.toLowerCase())}`;
+      qs('#locationHead').textContent = user.location || '—';
+
+      // Quick form
+      qs('#displayName').value = user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim() || '';
+      qs('#username').value = user.username || (user.email ? user.email.split('@')[0] : '');
+      qs('#location').value = user.location || '';
+      qs('#website').value  = user.website || '';
+      qs('#isPublic').checked = !!user.isPublic;
+
+      // Edit form
+      qs('#fullName').value = user.fullName || '';
+      qs('#email').value = user.email || '';
+      qs('#bio').value = user.bio || '';
+      qs('#tags').value = (user.tags || []).join(', ');
+      qs('#timezone').value = user.timezone || '';
+
+      // About card
+      qs('#bioText').textContent = user.bio || 'No bio yet.';
+      renderTags(user.tags || []);
+
+      return user;
+    }
+
+    function attachLogout() {
+      const btn = qs('#logoutBtn');
+      btn?.addEventListener('click', async () => { try { await api('/api/logout', { method: 'POST' }); } catch (_) {} location.href = 'login.html'; });
+    }
+
+    /* ================= TAGS RENDER ================= */
+    function renderTags(tags) {
+      const wrap = qs('#tagsWrap');
+      wrap.innerHTML = '';
+      if (!tags || !tags.length) return;
+      for (const t of tags) {
+        const span = document.createElement('span');
+        span.className = 'badge rounded-pill text-bg-secondary';
+        span.textContent = t;
+        wrap.appendChild(span);
+      }
+    }
+
+    /* ================= WATCHLIST STATS + RECENT REVIEWS ================= */
+    async function loadWatchStatsAndReviews() {
+      // Fetch a generous page to calculate counts + show a few reviews (client-side like dashboard)
+      const res = await api('/api/watchlist?page=1&limit=200', { method: 'GET' });
+      const data = await res.json();
+      if (!data?.ok) return;
+      const items = data.items || [];
+
+      const toWatch = items.filter(x => x.status === 'to-watch').length;
+      const watching = items.filter(x => x.status === 'watching').length;
+      const completed = items.filter(x => x.status === 'completed').length;
+
+      qs('#statToWatch').textContent = toWatch;
+      qs('#statWatching').textContent = watching;
+      qs('#statCompleted').textContent = completed;
+
+      // Recent reviews (latest 5 by ts, with non-empty review)
+      const reviews = items.filter(x => (x.status === 'completed') && (x.review && x.review.trim()))
+                           .sort((a,b) => (b.ts||0) - (a.ts||0))
+                           .slice(0,5);
+
+      const list = qs('#reviewsList');
+      list.innerHTML = '';
+      if (!reviews.length) { qs('#reviewsEmpty').classList.remove('d-none'); return; }
+      qs('#reviewsEmpty').classList.add('d-none');
+
+      for (const r of reviews) {
+        const card = document.createElement('div');
+        card.className = 'd-flex gap-3 align-items-start';
+        const stars = (n=0)=>`${'<i class=\"bi bi-star-fill\"></i>'.repeat(n)}${'<i class=\"bi bi-star\"></i>'.repeat(5-n)}`;
+        card.innerHTML = `
+          <div style="width:54px;height:80px;border-radius:.25rem;overflow:hidden;border:1px solid var(--wb-border)">
+            <img src="${r.poster_url || 'https://via.placeholder.com/160x240/1e293b/94a3b8?text=Poster'}" alt="poster" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <strong>${r.title || 'Untitled'}</strong>
+              <span class="small text-warning">${stars(Math.max(0, Math.min(5, parseInt(r.rating||0))))}</span>
+            </div>
+            <p class="small mb-1">${(r.review||'').replace(/</g,'&lt;')}</p>
+            <div class="text-muted small">Reviewed ${new Date((r.ts||Date.now())*1000).toLocaleString()}</div>
+          </div>`;
+        list.appendChild(card);
+      }
+    }
+
+    /* ================= AVATAR PREVIEW (client-side only) ================= */
+    (function initAvatarPreview(){
+      const input = qs('#avatarInput');
+      const img = qs('#avatarImg');
+      input?.addEventListener('change', e => {
+        const file = e.target.files?.[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => { img.src = reader.result; };
+        reader.readAsDataURL(file);
+        // TODO: upload via /api/profile/avatar if your backend supports it.
+      });
+    })();
+
+    /* ================= SAVE HANDLERS ================= */
+    qs('#quickForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        fullName: qs('#displayName').value.trim(),
+        username: qs('#username').value.trim(),
+        location: qs('#location').value.trim(),
+        website: qs('#website').value.trim(),
+        isPublic: qs('#isPublic').checked,
+      };
+      try {
+        const res = await api('/api/profile', { method: 'PUT', body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Save failed');
+        // Refresh head fields
+        await loadCurrentUser();
+        toast('Profile updated ✅');
+      } catch (err) { alert('Could not save: ' + err.message); }
+    });
+
+    qs('#resetQuick').addEventListener('click', () => loadCurrentUser());
+
+    qs('#saveEditBtn').addEventListener('click', async () => {
+      const payload = {
+        fullName: qs('#fullName').value.trim(),
+        bio: qs('#bio').value.trim(),
+        tags: qs('#tags').value.split(',').map(s => s.trim()).filter(Boolean),
+        timezone: qs('#timezone').value.trim(),
+      };
+      try {
+        const res = await api('/api/profile', { method: 'PUT', body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Save failed');
+        await loadCurrentUser();
+        bootstrap.Modal.getInstance(qs('#editProfileModal')).hide();
+        toast('Changes saved ✅');
+      } catch (err) { alert('Could not save: ' + err.message); }
+    });
+
+    qs('#savePassBtn').addEventListener('click', async () => {
+      const current = qs('#currentPass').value;
+      const next = qs('#newPass').value;
+      const confirm = qs('#confirmPass').value;
+      if (next !== confirm) { alert('New passwords do not match.'); return; }
+      try {
+        const res = await api('/api/profile/password', { method: 'PUT', body: JSON.stringify({ current, next }) });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Password update failed');
+        bootstrap.Modal.getInstance(qs('#passwordModal')).hide();
+        toast('Password updated ✅');
+      } catch (err) { alert('Could not update password: ' + err.message); }
+    });
+
+    qs('#confirmDeleteAccount').addEventListener('click', async () => {
+      if (!confirm('This will permanently delete your account. Continue?')) return;
+      try {
+        const res = await api('/api/profile', { method: 'DELETE' });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Delete failed');
+        location.href = 'register.html';
+      } catch (err) { alert('Could not delete account: ' + err.message); }
+    });
+
+    /* ================= TOAST HELPER (like dashboard success) ================= */
+    function toast(message) {
+      const t = document.createElement('div');
+      t.className = 'toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-3';
+      t.setAttribute('role', 'alert');
+      t.innerHTML = `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+      document.body.appendChild(t);
+      const bs = new bootstrap.Toast(t, { delay: 2800 });
+      bs.show();
+      t.addEventListener('hidden.bs.toast', () => t.remove());
+    }
+
+    /* ================= INIT ================= */
+    function initUIChrome(){
+      const nav = qs('.wb-navbar');
+      const onScroll = () => nav?.classList.toggle('navbar-shadow', window.scrollY > 8);
+      onScroll(); window.addEventListener('scroll', onScroll);
+    }
+
+    (async function boot(){
+      try {
+        await loadCurrentUser();
+        attachLogout();
+        initUIChrome();
+        await loadWatchStatsAndReviews();
+      } catch (e) {
+        console.error(e);
+        location.href = 'login.html';
+      }
+    })();
+  </script>
+</body>
+</html>

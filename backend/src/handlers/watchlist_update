@@ -1,0 +1,65 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/../response.php';
+
+/** @var PDO $db */
+$db = $GLOBALS['db'] ?? null;
+if (!$db) Response::json(['ok'=>false,'error'=>'DB not initialized'], 500);
+
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+$userId = $_SESSION['user_id'] ?? null;
+if (!$userId) Response::json(['ok'=>false,'error'=>'Unauthorized'], 401);
+
+// Small sanitizer
+$filter = function (string $v, int $max = 2000): string {
+  $v = trim(strip_tags($v));
+  if (mb_strlen($v) > $max) $v = mb_substr($v, 0, $max);
+  return $v;
+};
+
+// id comes from index.php
+if (!isset($id) || $id <= 0) Response::json(['ok'=>false,'error'=>'Invalid id'], 400);
+
+// JSON body
+$raw  = file_get_contents('php://input') ?: '';
+$data = json_decode($raw, true);
+if (!is_array($data)) $data = []; // front-end always sends JSON
+
+$title  = $filter((string)($data['title'] ?? ''), 120);
+$desc   = $filter((string)($data['description'] ?? ''), 2000);
+$status = $filter((string)($data['status'] ?? ''), 20);
+$rating = (int)($data['rating'] ?? 0);
+
+$allowed = ['to-watch','watching','completed'];
+if ($title === '')                      Response::json(['ok'=>false,'error'=>'Title required'], 422);
+if (!in_array($status, $allowed, true)) Response::json(['ok'=>false,'error'=>'Invalid status'], 422);
+if ($rating < 0 || $rating > 5)         Response::json(['ok'=>false,'error'=>'Rating must be 0..5'], 422);
+
+// Ownership check
+$exists = $db->prepare('SELECT id FROM watchlist WHERE id=? AND user_id=?');
+$exists->execute([$id, $userId]);
+if ($exists->fetchColumn() === false) {
+  Response::json(['ok'=>false,'error'=>'Not found'], 404);
+}
+
+// Update
+$upd = $db->prepare(
+  'UPDATE watchlist
+      SET title=?, description=?, status=?, rating=?, ts_updated=NOW()
+    WHERE id=? AND user_id=?'
+);
+$ok = $upd->execute([$title, $desc, $status, $rating, $id, $userId]);
+if (!$ok) Response::json(['ok'=>false,'error'=>'Database error while updating'], 500);
+
+Response::json([
+  'ok' => true,
+  'id' => $id,
+  'item' => [
+    'id' => $id,
+    'title' => $title,
+    'description' => $desc,
+    'status' => $status,
+    'rating' => $rating,
+  ]
+], 200);

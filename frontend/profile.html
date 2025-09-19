@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WatchBuddy | Profile</title>
+
+  <!-- Icons & Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Orbitron:wght@700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ===== CONSISTENT COLOR SYSTEM ===== */
+    :root {
+      color-scheme: dark;
+
+      /* Primary Colors */
+      --wb-bg: #0f172a;
+      --wb-surface: #1e293b;
+      --wb-panel: #334155;
+      --wb-border: #475569;
+      --wb-accent: #0ea5e9;
+
+      /* Text Colors - Improved Contrast */
+      --wb-text: #f1f5f9;
+      --wb-text-muted: #94a3b8;
+      --wb-text-dark: #64748b;
+
+      /* Interactive States */
+      --wb-hover-bg: rgba(14, 165, 233, 0.15);
+      --wb-hover-text: #ffffff;
+      --wb-active-bg: rgba(14, 165, 233, 0.25);
+      --wb-focus-shadow: rgba(14, 165, 233, 0.25);
+
+      /* Status Colors */
+      --wb-success: #22c55e;
+      --wb-warning: #f59e0b;
+      --wb-info: #06b6d4;
+      --wb-danger: #ef4444;
+    }
+
+    body {
+      background: var(--wb-bg);
+      color: var(--wb-text);
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    }
+
+    /* ===== NAVBAR ===== */
+    .wb-navbar {
+      background: rgba(15, 23, 42, 0.95) !important;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--wb-border);
+      transition: all 0.3s ease;
+      min-height: 72px;
+    }
+
+    .wb-navbar.navbar-shadow {
+      background: rgba(15, 23, 42, 0.98) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border-bottom-color: var(--wb-accent);
+    }
+
+    .navbar-brand {
+      color: var(--wb-text) !important;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .nav-link {
+      color: var(--wb-text-muted) !important;
+      font-weight: 500;
+      padding: 0.75rem 1rem !important;
+      border-radius: 10px;
+      margin: 0 0.25rem;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--wb-hover-text) !important;
+      background: var(--wb-hover-bg) !important;
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active {
+      color: var(--wb-accent) !important;
+      background: var(--wb-active-bg) !important;
+      position: relative;
+      box-shadow: inset 0 0 0 1px rgba(14, 165, 233, 0.3);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 2px;
+      background: var(--wb-accent);
+      border-radius: 1px;
+    }
+
+    /* ===== DROPDOWN MENU ===== */
+    .dropdown-menu {
+      background-color: var(--wb-panel);
+      border: 1px solid var(--wb-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .dropdown-item {
+      color: var(--wb-text);
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+      background-color: var(--wb-hover-bg);
+      color: var(--wb-hover-text);
+    }
+
+    .dropdown-divider {
+      border-color: var(--wb-border);
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--wb-panel);
+      border: 1px solid var(--wb-border);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      color: var(--wb-text);
+      font-weight: 600;
+    }
+
+    .card-text {
+      color: var(--wb-text-muted);
+      line-height: 1.6;
+    }
+
+    /* ===== FORM CONTROLS ===== */
+    .form-label {
+      color: var(--wb-text);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control,
+    .form-select {
+      background-color: var(--wb-surface);
+      color: var(--wb-text);
+      border: 1px solid var(--wb-border);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+
+    .form-control::placeholder {
+      color: var(--wb-text-dark);
+      opacity: 0.8;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      background-color: var(--wb-surface);
+      color: var(--wb-text);
+      border-color: var(--wb-accent);
+      box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
+    }
+
+    .input-group-text {
+      background-color: var(--wb-surface);
+      border-color: var(--wb-border);
+      color: var(--wb-text-muted);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      background-color: var(--wb-accent);
+      border-color: var(--wb-accent);
+      color: white;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background-color: #0284c7;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
+    }
+
+    .btn-outline-primary {
+      color: var(--wb-accent);
+      border-color: var(--wb-accent);
+      background-color: transparent;
+      font-weight: 500;
+      border-radius: 8px;
+    }
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus {
+      background-color: var(--wb-accent);
+      border-color: var(--wb-accent);
+      color: white;
+    }
+
+    /* ===== STATS ICONS ===== */
+    .stats-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      background: var(--wb-surface);
+      margin-bottom: 0.75rem;
+    }
+
+    .stats-icon.to-watch {
+      background: rgba(6, 182, 212, 0.2);
+      color: #67e8f9;
+    }
+
+    .stats-icon.watching {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+    }
+
+    .stats-icon.completed {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+
+    /* ===== PROFILE HEADER ===== */
+    .cover {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(30, 41, 59, 0.8)),
+        linear-gradient(45deg, #1e293b, #334155);
+      min-height: 200px;
+      border: 1px solid var(--wb-border);
+    }
+
+    .avatar-lg {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(14, 165, 233, 0.3);
+      background: var(--wb-surface);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== BADGES ===== */
+    .badge {
+      background-color: var(--wb-surface) !important;
+      color: var(--wb-text-muted);
+      border: 1px solid var(--wb-border);
+      font-weight: 500;
+      padding: 0.5rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    /* ===== FORM SWITCHES ===== */
+    .form-check-input:checked {
+      background-color: var(--wb-accent);
+      border-color: var(--wb-accent);
+    }
+
+    .form-check-input:focus {
+      box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
+    }
+
+    .form-check-label {
+      color: var(--wb-text);
+    }
+
+    /* ===== FOOTER ===== */
+    footer.wb-footer {
+      background: var(--wb-panel);
+      border-top: 1px solid var(--wb-border);
+      color: var(--wb-text-muted);
+      margin-top: 4rem;
+    }
+
+    /* ===== REVIEW ITEMS ===== */
+    .review-item {
+      padding: 1rem;
+      border-radius: 8px;
+      background: var(--wb-surface);
+      border: 1px solid var(--wb-border);
+      margin-bottom: 1rem;
+    }
+
+    .review-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ===== STAR RATINGS ===== */
+    .text-warning {
+      color: var(--wb-warning) !important;
+    }
+
+    /* ===== RESPONSIVE IMPROVEMENTS ===== */
+    @media (max-width: 768px) {
+      .cover {
+        min-height: 160px;
+      }
+
+      .avatar-lg {
+        width: 80px;
+        height: 80px;
+      }
+
+      .stats-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+
+<body data-page="profile">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.html">
+        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
+        WatchBuddy
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="mainNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html"><i class="bi bi-house-door me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item"><a class="nav-link active" href="profile.html"><i
+                class="bi bi-person me-1"></i>Profile</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle fs-5"></i><span id="userName">test</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="profile.html">Profile Settings</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><button class="dropdown-item" id="logoutBtn" type="button">Logout</button></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="container-fluid py-4">
+    <!-- Header -->
+    <section class="cover mb-5">
+      <div class="container py-4 position-relative" style="min-height: 200px;">
+        <div class="d-flex flex-column flex-md-row align-items-md-end gap-3">
+          <img src="https://ui-avatars.com/api/?name=Test&background=0D8ABC&color=fff&size=120" alt="Avatar" class="avatar-lg">
+          <div class="mb-2">
+            <h1 class="h2 fw-bold mb-2 text-white">Test</h1>
+            <div class="text-light opacity-75 mb-2">
+              <span>test@gmail.com</span> · <span>Cebu, Philippines</span>
+            </div>
+          </div>
+          <div class="ms-md-auto d-flex gap-2">
+            <button class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-image me-1"></i>Change Avatar
+            </button>
+            <button class="btn btn-primary btn-sm">
+              <i class="bi bi-pencil-square me-1"></i>Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <section class="container">
+      <div class="row g-4">
+        <!-- Left column -->
+        <div class="col-12 col-xl-8">
+          <!-- About -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h2 class="h5 fw-bold mb-3 text-white">About</h2>
+              <p class="card-text mb-3">Movie night curator. Loves heist films,
+                slow-burn series, and anything Studio Ghibli inspired ✨</p>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="card h-100 text-center p-3">
+                <div class="stats-icon to-watch mx-auto"><i class="bi bi-bookmark-plus"></i></div>
+                <div class="h4 fw-bold mb-1 text-white">12</div>
+                <div class="text-light small">To Watch</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="card h-100 text-center p-3">
+                <div class="stats-icon watching mx-auto"><i class="bi bi-play-circle"></i></div>
+                <div class="h4 fw-bold mb-1 text-white">3</div>
+                <div class="text-light small">Watching</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="card h-100 text-center p-3">
+                <div class="stats-icon completed mx-auto"><i class="bi bi-check-circle"></i></div>
+                <div class="h4 fw-bold mb-1 text-white">48</div>
+                <div class="text-light small">Completed</div>
+              </div>
+            </div>
+          </div>
+          <!-- Recent Reviews -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h5 fw-bold mb-0 text-light">Recent Reviews</h2>
+                <a class="btn btn-outline-primary btn-sm" href="dashboard.html">
+                  <i class="bi bi-collection me-1"></i>Go to Watchlist
+                </a>
+              </div>
+
+              <div class="review-item">
+                <div class="d-flex gap-3">
+                  <img src="assets/img/posters/poster-01.jpg" alt="La La Land Poster" width="54" height="80"
+                    class="rounded">
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                      <strong class="text-white">La La Land</strong>
+                      <span class="text-warning">
+                        <i class="bi bi-star-fill"></i> 4.5
+                      </span>
+                    </div>
+                    <p class="small mb-2 text-light">Whimsical, heartbreaking, and gorgeous. The score lives rent-free
+                      in my head.</p>
+                    <div class="small text-light">Reviewed on Sep 10, 2025</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="d-flex gap-3">
+                  <img src="assets/img/posters/poster-02.jpg" alt="Inception Poster" width="54" height="80"
+                    class="rounded">
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                      <strong class="text-white">Inception</strong>
+                      <span class="text-warning">
+                        <i class="bi bi-star-fill"></i> 5.0
+                      </span>
+                    </div>
+                    <p class="small mb-2 text-light">Mind-bending and brilliant. Nolan at his best.</p>
+                    <div class="text-light small">Reviewed on Sep 8, 2025</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: Quick Settings -->
+        <div class="col-12 col-xl-4">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="h5 fw-bold mb-4 text-light">Quick Settings</h2>
+
+              <div class="mb-3">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-control text-muted" value="Test" disabled readonly>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text">@</span>
+                  <input type="text" class="form-control text-muted" value="test@gmail.com" disabled readonly>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control text-muted" value="Cebu, Philippines" disabled readonly>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+    </section>
+  </main>
+
+<!-- Footer -->
+<footer class="wb-footer py-4 mt-auto">
+  <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+    <div class="small">Made with ❤️ for movie lovers</div>
+    <div class="small">© <span id="year"></span> WatchBuddy</div>
+  </div>
+</footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Year + navbar shadow behavior
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const nav = document.querySelector('.wb-navbar');
+    const onScroll = () => {
+      if (nav) {
+        nav.classList.toggle('navbar-shadow', window.scrollY > 8);
+      }
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll);
+  </script>
+</body>
+
+</html>

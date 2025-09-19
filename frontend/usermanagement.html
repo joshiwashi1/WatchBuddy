@@ -1,0 +1,1277 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WatchBuddy | User Management</title>
+
+    <!-- Icons & Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== CONSISTENT COLOR SYSTEM ===== */
+        :root {
+            color-scheme: dark;
+
+            /* Primary Colors */
+            --wb-bg: #0f172a;
+            --wb-surface: #1e293b;
+            --wb-panel: #334155;
+            --wb-border: #475569;
+            --wb-accent: #0ea5e9;
+
+            /* Text Colors */
+            --wb-text: #f1f5f9;
+            --wb-text-muted: #94a3b8;
+            --wb-text-dark: #64748b;
+
+            /* Interactive States */
+            --wb-hover-bg: rgba(14, 165, 233, 0.15);
+            --wb-hover-text: #ffffff;
+            --wb-active-bg: rgba(14, 165, 233, 0.25);
+            --wb-focus-shadow: rgba(14, 165, 233, 0.25);
+
+            /* Status Colors */
+            --wb-success: #22c55e;
+            --wb-warning: #f59e0b;
+            --wb-info: #06b6d4;
+            --wb-danger: #ef4444;
+        }
+
+        body {
+            background: var(--wb-bg);
+            color: var(--wb-text);
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+        }
+
+        /* ===== NAVBAR ===== */
+        .wb-navbar {
+            background: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--wb-border);
+            transition: all 0.3s ease;
+            min-height: 72px;
+        }
+
+        .wb-navbar.navbar-shadow {
+            background: rgba(15, 23, 42, 0.98) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-bottom-color: var(--wb-accent);
+        }
+
+        .navbar-brand {
+            color: var(--wb-text) !important;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .nav-link {
+            color: var(--wb-text-muted) !important;
+            font-weight: 500;
+            padding: 0.75rem 1rem !important;
+            border-radius: 10px;
+            margin: 0 0.25rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus-visible {
+            color: var(--wb-hover-text) !important;
+            background: var(--wb-hover-bg) !important;
+            transform: translateY(-1px);
+        }
+
+        .nav-link.active {
+            color: var(--wb-accent) !important;
+            background: var(--wb-active-bg) !important;
+            position: relative;
+            box-shadow: inset 0 0 0 1px rgba(14, 165, 233, 0.3);
+        }
+
+        /* ===== DROPDOWN MENU ===== */
+        .dropdown-menu {
+            background-color: var(--wb-panel);
+            border: 1px solid var(--wb-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-item {
+            color: var(--wb-text);
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: var(--wb-hover-bg);
+            color: var(--wb-hover-text);
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--wb-panel);
+            border: 1px solid var(--wb-border);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: var(--wb-text);
+            font-weight: 600;
+        }
+
+        .card-text {
+            color: var(--wb-text-muted);
+            line-height: 1.6;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background-color: var(--wb-accent);
+            border-color: var(--wb-accent);
+            color: white;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: #0284c7;
+            border-color: #0284c7;
+            box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
+        }
+
+        .btn-outline-primary {
+            color: var(--wb-accent);
+            border-color: var(--wb-accent);
+            background-color: transparent;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus {
+            background-color: var(--wb-accent);
+            border-color: var(--wb-accent);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--wb-success);
+            border-color: var(--wb-success);
+        }
+
+        .btn-warning {
+            background-color: var(--wb-warning);
+            border-color: var(--wb-warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--wb-danger);
+            border-color: var(--wb-danger);
+        }
+
+        /* ===== FORM CONTROLS ===== */
+        .form-label {
+            color: var(--wb-text);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: var(--wb-surface);
+            color: var(--wb-text);
+            border: 1px solid var(--wb-border);
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+
+        .form-control::placeholder {
+            color: var(--wb-text-dark);
+            opacity: 0.8;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: var(--wb-surface);
+            color: var(--wb-text);
+            border-color: var(--wb-accent);
+            box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
+        }
+
+        /* ===== TABLE STYLES ===== */
+        .table-dark {
+            --bs-table-bg: var(--wb-panel);
+            --bs-table-striped-bg: var(--wb-surface);
+            --bs-table-border-color: var(--wb-border);
+            --bs-table-color: var(--wb-text);
+        }
+
+        .table th {
+            border-color: var(--wb-border);
+            font-weight: 600;
+            color: var(--wb-text);
+        }
+
+
+        .table td {
+            border-color: var(--wb-border);
+            color: var(--wb-text-muted);
+        }
+
+        /* Let dropdowns escape the table wrapper */
+        .card-body {
+            overflow: visible;
+        }
+
+        /* By default .table-responsive sets overflow hidden; show dropdowns */
+        .table-responsive {
+            overflow: visible;
+        }
+
+        /* Keep horizontal scroll on narrow screens only */
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+
+        /* Make Actions column consistent and keep menus on top */
+        th.actions-col,
+        td.actions-col {
+            width: 140px;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu {
+            z-index: 1080;
+        }
+
+        /* USERS TABLE — container fixes */
+        .table-shell {
+            background: var(--wb-panel);
+            border: 1px solid var(--wb-border);
+            border-radius: 12px;
+            overflow: hidden;
+            /* keeps header/edges crisp & prevents overlap */
+        }
+
+        /* table look + alignment */
+        .table-users {
+            --bs-table-bg: var(--wb-panel);
+            --bs-table-striped-bg: var(--wb-surface);
+            --bs-table-border-color: var(--wb-border);
+            --bs-table-color: var(--wb-text);
+        }
+
+        .table-users thead th {
+            background: linear-gradient(0deg, rgba(0, 0, 0, .0), rgba(0, 0, 0, .05)),
+                var(--wb-surface);
+            color: var(--wb-text);
+            border-bottom: 1px solid var(--wb-border);
+        }
+
+        .table-users th,
+        .table-users td {
+            vertical-align: middle;
+            border-color: var(--wb-border) !important;
+            white-space: nowrap;
+            /* prevents cramped wraps on key columns */
+        }
+
+        .table-users .col-user {
+            min-width: 280px;
+        }
+
+        .table-users .col-email {
+            min-width: 220px;
+        }
+
+        .table-users .col-role,
+        .table-users .col-status {
+            width: 120px;
+        }
+
+        .table-users .col-join,
+        .table-users .col-active {
+            width: 140px;
+        }
+
+        .table-users .col-actions {
+            width: 140px;
+        }
+
+        /* make dropdowns never get clipped inside responsive wrappers */
+        .table-shell .table-responsive {
+            overflow: visible;
+        }
+
+        .table-shell .dropdown-menu {
+            z-index: 1080;
+        }
+
+        /* small screens: allow wrapping for long emails while keeping row tidy */
+        @media (max-width: 576px) {
+
+            .table-users th,
+            .table-users td {
+                white-space: normal;
+            }
+        }
+
+        /* ===== STATUS BADGES ===== */
+        .status-active {
+            background-color: rgba(34, 197, 94, 0.2) !important;
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-inactive {
+            background-color: rgba(100, 116, 139, 0.2) !important;
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .status-suspended {
+            background-color: rgba(239, 68, 68, 0.2) !important;
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .role-admin {
+            background-color: rgba(147, 51, 234, 0.2) !important;
+            color: #a78bfa;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+
+        .role-user {
+            background-color: rgba(14, 165, 233, 0.2) !important;
+            color: #7dd3fc;
+            border: 1px solid rgba(14, 165, 233, 0.3);
+        }
+
+        /* ===== USER AVATAR ===== */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--wb-border);
+        }
+
+        .user-avatar-lg {
+            width: 80px;
+            height: 80px;
+            border: 3px solid rgba(14, 165, 233, 0.3);
+        }
+
+        /* ===== STATS CARDS ===== */
+        .stats-card {
+            background: linear-gradient(135deg, var(--wb-panel), var(--wb-surface));
+            border: 1px solid var(--wb-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stats-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 1.25rem;
+            margin: 0 auto 1rem;
+        }
+
+        .stats-icon.users {
+            background: rgba(14, 165, 233, 0.2);
+            color: #7dd3fc;
+        }
+
+        .stats-icon.active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .stats-icon.inactive {
+            background: rgba(100, 116, 139, 0.2);
+            color: #94a3b8;
+        }
+
+        .stats-icon.admins {
+            background: rgba(147, 51, 234, 0.2);
+            color: #a78bfa;
+        }
+
+        /* ===== MODAL STYLES ===== */
+        .modal-content {
+            background-color: var(--wb-panel);
+            border: 1px solid var(--wb-border);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--wb-border);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--wb-border);
+        }
+
+        .modal-title {
+            color: var(--wb-text);
+        }
+
+        /* ===== FOOTER ===== */
+        footer.wb-footer {
+            background: var(--wb-panel);
+            border-top: 1px solid var(--wb-border);
+            color: var(--wb-text-muted);
+            margin-top: 4rem;
+        }
+
+        /* ===== PAGE SPECIFIC STYLES ===== */
+        .page-header {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(30, 41, 59, 0.8));
+            border: 1px solid var(--wb-border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            background: var(--wb-surface);
+            border: 1px solid var(--wb-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-detail-section {
+            background: var(--wb-surface);
+            border: 1px solid var(--wb-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== ACTIVITY TIMELINE ===== */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background: var(--wb-accent);
+            border-radius: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 1rem;
+            width: 2px;
+            height: calc(100% + 0.5rem);
+            background: var(--wb-border);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .stats-card {
+                padding: 1rem;
+            }
+
+            .page-header {
+                padding: 1.5rem;
+            }
+
+            .search-bar {
+                padding: 1rem;
+            }
+        }
+
+        /* ===== HIDE/SHOW PAGES ===== */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#" onclick="showPage('user-management')">
+                <i class="bi bi-people-fill me-2 fs-4 text-primary"></i>
+                WatchBuddy Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="mainNav" class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showPage('user-management')">
+                            <i class="bi bi-people me-1"></i>User Management
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
+                            data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle fs-5"></i><span>Admin User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Admin Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><button class="dropdown-item" type="button">Logout</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- USER MANAGEMENT PAGE -->
+    <div id="user-management" class="page active">
+        <main class="container py-4">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div
+                    class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                    <div>
+                        <h1 class="h2 fw-bold mb-2 text-white">User Management</h1>
+                        <p class="text-light opacity-75 mb-0">Manage user accounts, permissions, and activity</p>
+                    </div>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <i class="bi bi-plus-circle me-1"></i>Add New User
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="stats-card">
+                        <div class="stats-icon users"><i class="bi bi-people"></i></div>
+                        <div class="h3 fw-bold mb-1 text-white">1,247</div>
+                        <div class="text-muted small">Total Users</div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="stats-card">
+                        <div class="stats-icon active"><i class="bi bi-check-circle"></i></div>
+                        <div class="h3 fw-bold mb-1 text-white">1,198</div>
+                        <div class="text-muted small">Active Users</div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="stats-card">
+                        <div class="stats-icon inactive"><i class="bi bi-pause-circle"></i></div>
+                        <div class="h3 fw-bold mb-1 text-white">49</div>
+                        <div class="text-muted small">Inactive Users</div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="stats-card">
+                        <div class="stats-icon admins"><i class="bi bi-shield-check"></i></div>
+                        <div class="h3 fw-bold mb-1 text-white">8</div>
+                        <div class="text-muted small">Administrators</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="search-bar">
+                <div class="row g-3 align-items-end">
+                    <div class="col-12 col-md-4">
+                        <label class="form-label">Search Users</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Search by name, email, or username">
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-2">
+                        <label class="form-label">Status</label>
+                        <select class="form-select">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-2">
+                        <label class="form-label">Role</label>
+                        <select class="form-select">
+                            <option value="">All Roles</option>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <label class="form-label">Sort By</label>
+                        <select class="form-select">
+                            <option value="name">Name</option>
+                            <option value="email">Email</option>
+                            <option value="created">Date Created</option>
+                            <option value="last_active">Last Active</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <button class="btn btn-primary w-100">Filter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="card table-shell">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover table-users align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="col-user">User</th>
+                                <th class="col-email">Email</th>
+                                <th class="col-role">Role</th>
+                                <th class="col-status">Status</th>
+                                <th class="col-join">Join Date</th>
+                                <th class="col-active">Last Active</th>
+                                <th class="col-actions text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- User 1 -->
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="assets/img/default-avatar.png" alt="Avatar" class="user-avatar">
+                                        <div>
+                                            <div class="fw-medium text-white">Ellyza Sherynn</div>
+                                            <div class="small text-muted">@joshiwashi1</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>ellyza.sherynn@email.com</td>
+                                <td><span class="badge role-user">User</span></td>
+                                <td><span class="badge status-active">Active</span></td>
+                                <td>Aug 15, 2024</td>
+                                <td>2 hours ago</td>
+                                <td class="text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown">Actions</button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"
+                                                    onclick="showUserDetail('ellyza')">View Details</a></li>
+                                            <li><a class="dropdown-item" href="#">Edit User</a></li>
+                                            <li><a class="dropdown-item" href="#">Reset Password</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item text-danger" href="#">Suspend User</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- User 2 -->
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="assets/img/default-avatar.png" alt="Avatar" class="user-avatar">
+                                        <div>
+                                            <div class="fw-medium text-white">Marcus Chen</div>
+                                            <div class="small text-muted">@marcusc</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>marcus.chen@email.com</td>
+                                <td><span class="badge role-admin">Admin</span></td>
+                                <td><span class="badge status-active">Active</span></td>
+                                <td>Jul 22, 2024</td>
+                                <td>1 day ago</td>
+                                <td class="text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown">Actions</button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"
+                                                    onclick="showUserDetail('marcus')">View Details</a></li>
+                                            <li><a class="dropdown-item" href="#">Edit User</a></li>
+                                            <li><a class="dropdown-item" href="#">Reset Password</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item text-danger" href="#">Suspend User</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- User 3 -->
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="assets/img/default-avatar.png" alt="Avatar" class="user-avatar">
+                                        <div>
+                                            <div class="fw-medium text-white">Sarah Williams</div>
+                                            <div class="small text-muted">@sarahw</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>sarah.williams@email.com</td>
+                                <td><span class="badge role-user">User</span></td>
+                                <td><span class="badge status-inactive">Inactive</span></td>
+                                <td>Jun 10, 2024</td>
+                                <td>2 weeks ago</td>
+                                <td class="text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown">Actions</button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" onclick="showUserDetail('sarah')">View
+                                                    Details</a></li>
+                                            <li><a class="dropdown-item" href="#">Edit User</a></li>
+                                            <li><a class="dropdown-item" href="#">Reset Password</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item text-success" href="#">Activate User</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </main>
+    </div>
+
+    <!-- INDIVIDUAL USER RECORD PAGE -->
+    <div id="user-detail" class="page">
+        <main class="container py-4">
+            <!-- Back Button -->
+            <div class="mb-3">
+                <button class="btn btn-outline-primary" onclick="showPage('user-management')">
+                    <i class="bi bi-arrow-left me-1"></i>Back to User Management
+                </button>
+            </div>
+
+            <!-- User Header -->
+            <div class="page-header">
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
+                    <img src="assets/img/default-avatar.png" alt="User Avatar" class="user-avatar user-avatar-lg">
+                    <div class="flex-grow-1">
+                        <h1 class="h2 fw-bold mb-2 text-white" id="userDetailName">Test</h1>
+                        <div class="d-flex flex-wrap gap-3 mb-3">
+                            <span class="text-light opacity-75"><i class="bi bi-envelope me-1"></i>test@email.com</span>
+                            <span class="text-light opacity-75"><i class="bi bi-geo-alt me-1"></i>Cebu,
+                                Philippines</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge role-user" id="userDetailRole">User</span>
+                            <span class="badge status-active" id="userDetailStatus">Active</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-pencil me-1"></i>Edit User
+                        </button>
+                        <button class="btn btn-warning">
+                            <i class="bi bi-key me-1"></i>Reset Password
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-danger dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item text-warning" href="#">Suspend User</a></li>
+                                <li><a class="dropdown-item text-danger" href="#">Delete User</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Left Column -->
+                <div class="col-12 col-lg-8">
+                    <!-- Account Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="h5 fw-bold mb-0">Account Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control" value="user@gmail.com" readonly>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" value="test@gmail.com" readonly>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" value="+60 12-345 6789" readonly>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" value="Cebu, Philippines" readonly>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" value="1999-03-15" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Statistics -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="h5 fw-bold mb-0">Account Statistics</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-6 col-md-3">
+                                    <div class="text-center">
+                                        <div class="h4 fw-bold text-white mb-1">48</div>
+                                        <div class="text-muted small">Movies Watched</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="text-center">
+                                        <div class="h4 fw-bold text-white mb-1">12</div>
+                                        <div class="text-muted small">In Watchlist</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="text-center">
+                                        <div class="h4 fw-bold text-white mb-1">23</div>
+                                        <div class="text-muted small">Reviews Written</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="text-center">
+                                        <div class="h4 fw-bold text-white mb-1">4.2</div>
+                                        <div class="text-muted small">Avg Rating</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="h5 fw-bold mb-0">Recent Activity</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong class="text-white">Rated "Inception"</strong>
+                                        <p class="mb-1 text-muted small">Gave it 5 stars and wrote a review</p>
+                                    </div>
+                                    <small class="text-muted">2 hours ago</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong class="text-white">Added to Watchlist</strong>
+                                        <p class="mb-1 text-muted small">Added "The Batman" to watchlist</p>
+                                    </div>
+                                    <small class="text-muted">1 day ago</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong class="text-white">Profile Updated</strong>
+                                        <p class="mb-1 text-muted small">Updated profile bio and location</p>
+                                    </div>
+                                    <small class="text-muted">3 days ago</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong class="text-white">Completed Movie</strong>
+                                        <p class="mb-1 text-muted small">Marked "La La Land" as watched</p>
+                                    </div>
+                                    <small class="text-muted">1 week ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Watchlist Preview -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h6 text-uppercase text-muted mb-0">Watchlist (preview)</h2>
+                                <a class="btn btn-outline-primary btn-sm" href="dashboard.html">
+                                    <i class="bi bi-collection me-1"></i>Open Full Watchlist
+                                </a>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover mb-0 align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Status</th>
+                                            <th>Rating</th>
+                                            <th>Updated</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>La La Land</td>
+                                            <td><span class="badge status-active">Completed</span></td>
+                                            <td>★★★★★</td>
+                                            <td class="text-muted">Sep 10, 2025</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Inception</td>
+                                            <td><span class="badge status-active">Completed</span></td>
+                                            <td>★★★★★</td>
+                                            <td class="text-muted">Sep 8, 2025</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dune: Part Two</td>
+                                            <td><span class="badge status-inactive">To Watch</span></td>
+                                            <td>—</td>
+                                            <td class="text-muted">Sep 1, 2025</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <!-- Right Column -->
+                <div class="col-12 col-lg-4">
+                    <!-- Account Status -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="h5 fw-bold mb-0">Account Status</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Status</span>
+                                <span class="badge status-active">Active</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Role</span>
+                                <span class="badge role-user">User</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Email Verified</span>
+                                <span class="text-success"><i class="bi bi-check-circle-fill"></i> Yes</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>2FA Enabled</span>
+                                <span class="text-danger"><i class="bi bi-x-circle-fill"></i> No</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Member Since</span>
+                                <span class="text-muted">Aug 15, 2024</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Last Login</span>
+                                <span class="text-muted">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="h5 fw-bold mb-0">Quick Actions</h3>
+                        </div>
+                        <div class="card-body d-grid gap-2">
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-envelope me-1"></i>Send Email
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-key me-1"></i>Reset Password
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-shield-check me-1"></i>Enable 2FA
+                            </button>
+                            <button class="btn btn-outline-warning">
+                                <i class="bi bi-pause-circle me-1"></i>Suspend Account
+                            </button>
+                            <button class="btn btn-outline-danger">
+                                <i class="bi bi-trash me-1"></i>Delete Account
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Login History -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="h5 fw-bold mb-0">Recent Login History</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="small">
+                                <div
+                                    class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+                                    <div>
+                                        <div class="text-white">Desktop - Chrome</div>
+                                        <div class="text-muted">192.168.1.100</div>
+                                    </div>
+                                    <div class="text-muted">2h ago</div>
+                                </div>
+                                <div
+                                    class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+                                    <div>
+                                        <div class="text-white">Mobile - Safari</div>
+                                        <div class="text-muted">192.168.1.105</div>
+                                    </div>
+                                    <div class="text-muted">1d ago</div>
+                                </div>
+                                <div
+                                    class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+                                    <div>
+                                        <div class="text-white">Desktop - Firefox</div>
+                                        <div class="text-muted">192.168.1.100</div>
+                                    </div>
+                                    <div class="text-muted">3d ago</div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-white">Mobile - Chrome</div>
+                                        <div class="text-muted">192.168.1.105</div>
+                                    </div>
+                                    <div class="text-muted">1w ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Role</label>
+                                <select class="form-select" required>
+                                    <option value="">Select Role</option>
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Temporary Password</label>
+                                <input type="password" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sendWelcomeEmail" checked>
+                                    <label class="form-check-label" for="sendWelcomeEmail">
+                                        Send welcome email with login details
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Create User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="wb-footer py-4">
+        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+            <div class="small">WatchBuddy Admin Panel - User Management System</div>
+            <div class="small">© <span id="year"></span> WatchBuddy</div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Navbar shadow on scroll
+        const nav = document.querySelector('.wb-navbar');
+        const onScroll = () => {
+            if (nav) {
+                nav.classList.toggle('navbar-shadow', window.scrollY > 8);
+            }
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll);
+
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+
+            // Update navbar active state
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Show user detail with sample data
+        function showUserDetail(userId) {
+            showPage('user-detail');
+
+            // Sample data for different users
+            const userData = {
+                ellyza: {
+                    name: 'Test',
+                    email: 'ellyza.sherynn@email.com',
+                    username: '@joshiwashi1',
+                    role: 'User',
+                    status: 'Active'
+                },
+                marcus: {
+                    name: 'Marcus Chen',
+                    email: 'marcus.chen@email.com',
+                    username: '@marcusc',
+                    role: 'Admin',
+                    status: 'Active'
+                },
+                sarah: {
+                    name: 'Sarah Williams',
+                    email: 'sarah.williams@email.com',
+                    username: '@sarahw',
+                    role: 'User',
+                    status: 'Inactive'
+                }
+            };
+
+            const user = userData[userId] || userData.ellyza;
+
+            // Update user detail page content
+            document.getElementById('userDetailName').textContent = user.name;
+            document.getElementById('userDetailRole').textContent = user.role;
+            document.getElementById('userDetailRole').className = `badge role-${user.role.toLowerCase()}`;
+            document.getElementById('userDetailStatus').textContent = user.status;
+            document.getElementById('userDetailStatus').className = `badge status-${user.status.toLowerCase()}`;
+        }
+
+        // Sample search functionality
+        document.querySelector('input[placeholder="Search by name, email, or username"]')?.addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Initialize tooltips (if Bootstrap tooltips are needed)
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+</body>
+
+</html>

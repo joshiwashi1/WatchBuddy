@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WatchBuddy | User Record</title>
+
+  <!-- Icons & Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== CONSISTENT COLOR SYSTEM (matches your User Management page) ===== */
+    :root {
+      color-scheme: dark;
+
+      /* Primary Colors */
+      --wb-bg: #0f172a;
+      --wb-surface: #1e293b;
+      --wb-panel: #334155;
+      --wb-border: #475569;
+      --wb-accent: #0ea5e9;
+
+      /* Text Colors */
+      --wb-text: #f1f5f9;
+      --wb-text-muted: #94a3b8;
+      --wb-text-dark: #64748b;
+
+      /* Interactive States */
+      --wb-hover-bg: rgba(14, 165, 233, 0.15);
+      --wb-hover-text: #ffffff;
+      --wb-active-bg: rgba(14, 165, 233, 0.25);
+      --wb-focus-shadow: rgba(14, 165, 233, 0.25);
+
+      /* Status Colors */
+      --wb-success: #22c55e;
+      --wb-warning: #f59e0b;
+      --wb-info: #06b6d4;
+      --wb-danger: #ef4444;
+    }
+
+    body {
+      background: var(--wb-bg);
+      color: var(--wb-text);
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    }
+
+    /* ===== NAVBAR ===== */
+    .wb-navbar {
+      background: rgba(15, 23, 42, 0.95) !important;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--wb-border);
+      transition: all 0.3s ease;
+      min-height: 72px;
+    }
+    .wb-navbar.navbar-shadow {
+      background: rgba(15, 23, 42, 0.98) !important;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+      border-bottom-color: var(--wb-accent);
+    }
+    .navbar-brand { color: var(--wb-text) !important; font-weight: 700; font-size: 1.25rem; }
+    .nav-link {
+      color: var(--wb-text-muted) !important; font-weight: 500;
+      padding: .75rem 1rem !important; border-radius: 10px; margin: 0 .25rem;
+      transition: all .2s ease; display: inline-flex; align-items: center; gap:.5rem;
+    }
+    .nav-link:hover, .nav-link:focus-visible { color: var(--wb-hover-text)!important; background: var(--wb-hover-bg)!important; transform: translateY(-1px); }
+    .nav-link.active { color: var(--wb-accent)!important; background: var(--wb-active-bg)!important; box-shadow: inset 0 0 0 1px rgba(14,165,233,.3); }
+
+    /* ===== CARDS / FORMS ===== */
+    .card { background: var(--wb-panel); border: 1px solid var(--wb-border); border-radius: 12px; }
+    .card-header { border-bottom: 1px solid var(--wb-border); }
+    .card-title, .card-header h3 { color: var(--wb-text); font-weight: 600; }
+    .form-label { color: var(--wb-text); font-weight: 500; }
+    .form-control, .form-select {
+      background: var(--wb-surface); color: var(--wb-text);
+      border: 1px solid var(--wb-border); border-radius: 8px; padding: .75rem;
+    }
+    .form-control::placeholder { color: var(--wb-text-dark); opacity: .8; }
+    .form-control:focus, .form-select:focus {
+      background: var(--wb-surface); color: var(--wb-text);
+      border-color: var(--wb-accent); box-shadow: 0 0 0 .25rem var(--wb-focus-shadow);
+    }
+
+    /* ===== BADGES ===== */
+    .badge { border: 1px solid transparent; }
+    .status-active  { background: rgba(34,197,94,.2) !important; color: #4ade80; border-color: rgba(34,197,94,.3); }
+    .status-inactive{ background: rgba(100,116,139,.2) !important; color: #94a3b8; border-color: rgba(100,116,139,.3); }
+    .status-suspended{background: rgba(239,68,68,.2) !important; color: #f87171; border-color: rgba(239,68,68,.3); }
+    .role-admin { background: rgba(147,51,234,.2) !important; color: #a78bfa; border-color: rgba(147,51,234,.3); }
+    .role-user  { background: rgba(14,165,233,.2) !important; color: #7dd3fc; border-color: rgba(14,165,233,.3); }
+
+    /* ===== HEADER STRIP ===== */
+    .page-header {
+      background: linear-gradient(135deg, rgba(14,165,233,.1), rgba(30,41,59,.8));
+      border: 1px solid var(--wb-border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .user-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(14,165,233,.3); }
+    .user-avatar-xl { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(14,165,233,.3); }
+
+    /* ===== TIMELINE ===== */
+    .timeline-item { position: relative; padding-left: 2rem; margin-bottom: 1.5rem; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: .5rem; top: .5rem;
+      width: 8px; height: 8px; background: var(--wb-accent); border-radius: 50%;
+    }
+    .timeline-item::after {
+      content: ''; position: absolute; left: .75rem; top: 1rem; width: 2px; height: calc(100% + .5rem); background: var(--wb-border);
+    }
+    .timeline-item:last-child::after { display: none; }
+
+    /* ===== TABLE ===== */
+    .table-dark {
+      --bs-table-bg: var(--wb-panel);
+      --bs-table-striped-bg: var(--wb-surface);
+      --bs-table-border-color: var(--wb-border);
+      --bs-table-color: var(--wb-text);
+    }
+    .table th { color: var(--wb-text); border-color: var(--wb-border); }
+    .table td { color: var(--wb-text-muted); border-color: var(--wb-border); }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary{ background: var(--wb-accent); border-color: var(--wb-accent); color: #fff; font-weight: 500; border-radius: 8px; }
+    .btn-primary:hover,.btn-primary:focus{ background:#0284c7; border-color:#0284c7; box-shadow:0 0 0 .25rem var(--wb-focus-shadow); }
+    .btn-outline-primary{ color: var(--wb-accent); border-color: var(--wb-accent); border-radius:8px; }
+    .btn-outline-primary:hover{ background: var(--wb-accent); color:#fff; }
+    .btn-outline-warning{ color: var(--wb-warning); border-color: var(--wb-warning); }
+    .btn-outline-danger{ color: var(--wb-danger); border-color: var(--wb-danger); }
+
+    /* ===== FOOTER ===== */
+    footer.wb-footer { background: var(--wb-panel); border-top: 1px solid var(--wb-border); color: var(--wb-text-muted); margin-top: 4rem; }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="user-management.html">
+        <i class="bi bi-people-fill me-2 fs-4 text-primary"></i>
+        WatchBuddy Admin
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="mainNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="user-management.html"><i class="bi bi-people me-1"></i>User Management</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-person-badge me-1"></i>User Record</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <!-- Back -->
+    <div class="mb-3">
+      <a class="btn btn-outline-primary" href="user-management.html"><i class="bi bi-arrow-left me-1"></i>Back to User Management</a>
+    </div>
+
+    <!-- Header -->
+    <section class="page-header">
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
+        <img src="assets/img/default-avatar.png" alt="User Avatar" class="user-avatar-xl" id="avatar">
+        <div class="flex-grow-1">
+          <h1 class="h2 fw-bold mb-2 text-white" id="name">Ellyza Sherynn</h1>
+          <div class="d-flex flex-wrap gap-3 mb-2">
+            <span class="text-light opacity-75"><i class="bi bi-envelope me-1"></i><span id="email">ellyza.sherynn@email.com</span></span>
+            <span class="text-light opacity-75"><i class="bi bi-at me-1"></i><span id="username">@joshiwashi1</span></span>
+            <span class="text-light opacity-75"><i class="bi bi-geo-alt me-1"></i><span id="location">Kuching, Malaysia</span></span>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge role-user" id="roleBadge">User</span>
+            <span class="badge status-active" id="statusBadge">Active</span>
+            <span class="text-muted small" id="joined">Joined Aug 15, 2024</span>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-primary"><i class="bi bi-pencil me-1"></i>Edit</button>
+          <button class="btn btn-outline-primary"><i class="bi bi-key me-1"></i>Reset Password</button>
+          <div class="dropdown">
+            <button class="btn btn-outline-danger dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item text-warning" href="#" id="toggleSuspend">Suspend User</a></li>
+              <li><a class="dropdown-item text-danger" href="#">Delete User</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="row g-4">
+      <!-- Left -->
+      <div class="col-12 col-lg-8">
+        <!-- Account Information -->
+        <div class="card mb-4">
+          <div class="card-header"><h3 class="h5 fw-bold mb-0">Account Information</h3></div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" value="Ellyza Sherynn" readonly>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" value="joshiwashi1" readonly>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" value="ellyza.sherynn@email.com" readonly>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Phone Number</label>
+                <input type="text" class="form-control" value="+60 12-345 6789" readonly>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" value="Kuching, Malaysia" readonly>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" value="1999-03-15" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card mb-4">
+          <div class="card-header"><h3 class="h5 fw-bold mb-0">Recent Activity</h3></div>
+          <div class="card-body">
+            <div class="timeline-item">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong class="text-white">Rated “Inception”</strong>
+                  <p class="mb-1 text-muted small">Gave it 5 stars and wrote a review</p>
+                </div>
+                <small class="text-muted">2 hours ago</small>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong class="text-white">Added to Watchlist</strong>
+                  <p class="mb-1 text-muted small">Added “The Batman” to watchlist</p>
+                </div>
+                <small class="text-muted">1 day ago</small>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong class="text-white">Profile Updated</strong>
+                  <p class="mb-1 text-muted small">Updated profile bio and location</p>
+                </div>
+                <small class="text-muted">3 days ago</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="h5 fw-bold mb-0">Recent Reviews</h3>
+            <button class="btn btn-sm btn-outline-primary">View All</button>
+          </div>
+          <div class="card-body">
+            <div class="d-flex gap-3 mb-4">
+              <img src="assets/img/posters/poster-01.jpg" alt="Poster" width="60" height="90" class="rounded">
+              <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <strong class="text-white">La La Land</strong>
+                  <span class="text-warning">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i> 4.5
+                  </span>
+                </div>
+                <p class="text-muted mb-2">Whimsical, heartbreaking, and gorgeous. The cinematography is stunning and the score lives rent-free in my head.</p>
+                <small class="text-muted">Reviewed on September 10, 2025</small>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3">
+              <img src="assets/img/posters/poster-02.jpg" alt="Poster" width="60" height="90" class="rounded">
+              <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <strong class="text-white">Inception</strong>
+                  <span class="text-warning">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i> 5.0
+                  </span>
+                </div>
+                <p class="text-muted mb-2">Mind-bending and brilliant. Nolan at his absolute best. A masterpiece of modern cinema.</p>
+                <small class="text-muted">Reviewed on September 8, 2025</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="col-12 col-lg-4">
+        <!-- Account Status -->
+        <div class="card mb-4">
+          <div class="card-header"><h3 class="h5 fw-bold mb-0">Account Status</h3></div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Status</span><span class="badge status-active" id="statusChip">Active</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Role</span><span class="badge role-user" id="roleChip">User</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Email Verified</span><span class="text-success"><i class="bi bi-check-circle-fill"></i> Yes</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>2FA Enabled</span><span class="text-danger"><i class="bi bi-x-circle-fill"></i> No</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Member Since</span><span class="text-muted">Aug 15, 2024</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Last Login</span><span class="text-muted">2 hours ago</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mb-4">
+          <div class="card-header"><h3 class="h5 fw-bold mb-0">Quick Actions</h3></div>
+          <div class="card-body d-grid gap-2">
+            <button class="btn btn-outline-primary"><i class="bi bi-envelope me-1"></i>Send Email</button>
+            <button class="btn btn-outline-primary"><i class="bi bi-key me-1"></i>Reset Password</button>
+            <button class="btn btn-outline-primary"><i class="bi bi-shield-check me-1"></i>Enable 2FA</button>
+            <button class="btn btn-outline-warning" id="suspendBtn"><i class="bi bi-pause-circle me-1"></i>Suspend Account</button>
+            <button class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete Account</button>
+          </div>
+        </div>
+
+        <!-- Login History -->
+        <div class="card">
+          <div class="card-header"><h3 class="h5 fw-bold mb-0">Recent Login History</h3></div>
+          <div class="card-body small">
+            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+              <div><div class="text-white">Desktop · Chrome</div><div class="text-muted">192.168.1.100</div></div>
+              <div class="text-muted">2h ago</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+              <div><div class="text-white">Mobile · Safari</div><div class="text-muted">192.168.1.105</div></div>
+              <div class="text-muted">1d ago</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div><div class="text-white">Desktop · Firefox</div><div class="text-muted">192.168.1.100</div></div>
+              <div class="text-muted">3d ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Watchlist Preview -->
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h6 text-uppercase text-muted mb-0">Watchlist (preview)</h2>
+          <a class="btn btn-outline-primary btn-sm" href="dashboard.html"><i class="bi bi-collection me-1"></i>Open Full Watchlist</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-dark table-hover mb-0 align-middle">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Rating</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>La La Land</td><td><span class="badge status-active">Completed</span></td><td>★★★★★</td><td class="text-muted">Sep 10, 2025</td></tr>
+              <tr><td>Inception</td><td><span class="badge status-active">Completed</span></td><td>★★★★★</td><td class="text-muted">Sep 8, 2025</td></tr>
+              <tr><td>Dune: Part Two</td><td><span class="badge status-inactive">To Watch</span></td><td>—</td><td class="text-muted">Sep 1, 2025</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="wb-footer py-4">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+      <div class="small">User overview & admin controls</div>
+      <div class="small">© <span id="year"></span> WatchBuddy</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Year + navbar shadow
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const nav = document.querySelector('.wb-navbar');
+    const onScroll = () => nav?.classList.toggle('navbar-shadow', window.scrollY > 8);
+    onScroll(); window.addEventListener('scroll', onScroll);
+
+    // (Optional) Load dummy user from query: ?name=&email=&username=&role=&status=
+    const params = new URLSearchParams(location.search);
+    const data = {
+      name: params.get('name') || 'Ellyza Sherynn',
+      email: params.get('email') || 'ellyza.sherynn@email.com',
+      username: params.get('username') || '@joshiwashi1',
+      role: (params.get('role') || 'User'),
+      status: (params.get('status') || 'Active'),
+      location: params.get('location') || 'Kuching, Malaysia',
+      joined: params.get('joined') || 'Aug 15, 2024'
+    };
+
+    // Populate header fields
+    document.getElementById('name').textContent = data.name;
+    document.getElementById('email').textContent = data.email;
+    document.getElementById('username').textContent = data.username;
+    document.getElementById('location').textContent = data.location;
+    document.getElementById('joined').textContent = 'Joined ' + data.joined;
+
+    // Role & Status chips
+    const roleBadge = document.getElementById('roleBadge');
+    roleBadge.textContent = data.role;
+    roleBadge.className = 'badge role-' + data.role.toLowerCase();
+
+    const statusBadge = document.getElementById('statusBadge');
+    const statusChip  = document.getElementById('statusChip');
+    statusBadge.textContent = data.status;
+    statusBadge.className = 'badge status-' + data.status.toLowerCase();
+    statusChip.textContent = data.status;
+    statusChip.className = 'badge status-' + data.status.toLowerCase();
+
+    const roleChip = document.getElementById('roleChip');
+    roleChip.textContent = data.role;
+    roleChip.className = 'badge role-' + data.role.toLowerCase();
+
+    // Quick suspend toggle (demo)
+    const suspendBtn = document.getElementById('suspendBtn');
+    const toggleSuspendLink = document.getElementById('toggleSuspend');
+    function toggleSuspend(){
+      const nowSuspended = statusBadge.textContent !== 'Suspended';
+      const cls = nowSuspended ? 'status-suspended' : 'status-active';
+      statusBadge.textContent = nowSuspended ? 'Suspended' : 'Active';
+      statusChip.textContent  = statusBadge.textContent;
+      statusBadge.className = 'badge ' + cls;
+      statusChip.className  = 'badge ' + cls;
+      suspendBtn.innerHTML = nowSuspended
+        ? '<i class="bi bi-play-circle me-1"></i>Unsuspend Account'
+        : '<i class="bi bi-pause-circle me-1"></i>Suspend Account';
+      toggleSuspendLink.textContent = nowSuspended ? 'Unsuspend User' : 'Suspend User';
+    }
+    suspendBtn.addEventListener('click', toggleSuspend);
+    toggleSuspendLink.addEventListener('click', (e)=>{ e.preventDefault(); toggleSuspend(); });
+  </script>
+</body>
+</html>
