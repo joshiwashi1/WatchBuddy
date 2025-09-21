@@ -1,12 +1,14 @@
 <?php
 declare(strict_types=1);
 
-
 final class Auth
 {
     private PDO $db;
     public function __construct(PDO $db) { $this->db = $db; }
 
+    /* =========================
+       Registration (role=user)
+       ========================= */
     public function register(array $data): array
     {
         $first  = Validators::s($data['firstName'] ?? '');
@@ -25,11 +27,23 @@ final class Auth
 
         $hash = password_hash($pass, PASSWORD_DEFAULT);
 
+        // Detect whether a 'role' column exists (graceful fallback)
+        $hasRole = $this->columnExists('users', 'role');
+
         try {
-            $stmt = $this->db->prepare(
-                'INSERT INTO users (first_name,middle_name,last_name,suffix,email,password_hash) VALUES (?,?,?,?,?,?)'
-            );
-            $stmt->execute([$first, $middle, $last, $suffix, $email, $hash]);
+            if ($hasRole) {
+                $stmt = $this->db->prepare(
+                    'INSERT INTO users (first_name, middle_name, last_name, suffix, email, password_hash, role)
+                     VALUES (?,?,?,?,?,?,?)'
+                );
+                $stmt->execute([$first, $middle, $last, $suffix, $email, $hash, 'user']);
+            } else {
+                $stmt = $this->db->prepare(
+                    'INSERT INTO users (first_name, middle_name, last_name, suffix, email, password_hash)
+                     VALUES (?,?,?,?,?,?)'
+                );
+                $stmt->execute([$first, $middle, $last, $suffix, $email, $hash]);
+            }
             $id = (int)$this->db->lastInsertId();
         } catch (PDOException $e) {
             $isDup = ($e->getCode() === '23000') || ((int)($e->errorInfo[1] ?? 0) === 1062);
@@ -38,11 +52,15 @@ final class Auth
         }
 
         session_regenerate_id(true);
-        $_SESSION['uid'] = $id;
+        $_SESSION['uid']  = $id;
+        $_SESSION['role'] = 'user'; // default on register
 
         return ['ok' => true, 'user' => $this->me($id)];
     }
 
+    /* ================
+       Login (sets role)
+       ================ */
     public function login(array $data): array
     {
         $email = Validators::email($data['email'] ?? '');
@@ -51,7 +69,13 @@ final class Auth
             return ['ok' => false, 'error' => 'Invalid credentials'];
         }
 
-        $stmt = $this->db->prepare('SELECT id, password_hash FROM users WHERE email=? LIMIT 1');
+        // Try to fetch role if available; fall back if not
+        $hasRole = $this->columnExists('users', 'role');
+        $select  = $hasRole
+            ? 'SELECT id, password_hash, role FROM users WHERE email=? LIMIT 1'
+            : 'SELECT id, password_hash FROM users WHERE email=? LIMIT 1';
+
+        $stmt = $this->db->prepare($select);
         $stmt->execute([$email]);
         $u = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -60,7 +84,9 @@ final class Auth
         }
 
         session_regenerate_id(true);
-        $_SESSION['uid'] = (int)$u['id'];
+        $_SESSION['uid']  = (int)$u['id'];
+        $_SESSION['role'] = $hasRole ? (string)($u['role'] ?? 'user') : 'user';
+
         return ['ok' => true, 'user' => $this->me((int)$u['id'])];
     }
 
@@ -75,26 +101,40 @@ final class Auth
         return ['ok' => true];
     }
 
+    /* ==========================
+       Current user (includes role)
+       ========================== */
     public function me(?int $uid = null): ?array
     {
         $uid = $uid ?? (int)($_SESSION['uid'] ?? 0);
         if ($uid <= 0) return null;
 
-        $stmt = $this->db->prepare(
-            'SELECT id,
-                    first_name  AS firstName,
-                    middle_name AS middleName,
-                    last_name   AS lastName,
-                    suffix,
-                    email,
-                    created_at  AS createdAt
-             FROM users
-             WHERE id = ?'
-        );
+        $hasRole = $this->columnExists('users', 'role');
+        $select  = $hasRole
+            ? 'SELECT id,
+                     first_name  AS firstName,
+                     middle_name AS middleName,
+                     last_name   AS lastName,
+                     suffix,
+                     email,
+                     role,
+                     created_at  AS createdAt
+               FROM users WHERE id = ?'
+            : 'SELECT id,
+                     first_name  AS firstName,
+                     middle_name AS middleName,
+                     last_name   AS lastName,
+                     suffix,
+                     email,
+                     created_at  AS createdAt
+               FROM users WHERE id = ?';
+
+        $stmt = $this->db->prepare($select);
         $stmt->execute([$uid]);
         $u = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$u) return null;
 
+        // Full name formatting
         $parts = [$u['firstName']];
         if (!empty($u['middleName'])) $parts[] = $u['middleName'];
         $parts[] = $u['lastName'];
@@ -102,6 +142,11 @@ final class Auth
         if (!empty($u['suffix'])) $display .= ', ' . $u['suffix'];
 
         $u['fullName'] = $display;
+
+        // Ensure role is always present in response & session
+        $u['role'] = $hasRole ? ($u['role'] ?? 'user') : 'user';
+        $_SESSION['role'] = $u['role'];
+
         return $u;
     }
 
@@ -123,5 +168,34 @@ final class Auth
             Response::json(['ok' => false, 'error' => 'Unauthorized'], 401);
         }
         return $uid;
+    }
+
+    /** New: admin-only guard (403 if not admin) */
+    public static function requireAdmin(): int
+    {
+        $uid  = (int)($_SESSION['uid'] ?? 0);
+        $role = (string)($_SESSION['role'] ?? 'user');
+        if ($uid <= 0) {
+            Response::json(['ok' => false, 'error' => 'Unauthorized'], 401);
+        }
+        if ($role !== 'admin') {
+            Response::json(['ok' => false, 'error' => 'Forbidden'], 403);
+        }
+        return $uid;
+    }
+
+    /* =================
+       Internal helpers
+       ================= */
+    private function columnExists(string $table, string $column): bool
+    {
+        try {
+            $stmt = $this->db->prepare("SHOW COLUMNS FROM `$table` LIKE ?");
+            $stmt->execute([$column]);
+            return (bool)$stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            // In case of restricted privileges, fail closed to "not exists"
+            return false;
+        }
     }
 }

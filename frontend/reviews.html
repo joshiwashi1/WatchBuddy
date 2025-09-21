@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WatchBuddy - Reviews</title>
+
+  <!-- Fonts & (optional) Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Bootstrap (dropdown for user menu) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary-dark:#0c0d1b;--primary-navy:#151829;--accent-blue:#2563eb;--accent-purple:#7c3aed;
+      --text-primary:#ffffff;--text-secondary:#a1a8c3;--text-muted:#6b7280;
+      --surface-elevated:#1e2139;--surface-card:#252846;--border-subtle:#2d3348;
+      --success:#10b981;--warning:#f59e0b;--danger:#ef4444
+    }
+    .navbar-brand {
+  font-family: 'Orbitron', sans-serif !important;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.navbar-brand:hover {
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.navbar-brand img {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary-navy) 100%);color:var(--text-primary);font-family:'Poppins',sans-serif;font-weight:300;line-height:1.6;min-height:100vh}
+    .container{max-width:1400px;margin:0 auto;padding:0 1.5rem}
+    .header{background:rgba(21,24,41,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle);padding:1rem 0;position:sticky;top:0;z-index:100}
+    .nav{display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:.75rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.25rem}
+    .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-link{color:var(--text-secondary);text-decoration:none;font-weight:400;padding:.5rem 0;position:relative;transition:color .2s}
+    .nav-link:hover,.nav-link.active{color:var(--text-primary)}
+    .nav-link.active::after{content:'';position:absolute;bottom:-1rem;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple))}
+    .user-profile{display:flex;align-items:center;gap:.75rem;color:var(--text-secondary)}
+    .user-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:.9rem}
+
+    .main{padding:2rem 0}
+    .page-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem}
+    .page-title{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--text-primary),var(--text-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page-subtitle{color:var(--text-secondary);font-size:1rem;margin-top:.5rem}
+
+    .review-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;background:var(--surface-elevated);padding:1.5rem;border-radius:16px;border:1px solid var(--border-subtle);margin-bottom:2rem}
+    .stat-item{text-align:center}
+    .stat-number{font-size:1.75rem;font-weight:700;color:var(--accent-blue);display:block}
+    .stat-label{color:var(--text-secondary);font-size:.9rem;margin-top:.25rem}
+
+    .filters-section{background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:16px;padding:1.5rem;margin-bottom:2rem}
+    .filters-row{display:grid;grid-template-columns:1fr auto auto;gap:1rem;align-items:center}
+    .search-input{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:12px;padding:.75rem 1rem;color:var(--text-primary);font-size:.9rem}
+    .search-input::placeholder{color:var(--text-muted)}
+    .search-input:focus{outline:none;border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    .filter-select{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:8px;padding:.5rem .75rem;color:var(--text-primary);font-size:.9rem;min-width:120px}
+
+    .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:1.5rem}
+    .review-card{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:16px;padding:1.5rem;transition:all .3s ease;cursor:pointer}
+    .review-card:hover{transform:translateY(-4px);border-color:var(--accent-blue);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+    .review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+    .movie-info{flex:1}
+    .movie-title{font-size:1.2rem;font-weight:600;margin-bottom:.25rem}
+    .movie-meta{color:var(--text-secondary);font-size:.875rem}
+    .review-rating{display:flex;align-items:center;gap:.5rem}
+    .star-rating{color:var(--warning);font-size:1.1rem}
+    .rating-number{color:var(--text-secondary);font-size:.9rem}
+    .review-content{margin-bottom:1rem}
+    .review-excerpt{color:var(--text-secondary);line-height:1.6;-webkit-line-clamp:3;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+    .review-footer{display:flex;justify-content:space-between;align-items:center;font-size:.875rem;color:var(--text-muted)}
+    .review-actions{display:flex;gap:.5rem}
+    .action-btn{width:32px;height:32px;border:none;border-radius:8px;background:var(--surface-elevated);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s ease;font-size:.9rem}
+    .action-btn:hover{background:var(--accent-blue);color:#fff}
+
+    .featured-section{margin-bottom:3rem}
+    .section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+    .section-title{font-size:1.5rem;font-weight:600}
+    .section-badge{background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));color:#fff;padding:.25rem .75rem;border-radius:20px;font-size:.75rem;font-weight:500}
+    .featured-review{background:var(--surface-elevated);border:2px solid var(--accent-blue);border-radius:20px;padding:2rem;position:relative;overflow:hidden}
+    .featured-review::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple))}
+    .featured-header{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:flex-start;margin-bottom:1.5rem}
+    .featured-movie{display:flex;gap:1rem;align-items:flex-start}
+    .movie-poster-small{width:80px;height:120px;background:linear-gradient(135deg,var(--primary-navy),var(--surface-card));border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;flex-shrink:0}
+    .featured-title{font-size:1.5rem;font-weight:700;margin-bottom:.5rem}
+    .featured-meta{color:var(--text-secondary);margin-bottom:1rem}
+    .featured-rating{display:flex;align-items:center;gap:.75rem;font-size:1.25rem}
+    .featured-content{font-size:1.1rem;line-height:1.7;color:var(--text-secondary)}
+
+    /* Responsive tweaks */
+    @media (max-width:1024px){.filters-row{grid-template-columns:1fr}.reviews-grid{grid-template-columns:1fr}.review-stats{grid-template-columns:repeat(2,1fr)}.featured-header{grid-template-columns:1fr}}
+    @media (max-width:768px){.page-header{flex-direction:column;align-items:flex-start;gap:1rem}.nav-links{display:none}.review-stats{grid-template-columns:1fr;text-align:left}}
+    @media (max-width:480px){.container{padding:0 1rem}.main{padding:1.5rem 0}.reviews-grid{grid-template-columns:1fr}}
+    /* Dark dropdown */
+    .dropdown-menu{background:#1e2139;border:1px solid #2d3348;border-radius:12px;overflow:hidden}
+    .dropdown-item{color:#e5e7eb}
+    .dropdown-item:hover{background:rgba(37,99,235,.25);color:#fff}
+  </style>
+</head>
+
+<body>
+<header class="header">
+  <nav class="nav container">
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.html">
+  <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="36" height="36" class="me-2 rounded-2">
+  WatchBuddy
+</a>
+    <ul class="nav-links">
+      <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      <li><a href="movies.html" class="nav-link">Movies</a></li>
+      <li><a href="reviews.html" class="nav-link active">Reviews</a></li>
+    </ul>
+
+    <!-- User menu -->
+    <div class="dropdown">
+      <button class="user-profile dropdown-toggle" id="userMenuBtn" data-bs-toggle="dropdown" aria-expanded="false" style="background:none;border:0;">
+        <span id="userFirst">User</span>
+        <div class="user-avatar" id="userAvatar">U</div>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="profile.html"><i class="bi bi-gear me-2"></i>Profile Settings</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" id="logoutBtn" type="button"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main class="main container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">My Reviews</h1>
+      <p class="page-subtitle">Your thoughts on movies you've watched</p>
+    </div>
+  </div>
+
+  <!-- Stats (static placeholders) -->
+  <div class="review-stats">
+    <div class="stat-item"><span class="stat-number">3</span><div class="stat-label">Total Reviews</div></div>
+    <div class="stat-item"><span class="stat-number">4.0</span><div class="stat-label">Avg Rating</div></div>
+    <div class="stat-item"><span class="stat-number">2</span><div class="stat-label">This Month</div></div>
+    <div class="stat-item"><span class="stat-number">~350</span><div class="stat-label">Words Written</div></div>
+  </div>
+
+  <!-- Featured Review -->
+  <div class="featured-section">
+    <div class="section-header">
+      <h2 class="section-title">Featured Review</h2>
+      <span class="section-badge">Latest</span>
+    </div>
+    <div class="featured-review">
+      <div class="featured-header">
+        <div class="featured-movie">
+          <div class="movie-poster-small">🎬</div>
+          <div class="featured-info">
+            <h3 class="featured-title">Oppenheimer</h3>
+            <div class="featured-meta">Christopher Nolan • 2023 • Biography, Drama</div>
+          </div>
+        </div>
+        <div class="featured-rating"><span class="star-rating">★★★★★</span><span class="rating-number">5/5</span></div>
+      </div>
+      <div class="featured-content">
+        Christopher Nolan delivers his most personal and powerful film to date. Cillian Murphy's portrayal of J. Robert Oppenheimer is extraordinary, capturing the internal conflict with the consequences of creation. The non-linear structure mirrors the fragmented nature of memory and guilt, while the IMAX photography makes history feel immediate…
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filters-row">
+      <input type="text" class="search-input" placeholder="Search your reviews..." id="searchInput">
+      <select class="filter-select" id="ratingFilter">
+        <option value="">All Ratings</option>
+        <option value="5">5 Stars</option>
+        <option value="4">4 Stars</option>
+        <option value="3">3 Stars</option>
+        <option value="2">2 Stars</option>
+        <option value="1">1 Star</option>
+      </select>
+      <select class="filter-select" id="sortSelect">
+        <option value="recent">Most Recent</option>
+        <option value="oldest">Oldest First</option>
+        <option value="rating">Highest Rated</option>
+        <option value="title">Movie Title</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Exactly three example reviews -->
+  <div class="reviews-grid" id="reviewsGrid">
+    <div class="review-card" data-rating="5" data-title="dune">
+      <div class="review-header">
+        <div class="movie-info">
+          <h3 class="movie-title">Dune</h3>
+          <div class="movie-meta">Denis Villeneuve • 2021</div>
+        </div>
+        <div class="review-rating"><span class="star-rating">★★★★★</span><span class="rating-number">5/5</span></div>
+      </div>
+      <div class="review-content">
+        <p class="review-excerpt">Villeneuve crafts a visual epic that honors Herbert’s dense novel while feeling uniquely cinematic. World-building is top-tier, from sweeping deserts to intricate design…</p>
+      </div>
+      <div class="review-footer">
+        <div class="review-date">📅 3 days ago</div>
+        <div class="review-actions">
+          <button class="action-btn" title="Edit">✏</button>
+          <button class="action-btn" title="Delete">🗑</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card" data-rating="4" data-title="the batman">
+      <div class="review-header">
+        <div class="movie-info">
+          <h3 class="movie-title">The Batman</h3>
+          <div class="movie-meta">Matt Reeves • 2022</div>
+        </div>
+        <div class="review-rating"><span class="star-rating">★★★★☆</span><span class="rating-number">4/5</span></div>
+      </div>
+      <div class="review-content">
+        <p class="review-excerpt">A moody detective noir that finally leans into Batman’s sleuthing. Pattinson is compelling, and the atmosphere is thick—even if it runs a touch long…</p>
+      </div>
+      <div class="review-footer">
+        <div class="review-date">📅 1 week ago</div>
+        <div class="review-actions">
+          <button class="action-btn" title="Edit">✏</button>
+          <button class="action-btn" title="Delete">🗑</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card" data-rating="3" data-title="the matrix resurrections">
+      <div class="review-header">
+        <div class="movie-info">
+          <h3 class="movie-title">The Matrix Resurrections</h3>
+          <div class="movie-meta">Lana Wachowski • 2021</div>
+        </div>
+        <div class="review-rating"><span class="star-rating">★★★☆☆</span><span class="rating-number">3/5</span></div>
+      </div>
+      <div class="review-content">
+        <p class="review-excerpt">Smart meta-ideas and heartfelt beats, but the action rarely hits the old highs. An interesting—if uneven—return to the simulation…</p>
+      </div>
+      <div class="review-footer">
+        <div class="review-date">📅 2 weeks ago</div>
+        <div class="review-actions">
+          <button class="action-btn" title="Edit">✏</button>
+          <button class="action-btn" title="Delete">🗑</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Edit Review Modal -->
+<div class="modal fade" id="editReviewModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content" 
+         style="background: var(--primary-navy); color: var(--text-primary); border:1px solid var(--border-subtle);">
+      <div class="modal-header" style="border-bottom:1px solid var(--border-subtle);">
+        <h5 class="modal-title">Edit Review</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editReviewId">
+
+        <label class="form-label">Rating</label>
+        <select id="editReviewRating" class="form-select" 
+                style="background: var(--surface-card); color: var(--text-primary); border:1px solid var(--border-subtle);">
+          <option value="0">Not rated</option>
+          <option value="1">★☆☆☆☆ (1)</option>
+          <option value="2">★★☆☆☆ (2)</option>
+          <option value="3">★★★☆☆ (3)</option>
+          <option value="4">★★★★☆ (4)</option>
+          <option value="5">★★★★★ (5)</option>
+        </select>
+
+        <label class="form-label mt-3">Review</label>
+        <textarea id="editReviewText" class="form-control" rows="4"
+                  style="background: var(--surface-card); color: var(--text-primary); border:1px solid var(--border-subtle);"></textarea>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--border-subtle);">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="saveEditReviewBtn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Review Modal -->
+<div class="modal fade" id="deleteReviewModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" 
+         style="background: var(--primary-navy); color: var(--text-primary); border:1px solid var(--border-subtle);">
+      <div class="modal-header" style="border-bottom:1px solid var(--border-subtle);">
+        <h5 class="modal-title text-danger">
+          <i class="bi bi-exclamation-triangle me-2"></i>Delete Review
+        </h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="color: var(--text-secondary);">
+        Are you sure you want to delete your review for 
+        <strong id="deleteReviewTitle" style="color: var(--text-primary);"></strong>?
+        <input type="hidden" id="deleteReviewId">
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--border-subtle);">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" id="confirmDeleteReviewBtn">
+          <i class="bi bi-trash me-1"></i>Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Bootstrap JS (for dropdowns) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ================= CONFIG ================= */
+const API_BASE = (location.protocol === 'file:' ? 'http://localhost:8000' : `${location.origin}/watchbuddy/backend/public`);
+const qs  = (s, r=document) => r.querySelector(s);
+const qsa = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+async function api(path, options = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...(options.headers||{}) },
+    ...options,
+  });
+  if (res.status === 401) throw new Error('Unauthorized');
+  return res;
+}
+function starsInline(n=0){ n = Math.max(0, Math.min(5, parseInt(n,10)||0)); return `${'★'.repeat(n)}${'☆'.repeat(5-n)}`; }
+
+/* ================= USER ================= */
+(async function loadUser(){
+  try {
+    const r = await api('/api/me'); const data = await r.json();
+    if (data?.ok && data.user){
+      const first = data.user.first_name || data.user.name || (data.user.email||'User').split('@')[0];
+      qs('#userFirst')  && (qs('#userFirst').textContent  = first);
+      qs('#userAvatar') && (qs('#userAvatar').textContent = first[0].toUpperCase());
+    }
+  } catch(_) {}
+})();
+(function attachLogout(){
+  qs('#logoutBtn')?.addEventListener('click', async()=>{
+    try { await api('/api/logout',{method:'POST'}); } catch(_){}
+    location.href='login.html';
+  });
+})();
+
+/* ================= STATE ================= */
+let WATCHLIST = [], REVIEWS = [];
+const reviewsGrid  = qs('#reviewsGrid');
+const searchInput  = qs('#searchInput');
+const ratingFilter = qs('#ratingFilter');
+const sortSelect   = qs('#sortSelect');
+
+/* ================= FETCH ================= */
+async function fetchWatchlist(){
+  const res  = await api('/api/watchlist');
+  const data = await res.json();
+  if(!data?.ok) throw new Error(data?.error||'Failed to load watchlist');
+  WATCHLIST = data.items || [];
+  REVIEWS   = WATCHLIST.filter(m => m.status === 'completed' && (m.review||'').trim() !== '');
+  renderReviews(REVIEWS);
+}
+
+/* ================= RENDER ================= */
+function reviewCardNode(m){
+  const el = document.createElement('div');
+  el.className = 'review-card';
+  el.dataset.id = m.id;
+  el.dataset.title = (m.title||'').toLowerCase();
+  el.dataset.rating = m.rating || 0;
+
+  el.innerHTML = `
+    <div class="review-header">
+      <div class="movie-info">
+        <h3 class="movie-title">${m.title || 'Untitled'}</h3>
+        <div class="movie-meta">${m.description || ''}</div>
+      </div>
+      <div class="review-rating">
+        <span class="star-rating">${starsInline(m.rating)}</span>
+        <span class="rating-number">${m.rating||0}/5</span>
+      </div>
+    </div>
+    <div class="review-content"><p class="review-excerpt">${(m.review||'No review').trim()}</p></div>
+    <div class="review-footer">
+      <div class="review-date">📅 recently</div>
+      <div class="review-actions">
+        <button class="action-btn" data-action="edit"   data-id="${m.id}" title="Edit">✏</button>
+        <button class="action-btn" data-action="delete" data-id="${m.id}" title="Delete">🗑</button>
+      </div>
+    </div>`;
+  return el;
+}
+
+function renderReviews(list){
+  if (!reviewsGrid) return;
+  reviewsGrid.innerHTML = '';
+  list.slice(0, Math.max(3, list.length)).forEach(m => reviewsGrid.appendChild(reviewCardNode(m)));
+}
+
+/* ================= FILTERS ================= */
+function applyFilters(){
+  const q  = (searchInput?.value || '').toLowerCase();
+  const rf = ratingFilter?.value || '';
+  const sv = sortSelect?.value   || 'recent';
+
+  let visible = REVIEWS.filter(m=>{
+    const matchQ = !q || (m.title||'').toLowerCase().includes(q) || (m.review||'').toLowerCase().includes(q);
+    const matchR = !rf || String(m.rating||0) === rf;
+    return matchQ && matchR;
+  });
+
+  if (sv === 'title')  visible.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
+  if (sv === 'rating') visible.sort((a,b)=> (b.rating||0) - (a.rating||0));
+
+  renderReviews(visible);
+}
+
+/* ================= MODALS (Edit / Delete) ================= */
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+
+  const id     = btn.dataset.id;
+  const action = btn.dataset.action;
+  const m      = REVIEWS.find(x=>String(x.id)===String(id));
+  if (!m) return;
+
+  if (action === 'edit'){
+    qs('#editReviewId').value         = id;
+    qs('#editReviewRating').value     = m.rating || 0;
+    qs('#editReviewText').value       = m.review || '';
+    new bootstrap.Modal('#editReviewModal').show();
+  }
+
+  if (action === 'delete'){
+    qs('#deleteReviewId').value       = id;
+    qs('#deleteReviewTitle').textContent = m.title || 'this movie';
+    new bootstrap.Modal('#deleteReviewModal').show();
+  }
+});
+
+/* ================= SAVE EDIT ================= */
+qs('#saveEditReviewBtn')?.addEventListener('click', async()=>{
+  const id     = qs('#editReviewId').value;
+  const rating = parseInt(qs('#editReviewRating').value,10) || 0;
+  const review = (qs('#editReviewText').value || '').trim();
+
+  try{
+    const r = await api(`/api/watchlist/${id}/review`, { method:'PUT', body: JSON.stringify({ rating, review }) });
+    const d = await r.json();
+    if(!d.ok) throw new Error(d.error || 'Failed to save');
+
+    const i = WATCHLIST.findIndex(x=>String(x.id)===String(id));
+    if (i>=0) WATCHLIST[i] = { ...WATCHLIST[i], rating, review };
+    REVIEWS = WATCHLIST.filter(m=>m.status==='completed' && (m.review||'').trim()!=='');
+
+    bootstrap.Modal.getInstance(qs('#editReviewModal'))?.hide();
+    renderReviews(REVIEWS);
+    applyFilters();
+  }catch(err){ alert(err.message); }
+});
+
+/* ================= CONFIRM DELETE ================= */
+qs('#confirmDeleteReviewBtn')?.addEventListener('click', async()=>{
+  const id = qs('#deleteReviewId').value;
+  try{
+    const r = await api(`/api/watchlist/${id}/review`, { method:'PUT', body: JSON.stringify({ rating: 0, review: '' }) });
+    const d = await r.json();
+    if(!d.ok) throw new Error(d.error || 'Failed to delete');
+
+    const i = WATCHLIST.findIndex(x=>String(x.id)===String(id));
+    if (i>=0) WATCHLIST[i] = { ...WATCHLIST[i], review: '' };
+    REVIEWS = WATCHLIST.filter(m=>m.status==='completed' && (m.review||'').trim()!=='');
+
+    bootstrap.Modal.getInstance(qs('#deleteReviewModal'))?.hide();
+    renderReviews(REVIEWS);
+    applyFilters();
+  }catch(err){ alert(err.message); }
+});
+
+/* ================= HOOKS ================= */
+searchInput?.addEventListener('input',  applyFilters);
+ratingFilter?.addEventListener('change', applyFilters);
+sortSelect?.addEventListener('change',   applyFilters);
+
+/* ================= BOOT ================= */
+(async function(){
+  try{
+    await fetchWatchlist();
+    applyFilters();
+  }catch(e){
+    console.error(e);
+    alert('Server unreachable or not logged in.');
+  }
+})();
+</script>
+
+</body>
+</html>

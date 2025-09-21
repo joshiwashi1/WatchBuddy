@@ -65,8 +65,34 @@ if ($method === 'POST' && $uri === '/api/logout') {
 /* ========== PROTECTED ROUTES ========== */
 if ($method === 'GET' && $uri === '/api/me') {
   $user = $auth->meOr401();
+  // ✅ now includes role thanks to Auth::me()
   json(['ok' => true, 'user' => $user]);
 }
+
+/* ========== ADMIN ROUTES ========== */
+if ($method === 'GET' && $uri === '/api/admin/users') {
+  Auth::requireAdmin(); // 403 if not admin
+  $stmt = $pdo->query("SELECT id,email,role,is_active,created_at FROM users ORDER BY created_at DESC");
+  $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  json(['ok'=>true,'users'=>$rows]);
+}
+
+if ($method === 'POST' && $uri === '/api/admin/create') {
+  Auth::requireAdmin();
+  $data = parseJsonBody();
+  $email = Validators::email($data['email'] ?? '');
+  $name  = trim((string)($data['name'] ?? ''));
+  $pass  = (string)($data['password'] ?? '');
+  if ($email==='' || $pass==='') {
+    badRequest('Missing required fields');
+  }
+  $hash = password_hash($pass, PASSWORD_DEFAULT);
+  $stmt = $pdo->prepare("INSERT INTO users (first_name,email,password_hash,role,is_active,created_at)
+                         VALUES (?,?,?,?,1,NOW())");
+  $stmt->execute([$name, $email, $hash, 'admin']);
+  json(['ok'=>true,'id'=>(int)$pdo->lastInsertId()]);
+}
+
 
 if ($method === 'GET' && $uri === '/api/watchlist') {
   $uid = Auth::requireAuth();
@@ -235,7 +261,6 @@ if ($method === 'DELETE' && preg_match('#^/api/watchlist/(\d+)$#', $uri, $m)) {
     json(['ok' => false, 'error' => 'DB error: '.$e->getMessage()], 409);
   }
 }
-
 
 
 /* ========== 404 LAST ========== */

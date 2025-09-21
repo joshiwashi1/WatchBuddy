@@ -1,417 +1,903 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WatchBuddy | User Profile</title>
-
-  <!-- Icons & Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WatchBuddy - Clean Dashboard</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 
-  <!-- Optional site stylesheet (uses your existing dark variables if present) -->
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <!-- Bootstrap (for modals/dropdowns/toasts only) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    /* Fallback colors if your styles.css isn't loaded */
-    :root {
-      --wb-primary: #1E3A8A;        /* Indigo-800 */
-      --wb-primary-600: #172554;    /* Indigo-950 */
-      --wb-accent: #0EA5E9;         /* Sky-500 */
-      --wb-bg: #0F172A;             /* Slate-950 */
-      --wb-surface: #1E293B;        /* Slate-800 */
-      --wb-surface-2: #0b1220;      /* Deeper panel */
-      --wb-text: #E5E7EB;           /* Slate-200 */
-      --wb-text-dim: #9CA3AF;       /* Gray-400 */
-      --wb-success: #22C55E;
-      --wb-warning: #F59E0B;
-      --wb-danger: #EF4444;
+    :root{
+      --primary-dark:#0c0d1b;--primary-navy:#151829;--accent-blue:#2563eb;--accent-purple:#7c3aed;
+      --text-primary:#ffffff;--text-secondary:#a1a8c3;--text-muted:#6b7280;
+      --surface-elevated:#1e2139;--surface-card:#252846;--border-subtle:#2d3348;
+      --success:#10b981;--warning:#f59e0b;--danger:#ef4444
     }
-    body{background:var(--wb-bg); color:var(--wb-text); font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary-navy) 100%);
+      color:var(--text-primary);font-family:'Poppins',sans-serif;font-weight:300;line-height:1.6;min-height:100vh
+    }
+    .container{max-width:1400px;margin:0 auto;padding:0 1.5rem}
+    /* Header */
+    .header{background:rgba(21,24,41,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle);padding:1rem 0;position:sticky;top:0;z-index:100}
+    .nav{display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:.75rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.25rem}
+    .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-link{color:var(--text-secondary);text-decoration:none;font-weight:400;padding:.5rem 0;position:relative;transition:color .2s ease}
+    .nav-link:hover,.nav-link.active{color:var(--text-primary)}
+    .nav-link.active::after{content:'';position:absolute;bottom:-1rem;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple))}
+    .user-profile{display:flex;align-items:center;gap:.75rem;color:var(--text-secondary)}
+    .user-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:.9rem}
 
-    /* Navbar */
-    .wb-navbar{background:var(--wb-surface); border-bottom:1px solid rgba(255,255,255,.08);} 
-    .navbar-brand{font-family:'Orbitron', sans-serif; letter-spacing:.5px;}
+    /* Main */
+    .main{padding:3rem 0}
+    .hero{text-align:center;margin-bottom:4rem}
+    .hero-title{font-size:3.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(135deg,var(--text-primary),var(--text-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+    .hero-subtitle{font-size:1.2rem;color:var(--text-secondary);font-weight:400}
 
-    /* Header (cover) */
-    .profile-cover{
-      background: linear-gradient(180deg, rgba(14,165,233,.15), rgba(23,37,84,.5)), url('assets/img/cover.jpg') center/cover no-repeat;
-      min-height: 180px; border-radius: 1rem; position: relative; overflow:hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    /* Stats */
+    .stats-section{margin-bottom:4rem}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-bottom:2rem}
+    .stat-card{
+      background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:16px;padding:2rem;text-align:center;transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden
+    }
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--card-accent);transition:height .3s ease}
+    .stat-card:hover{transform:translateY(-4px);border-color:var(--card-accent);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+    .stat-card:hover::before{height:4px}
+    .stat-card.to-watch{--card-accent:var(--accent-blue)}
+    .stat-card.watching{--card-accent:var(--warning)}
+    .stat-card.completed{--card-accent:var(--success)}
+    .stat-card.average{--card-accent:var(--accent-purple)}
+    .stat-number{font-size:2.5rem;font-weight:700;margin-bottom:.5rem;color:var(--card-accent)}
+    .stat-label{color:var(--text-secondary);font-weight:400;font-size:1rem}
+
+    /* Layout */
+    .content-layout{display:grid;grid-template-columns:1fr 300px;gap:3rem}
+    .movies-section{background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:20px;padding:2rem}
+    .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+    .section-title{font-size:1.5rem;font-weight:600}
+    .add-movie-btn{
+      background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border:none;color:#fff;padding:.75rem 1.5rem;border-radius:12px;font-weight:500;cursor:pointer;transition:all .2s ease;font-size:.9rem
+    }
+    .add-movie-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.3)}
+
+    /* Filters */
+    .filters{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+    .search-input{flex:1;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:12px;padding:.75rem 1rem;color:var(--text-primary);font-size:.9rem;min-width:250px}
+    .search-input::placeholder{color:var(--text-muted)}
+    .search-input:focus{outline:none;border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    .filter-tabs{display:flex;gap:.5rem;background:var(--surface-card);padding:.25rem;border-radius:12px;border:1px solid var(--border-subtle)}
+    .filter-tab{background:transparent;border:none;color:var(--text-secondary);padding:.5rem 1rem;border-radius:8px;font-weight:400;cursor:pointer;transition:all .2s ease;font-size:.9rem}
+    .filter-tab.active{background:var(--accent-blue);color:#fff}
+    .sort-select{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:12px;padding:.6rem 1rem;color:var(--text-primary);font-size:.9rem}
+
+    /* Grid */
+    .movies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+    .movie-card{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:16px;overflow:hidden;transition:all .3s ease;cursor:pointer}
+    .movie-card:hover{transform:translateY(-6px);border-color:var(--accent-blue);box-shadow:0 25px 50px rgba(0,0,0,.3)}
+    .movie-poster{aspect-ratio:16/10;background:linear-gradient(135deg,var(--primary-navy),var(--surface-card));position:relative;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem}
+    .movie-status{position:absolute;top:.75rem;right:.75rem;padding:.25rem .75rem;border-radius:20px;font-size:.75rem;font-weight:500;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1)}
+    .status-to-watch{background:rgba(37,99,235,.2);color:#60a5fa;border-color:rgba(37,99,235,.3)}
+    .status-watching{background:rgba(245,158,11,.2);color:#fbbf24;border-color:rgba(245,158,11,.3)}
+    .status-completed{background:rgba(16,185,129,.2);color:#34d399;border-color:rgba(16,185,129,.3)}
+    .movie-info{padding:1.5rem}
+    .movie-title{font-size:1.1rem;font-weight:600;margin-bottom:.5rem;line-height:1.3}
+    .movie-desc{color:var(--text-secondary);font-size:.9rem;margin-bottom:1rem;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .movie-meta{display:flex;justify-content:space-between;align-items:center}
+    .movie-rating{color:var(--warning);font-size:.9rem;font-weight:500}
+    .movie-actions{display:flex;gap:.5rem}
+    .action-btn{width:32px;height:32px;border:none;border-radius:8px;background:var(--surface-elevated);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s ease;font-size:.9rem}
+    .action-btn:hover{background:var(--accent-blue);color:#fff}
+
+    /* Sidebar */
+    .sidebar{display:flex;flex-direction:column;gap:2rem}
+    .widget{background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:16px;padding:1.5rem}
+    .widget-title{font-size:1.1rem;font-weight:600;margin-bottom:1rem}
+    .activity-list{display:flex;flex-direction:column;gap:1rem}
+    .activity-item{display:flex;align-items:flex-start;gap:.75rem}
+    .activity-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-blue);flex-shrink:0;margin-top:.5rem}
+    .activity-content{flex:1}
+    .activity-text{font-size:.9rem;margin-bottom:.25rem}
+    .activity-time{font-size:.8rem;color:var(--text-muted)}
+
+    /* Empty */
+    .empty-state{text-align:center;padding:4rem 2rem;color:var(--text-muted)}
+    .empty-title{font-size:1.2rem;font-weight:500;margin-bottom:.5rem;color:var(--text-secondary)}
+
+    /* Responsive */
+    @media (max-width:1024px){
+      .content-layout{grid-template-columns:1fr;gap:2rem}
+      .sidebar{flex-direction:row;overflow-x:auto}
+      .widget{min-width:280px}
+    }
+    @media (max-width:768px){
+      .hero-title{font-size:2.5rem}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .nav-links{display:none}
+      .filters{flex-direction:column}
+      .search-input{min-width:unset}
+      .movies-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:480px){
+      .container{padding:0 1rem}
+      .main{padding:2rem 0}
+      .stats-grid{grid-template-columns:1fr}
     }
 
-    /* Avatar */
-    .avatar-wrap{ position:absolute; left:1.25rem; bottom:-42px; }
-    .avatar{ width:96px; height:96px; border-radius:50%; border:4px solid var(--wb-bg); object-fit:cover; background:#111827; }
-
-    /* Card shells */
-    .wb-card{ background:var(--wb-surface); border:1px solid rgba(255,255,255,.08); border-radius:1rem; }
-    .wb-card-ghost{ background:var(--wb-surface-2); border:1px solid rgba(255,255,255,.06); border-radius:1rem; }
-
-    /* Stat pill */
-    .stat-pill{display:flex; gap:.75rem; align-items:center; padding:1rem; border-radius:.875rem; border:1px solid rgba(255,255,255,.06);}
-    .stat-pill i{font-size:1.25rem;}
-
-    .text-dim{ color: var(--wb-text-dim)!important; }
-
-    .form-control, .form-select, .form-check-input{
-      background: #0b1220; border-color: rgba(255,255,255,.08); color: var(--wb-text);
-    }
-    .form-control::placeholder{ color: rgba(229,231,235,.5); }
-    .form-control:focus{ box-shadow: 0 0 0 .25rem rgba(14,165,233,.15); border-color: var(--wb-accent); }
-
-    .nav-tabs{border-color: rgba(255,255,255,.08);} 
-    .nav-tabs .nav-link{ color:var(--wb-text-dim); border:0; }
-    .nav-tabs .nav-link.active{ color:#fff; background:transparent; border-bottom:2px solid var(--wb-accent); }
-
-    .btn-primary{ background: var(--wb-primary); border-color: var(--wb-primary); }
-    .btn-outline-light{ border-color: rgba(255,255,255,.25); color:#fff; }
-    .btn-outline-light:hover{ background: rgba(255,255,255,.08); }
-
-    @media (max-width: 576px){
-      .avatar-wrap{ position:static; margin-top:-48px; margin-bottom:.5rem; }
-      .profile-cover{ min-height: 140px; }
-    }
+    /* Small helper so Bootstrap dropdowns look native dark */
+    .dropdown-menu{background:#1e2139;border:1px solid #2d3348;border-radius:12px;overflow:hidden}
+    .dropdown-item{color:#e5e7eb}
+    .dropdown-item:hover{background:rgba(37,99,235,.25);color:#fff}
+    .modal-content{background:#1e2139;color:#e5e7eb;border:1px solid #2d3348}
+    .btn-outline-secondary{color:#e5e7eb;border-color:#2d3348}
+    .btn-outline-secondary:hover{background:#2d3348}
   </style>
 </head>
-
-<body data-page="profile" class="d-flex flex-column min-vh-100">
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg wb-navbar sticky-top" data-bs-theme="dark">
-    <div class="container">
-      <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
-        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="40" height="40" class="me-2 rounded-circle" />
-        WatchBuddy
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarsExample">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-grid"></i> Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-person"></i> Profile</a></li>
-          <li class="nav-item"><a class="nav-link" href="watchlist.html"><i class="bi bi-collection"></i> Watchlist</a></li>
-        </ul>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <div class="logo">
+        <div class="logo-icon">W</div><span>WatchBuddy</span>
       </div>
-    </div>
-  </nav>
+      <ul class="nav-links">
+        <li><a href="#" class="nav-link active">Dashboard</a></li>
+        <li><a href="#" class="nav-link">Movies</a></li>
+        <li><a href="#" class="nav-link">Reviews</a></li>
+        <li><a href="#" class="nav-link">Discover</a></li>
+      </ul>
+      <div class="user-profile" id="userBox">
+        <span id="userFirst">John</span>
+        <div class="user-avatar" id="userAvatar">J</div>
+      </div>
+    </nav>
+  </header>
 
-  <!-- Main -->
-  <main class="container my-4 my-lg-5">
-    <!-- Cover + Avatar + Quick Actions -->
-    <section class="position-relative">
-      <div class="profile-cover w-100"></div>
+  <main class="main container">
+    <section class="hero">
+      <h1 class="hero-title">Your Movie Journey</h1>
+      <p class="hero-subtitle">Track, discover, and enjoy every film</p>
+    </section>
 
-      <!-- Avatar + name row -->
-      <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between px-3 px-sm-4" style="margin-top:-32px;">
-        <div class="d-flex align-items-end gap-3">
-          <div class="avatar-wrap">
-            <img id="avatarImg" class="avatar" src="assets/img/default-avatar.png" alt="User avatar" />
-          </div>
-          <div class="pb-2">
-            <h1 class="h4 mb-1">Ellyza Sherynn <span class="badge text-bg-primary ms-2">Pro</span></h1>
-            <div class="text-dim small">@joshiwashi1 · Kuching, MY</div>
-          </div>
+    <!-- Stats -->
+    <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-card to-watch js-status-link" data-filter="to-watch" tabindex="0" role="button" aria-label="Filter To Watch">
+          <div class="stat-number" id="countToWatch">0</div>
+          <div class="stat-label">To Watch</div>
         </div>
-        <div class="d-flex gap-2 pb-2">
-          <label class="btn btn-outline-light btn-sm">
-            <i class="bi bi-image"></i> Change Avatar
-            <input id="avatarInput" type="file" accept="image/*" hidden />
-          </label>
-          <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i> Edit Profile</a>
+        <div class="stat-card watching js-status-link" data-filter="watching" tabindex="0" role="button" aria-label="Filter Watching">
+          <div class="stat-number" id="countWatching">0</div>
+          <div class="stat-label">Watching</div>
+        </div>
+        <div class="stat-card completed js-status-link" data-filter="completed" tabindex="0" role="button" aria-label="Filter Completed">
+          <div class="stat-number" id="countCompleted">0</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card average" tabindex="-1">
+          <div class="stat-number" id="avgRating">—</div>
+          <div class="stat-label">Average Rating</div>
         </div>
       </div>
     </section>
 
-    <!-- Stats + About -->
-    <section class="row g-4 mt-4">
-      <div class="col-12 col-lg-8">
-        <div class="wb-card p-3 p-md-4">
-          <ul class="nav nav-tabs border-0" id="profileTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab">Activity</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="lists-tab" data-bs-toggle="tab" data-bs-target="#lists" type="button" role="tab">Lists</button>
-            </li>
-          </ul>
+    <div class="content-layout">
+      <section class="movies-section">
+        <div class="section-header">
+          <h2 class="section-title">Your Collection</h2>
+          <button class="add-movie-btn" data-bs-toggle="modal" data-bs-target="#addMovieModal">Add Movie</button>
+        </div>
 
-          <div class="tab-content pt-3">
-            <!-- Overview -->
-            <div class="tab-pane fade show active" id="overview" role="tabpanel">
-              <div class="row g-3 g-md-4">
-                <div class="col-6 col-md-3">
-                  <div class="stat-pill">
-                    <i class="bi bi-bookmark-plus text-dim"></i>
-                    <div>
-                      <div class="small text-dim">To Watch</div>
-                      <div class="h5 mb-0" id="statToWatch">12</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="stat-pill">
-                    <i class="bi bi-play-circle text-dim"></i>
-                    <div>
-                      <div class="small text-dim">Watching</div>
-                      <div class="h5 mb-0" id="statWatching">3</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="stat-pill">
-                    <i class="bi bi-check2-circle text-dim"></i>
-                    <div>
-                      <div class="small text-dim">Completed</div>
-                      <div class="h5 mb-0" id="statCompleted">48</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="stat-pill">
-                    <i class="bi bi-star text-dim"></i>
-                    <div>
-                      <div class="small text-dim">Avg. Rating</div>
-                      <div class="h5 mb-0" id="statAvg">4.3</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div class="filters">
+          <input type="text" class="search-input" placeholder="Search movies..." id="searchInput">
+          <div class="filter-tabs" id="statusTabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="to-watch">To Watch</button>
+            <button class="filter-tab" data-filter="watching">Watching</button>
+            <button class="filter-tab" data-filter="completed">Completed</button>
+          </div>
+          <select id="sortSelect" class="sort-select" title="Sort">
+            <option value="recent">Sort: Recently Added</option>
+            <option value="title">Sort: Title (A–Z)</option>
+            <option value="rating">Sort: Rating (High–Low)</option>
+          </select>
+        </div>
 
-              <div class="mt-4">
-                <h2 class="h6 text-dim mb-2">About</h2>
-                <div class="wb-card-ghost p-3">
-                  <p class="mb-2">Accounting student • UI tinkerer • Movie night curator. I love heist films, slow-burn series, and anything Studio Ghibli inspired ✨</p>
-                  <div class="d-flex flex-wrap gap-2 small">
-                    <span class="badge text-bg-secondary">Forensic Accounting</span>
-                    <span class="badge text-bg-secondary">UI/UX</span>
-                    <span class="badge text-bg-secondary">Kuching</span>
-                    <span class="badge text-bg-secondary">Matcha & Mango</span>
-                  </div>
-                </div>
-              </div>
+        <div class="movies-grid" id="moviesGrid"><!-- cards render here --></div>
 
-              <div class="mt-4">
-                <h2 class="h6 text-dim mb-2">Recently Watched</h2>
-                <div class="row g-3">
-                  <!-- Example poster cards -->
-                  <div class="col-6 col-md-3">
-                    <div class="wb-card overflow-hidden">
-                      <img src="assets/img/posters/poster-01.jpg" class="w-100" alt="Poster 1" />
-                      <div class="p-2 d-flex align-items-center justify-content-between">
-                        <span class="small">Inception</span>
-                        <span class="small"><i class="bi bi-star-fill"></i> 4.5</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-3">
-                    <div class="wb-card overflow-hidden">
-                      <img src="assets/img/posters/poster-02.jpg" class="w-100" alt="Poster 2" />
-                      <div class="p-2 d-flex align-items-center justify-content-between">
-                        <span class="small">Dune: Part II</span>
-                        <span class="small"><i class="bi bi-star-fill"></i> 4.0</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-3">
-                    <div class="wb-card overflow-hidden">
-                      <img src="assets/img/posters/poster-03.jpg" class="w-100" alt="Poster 3" />
-                      <div class="p-2 d-flex align-items-center justify-content-between">
-                        <span class="small">Whiplash</span>
-                        <span class="small"><i class="bi bi-star-fill"></i> 5.0</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-3">
-                    <div class="wb-card overflow-hidden">
-                      <img src="assets/img/posters/poster-04.jpg" class="w-100" alt="Poster 4" />
-                      <div class="p-2 d-flex align-items-center justify-content-between">
-                        <span class="small">Spirited Away</span>
-                        <span class="small"><i class="bi bi-star-fill"></i> 4.8</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <!-- Empty -->
+        <div class="empty-state d-none" id="emptyState">
+          <div class="empty-title">No movies found</div>
+          <div class="mb-3">Try adjusting filters or add your first movie to get started.</div>
+          <button class="add-movie-btn" data-bs-toggle="modal" data-bs-target="#addMovieModal">Add Your First Movie</button>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <div class="widget">
+          <h3 class="widget-title">Recent Activity</h3>
+          <div class="activity-list" id="activityList">
+            <!-- Optional: You can populate from backend events later -->
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-content">
+                <div class="activity-text">Completed <strong>Oppenheimer</strong></div>
+                <div class="activity-time">2 hours ago</div>
               </div>
             </div>
-
-            <!-- Activity -->
-            <div class="tab-pane fade" id="activity" role="tabpanel">
-              <div class="wb-card-ghost p-3">
-                <div class="d-flex gap-3 align-items-start">
-                  <i class="bi bi-clock-history mt-1 text-dim"></i>
-                  <div>
-                    <div class="small">You rated <strong>"Oppenheimer"</strong> <i class="bi bi-star-fill"></i> 4.0</div>
-                    <div class="text-dim small">2 days ago</div>
-                  </div>
-                </div>
-                <hr class="border-secondary-subtle" />
-                <div class="d-flex gap-3 align-items-start">
-                  <i class="bi bi-plus-circle mt-1 text-dim"></i>
-                  <div>
-                    <div class="small">Added <strong>"Kimi no Na wa"</strong> to <em>To Watch</em></div>
-                    <div class="text-dim small">3 days ago</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Reviews -->
-            <div class="tab-pane fade" id="reviews" role="tabpanel">
-              <div class="wb-card-ghost p-3">
-                <div class="d-flex gap-3">
-                  <img src="assets/img/posters/poster-05.jpg" alt="Movie" width="54" height="80" class="rounded" />
-                  <div>
-                    <div class="d-flex align-items-center gap-2">
-                      <strong>La La Land</strong>
-                      <span class="small text-dim"><i class="bi bi-star-fill"></i> 4.2</span>
-                    </div>
-                    <p class="small mb-1">Whimsical, heartbreaking, and gorgeous. The score lives rent-free in my head.</p>
-                    <div class="text-dim small">Reviewed on 10 Sep 2025</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Lists -->
-            <div class="tab-pane fade" id="lists" role="tabpanel">
-              <div class="wb-card-ghost p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h3 class="h6 mb-0">Custom Lists</h3>
-                  <a href="#" class="btn btn-outline-light btn-sm"><i class="bi bi-plus"></i> New List</a>
-                </div>
-                <div class="row g-3">
-                  <div class="col-12 col-md-6">
-                    <div class="wb-card p-3">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                          <div class="fw-semibold">Cozy Rainy-Day Picks</div>
-                          <div class="small text-dim">12 items · Updated 2d ago</div>
-                        </div>
-                        <i class="bi bi-chevron-right text-dim"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <div class="wb-card p-3">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                          <div class="fw-semibold">Heist & Thriller</div>
-                          <div class="small text-dim">8 items · Updated 5d ago</div>
-                        </div>
-                        <i class="bi bi-chevron-right text-dim"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-content">
+                <div class="activity-text">Rated <strong>The Batman</strong> 4 stars</div>
+                <div class="activity-time">1 day ago</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Right column -->
-      <div class="col-12 col-lg-4">
-        <!-- Quick profile form -->
-        <div class="wb-card p-3 p-md-4">
-          <h2 class="h6 text-dim mb-3">Profile Settings</h2>
-          <form id="profileForm">
+        <div class="widget">
+          <h3 class="widget-title">This Week</h3>
+          <div class="activity-text" style="color:var(--text-secondary);font-size:.9rem;">
+            You’ve watched 3 movies and rated 2 films this week. Keep it up!
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ===== Modals ===== -->
+  <!-- Add Movie -->
+  <div class="modal fade" id="addMovieModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Add New Movie</h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addMovieForm" novalidate>
             <div class="row g-3">
               <div class="col-12">
-                <label class="form-label">Display Name</label>
-                <input type="text" class="form-control" id="displayName" placeholder="Your name" value="Ellyza Sherynn" />
+                <label class="form-label" for="movieTitle">Movie Title</label>
+                <input type="text" id="movieTitle" class="form-control" placeholder="Enter movie title" required>
+                <div class="invalid-feedback">Please enter a title (2–120 chars).</div>
               </div>
               <div class="col-12">
-                <label class="form-label">Username</label>
-                <div class="input-group">
-                  <span class="input-group-text">@</span>
-                  <input type="text" class="form-control" id="username" value="joshiwashi1" />
-                </div>
+                <label class="form-label" for="movieDesc">Description</label>
+                <textarea id="movieDesc" class="form-control" rows="3" placeholder="Brief description (optional)"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="movieStatus">Status</label>
+                <select id="movieStatus" class="form-select" required>
+                  <option value="to-watch">To Watch</option>
+                  <option value="watching">Watching</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <div class="invalid-feedback">Please choose a valid status.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="movieRating">Rating</label>
+                <select id="movieRating" class="form-select">
+                  <option value="0" selected>Not rated</option>
+                  <option value="1">★☆☆☆☆ (1)</option>
+                  <option value="2">★★☆☆☆ (2)</option>
+                  <option value="3">★★★☆☆ (3)</option>
+                  <option value="4">★★★★☆ (4)</option>
+                  <option value="5">★★★★★ (5)</option>
+                </select>
+                <div class="invalid-feedback">Rating must be 0–5.</div>
               </div>
               <div class="col-12">
-                <label class="form-label">Bio</label>
-                <textarea class="form-control" rows="3" id="bio" placeholder="Tell us about you…">Accounting student • UI tinkerer • Movie night curator.</textarea>
-              </div>
-              <div class="col-12">
-                <label class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" placeholder="City, Country" value="Kuching, Malaysia" />
-              </div>
-              <div class="col-12">
-                <label class="form-label">Website</label>
-                <input type="url" class="form-control" id="website" placeholder="https://" />
-              </div>
-              <div class="col-12 d-flex justify-content-between align-items-center">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="privacySwitch" checked />
-                  <label class="form-check-label" for="privacySwitch">Make profile public</label>
-                </div>
-                <button class="btn btn-primary" type="submit"><i class="bi bi-save"></i> Save</button>
+                <label class="form-label" for="moviePoster">Poster Image (optional)</label>
+                <input type="file" id="moviePoster" class="form-control" accept="image/*">
+                <div class="invalid-feedback">Please select a valid image (max 2 MB).</div>
               </div>
             </div>
           </form>
         </div>
-
-        <!-- Connections -->
-        <div class="wb-card p-3 p-md-4 mt-3">
-          <h2 class="h6 text-dim mb-3">Connected Accounts</h2>
-          <div class="d-flex flex-column gap-2">
-            <button class="btn btn-outline-light w-100"><i class="bi bi-github"></i> Connect GitHub</button>
-            <button class="btn btn-outline-light w-100"><i class="bi bi-google"></i> Connect Google</button>
-            <button class="btn btn-outline-light w-100"><i class="bi bi-discord"></i> Connect Discord</button>
-          </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="addMovieBtn"><i class="bi bi-plus-lg me-1"></i>Add Movie</button>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
 
-  <footer class="mt-auto py-4 text-center text-dim small">
-    Made with ❤️ for movie lovers · © <span id="year"></span> WatchBuddy
-  </footer>
+  <!-- Edit Movie -->
+  <div class="modal fade" id="editMovieModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Edit Movie</h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editMovieForm" novalidate>
+            <input type="hidden" id="editMovieId">
+            <div class="mb-3">
+              <label for="editMovieTitle" class="form-label">Movie Title</label>
+              <input type="text" id="editMovieTitle" class="form-control" required>
+              <div class="invalid-feedback">Please enter a title.</div>
+            </div>
+            <div class="mb-3">
+              <label for="editMovieDesc" class="form-label">Description</label>
+              <textarea id="editMovieDesc" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="editMovieStatus" class="form-label">Status</label>
+                <select id="editMovieStatus" class="form-select" required>
+                  <option value="to-watch">To Watch</option>
+                  <option value="watching">Watching</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="editMovieRating" class="form-label">Rating</label>
+                <select id="editMovieRating" class="form-select">
+                  <option value="0">Not rated</option>
+                  <option value="1">★☆☆☆☆ (1)</option>
+                  <option value="2">★★☆☆☆ (2)</option>
+                  <option value="3">★★★☆☆ (3)</option>
+                  <option value="4">★★★★☆ (4)</option>
+                  <option value="5">★★★★★ (5)</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="saveEditBtn"><i class="bi bi-save me-1"></i>Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Review Add/Edit -->
+  <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Add / Edit Review</h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="reviewMovieId">
+          <div class="mb-3">
+            <label class="form-label" for="reviewRating">Rating</label>
+            <select id="reviewRating" class="form-select">
+              <option value="0">Not rated</option>
+              <option value="1">★☆☆☆☆ (1)</option>
+              <option value="2">★★☆☆☆ (2)</option>
+              <option value="3">★★★☆☆ (3)</option>
+              <option value="4">★★★★☆ (4)</option>
+              <option value="5">★★★★★ (5)</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="reviewText">Your Review</label>
+            <textarea id="reviewText" class="form-control" rows="5" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="text-muted small">Reviews are only allowed for movies marked as <strong>Completed</strong>.</div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="saveReviewBtn"><i class="bi bi-save me-1"></i>Save Review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review View -->
+  <div class="modal fade" id="viewReviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title"><span id="viewReviewTitle">Review</span></h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div id="viewReviewStars" class="text-warning" aria-label="Rating"></div>
+            <span class="badge bg-success-subtle text-success" id="viewReviewStatus" style="background:rgba(16,185,129,.2);color:#34d399;border:1px solid rgba(16,185,129,.3)">Completed</span>
+          </div>
+          <div id="viewReviewText" class="card-text" style="white-space:pre-wrap;"></div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary" id="editFromViewBtn"><i class="bi bi-pencil me-1"></i>Edit Review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete</h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0">Delete <strong id="deleteMovieTitle">this movie</strong> from your watchlist?</p>
+          <p class="small text-muted mb-0">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-danger" id="confirmDeleteBtn"><i class="bi bi-trash me-1"></i>Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Icons (Bootstrap) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
   <script>
-    // Year stamp
-    document.getElementById('year').textContent = new Date().getFullYear();
+    /* ============= CONFIG ============= */
+    const API_BASE = `${location.origin}/watchbuddy/backend/public`;
 
-    // Avatar preview
-    const fileInput = document.getElementById('avatarInput');
-    const avatarImg = document.getElementById('avatarImg');
-    fileInput?.addEventListener('change', (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => { avatarImg.src = reader.result; };
-      reader.readAsDataURL(file);
+    /* ============= HELPERS ============= */
+    const qs = (s, r=document)=>r.querySelector(s);
+    const qsa = (s, r=document)=>Array.from(r.querySelectorAll(s));
+    const debounce = (fn, ms)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; };
+
+    async function api(path, options = {}) {
+      const res = await fetch(`${API_BASE}${path}`, {
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json', ...(options.headers||{}) },
+        ...options,
+      });
+      if (res.status === 401) {
+        // optional: redirect to login
+        // location.href = 'login.html?expired=1';
+        throw new Error('Unauthorized');
+      }
+      return res;
+    }
+
+    /* ============= STATE ============= */
+    const moviesGrid = qs('#moviesGrid');
+    const emptyState = qs('#emptyState');
+    const searchInput = qs('#searchInput');
+    const sortSelect = qs('#sortSelect');
+    const statusTabs = qsa('.filter-tab');
+    const statCards = qsa('.js-status-link');
+
+    let MOVIES = [];           // in-memory list from backend
+    let currentStatus = 'all'; // UI filter status
+
+    /* ============= USER (optional) ============= */
+    (async function loadUser(){
+      try{
+        const r = await api('/api/me', { method:'GET' });
+        const data = await r.json();
+        if (data?.ok && data.user) {
+          const first = data.user.firstName ||
+                        (data.user.fullName ? data.user.fullName.split(' ')[0] : '') ||
+                        (data.user.email ? data.user.email.split('@')[0] : 'User');
+          qs('#userFirst').textContent = first;
+          qs('#userAvatar').textContent = first.slice(0,1).toUpperCase();
+        }
+      }catch(_){}
+    })();
+
+    /* ============= RENDER ============= */
+    function statusBadgeClass(s){
+      if (s === 'completed') return 'status-completed';
+      if (s === 'watching') return 'status-watching';
+      return 'status-to-watch';
+    }
+    function starsInline(n=0){
+      n = Math.max(0, Math.min(5, parseInt(n,10)||0));
+      return `${'★'.repeat(n)}${'☆'.repeat(5-n)}`;
+    }
+
+    function cardNode(item){
+      const id = item.id;
+      const title = item.title;
+      const desc = item.description || '';
+      const status = item.status;
+      const rating = Number(item.rating||0);
+      const ts = Number(item.ts || Math.floor(Date.now()/1000));
+      const poster = item.poster_url || `https://via.placeholder.com/640x400/252846/94a3b8?text=${encodeURIComponent(title)}`;
+
+      const el = document.createElement('div');
+      el.className = 'movie-card movie-item';
+      el.dataset.id = id;
+      el.dataset.title = (title||'').toLowerCase();
+      el.dataset.status = status;
+      el.dataset.rating = String(rating);
+      el.dataset.ts = String(ts);
+
+      el.innerHTML = `
+        <div class="movie-poster">
+          <div class="movie-status ${statusBadgeClass(status)}">${status==='completed'?'Completed':status==='watching'?'Watching':'To Watch'}</div>
+          <img src="${poster}" alt="${title} poster" style="width:100%;height:100%;object-fit:cover;border-bottom:1px solid var(--border-subtle);">
+        </div>
+        <div class="movie-info">
+          <h3 class="movie-title">${title}</h3>
+          <p class="movie-desc">${desc || 'No description provided.'}</p>
+          <div class="movie-meta">
+            <div class="movie-rating">${rating>0 ? starsInline(rating) : 'Not rated'}</div>
+            <div class="movie-actions dropdown">
+              <button class="action-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Actions">⋯</button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><button class="dropdown-item" data-action="edit" data-id="${id}"><i class="bi bi-pencil me-2"></i>Edit</button></li>
+                ${status==='to-watch'?`
+                  <li><button class="dropdown-item" data-action="mark-watching" data-id="${id}"><i class="bi bi-play-circle me-2"></i>Mark as Watching</button></li>
+                `:''}
+                ${status==='watching'?`
+                  <li><button class="dropdown-item" data-action="mark-completed" data-id="${id}"><i class="bi bi-check2-circle me-2"></i>Mark as Completed</button></li>
+                `:''}
+                ${status==='completed' ? (item.review && item.review.trim()
+                  ? `<li><button class="dropdown-item" data-action="view-review" data-id="${id}"><i class="bi bi-chat-left-quote me-2"></i>View Review</button></li>`
+                  : `<li><button class="dropdown-item" data-action="review" data-id="${id}"><i class="bi bi-chat-square-text me-2"></i>Add Review</button></li>`
+                ) : ''}
+                <li><hr class="dropdown-divider"></li>
+                <li><button class="dropdown-item text-danger" data-action="delete" data-id="${id}"><i class="bi bi-trash me-2"></i>Delete</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+      return el;
+    }
+
+    function render(list){
+      moviesGrid.innerHTML = '';
+      list.forEach(m => moviesGrid.appendChild(cardNode(m)));
+    }
+
+    /* ============= FETCH ============= */
+    async function fetchWatchlist(page=1, limit=64){
+      const res = await api(`/api/watchlist?page=${page}&limit=${limit}`, { method:'GET' });
+      const data = await res.json();
+      if (!data?.ok) throw new Error(data?.error || 'Failed to load watchlist');
+      MOVIES = data.items || [];
+      render(MOVIES);
+      applyFilters();
+    }
+
+    /* ============= FILTERS / SORT / STATS ============= */
+    function visibleCards(){
+      return qsa('.movie-item', moviesGrid).filter(c => c.style.display !== 'none');
+    }
+
+    function applyFilters(){
+      const q = (searchInput.value||'').toLowerCase().trim();
+      const sort = sortSelect.value;
+      const statusFilter = currentStatus;
+
+      const cards = qsa('.movie-item', moviesGrid);
+      let vis = [];
+
+      cards.forEach(c => {
+        const title = c.dataset.title||'';
+        const status = c.dataset.status||'';
+        const match = (!q || title.includes(q)) && (statusFilter==='all' || statusFilter===status);
+        c.style.display = match ? '' : 'none';
+        if (match) vis.push(c);
+      });
+
+      // sort
+      if (sort === 'title'){
+        vis.sort((a,b)=>(a.dataset.title||'').localeCompare(b.dataset.title||''));
+      } else if (sort === 'rating'){
+        vis.sort((a,b)=>parseInt(b.dataset.rating||'0',10)-parseInt(a.dataset.rating||'0',10));
+      } else {
+        vis.sort((a,b)=>parseInt(b.dataset.ts||'0',10)-parseInt(a.dataset.ts||'0',10));
+      }
+      vis.forEach(v=>moviesGrid.appendChild(v));
+
+      // empty toggle
+      const has = vis.length>0;
+      emptyState.classList.toggle('d-none', has);
+      moviesGrid.classList.toggle('d-none', !has);
+
+      updateStats();
+      updateAverageRating();
+    }
+
+    function updateStats(){
+      const count = st => MOVIES.filter(m => (m.status||'')===st).length;
+      qs('#countToWatch').textContent = count('to-watch');
+      qs('#countWatching').textContent = count('watching');
+      qs('#countCompleted').textContent = count('completed');
+    }
+
+    function updateAverageRating(){
+      const vis = visibleCards();
+      const nums = vis.map(el=>parseInt(el.dataset.rating||'0',10)).filter(n=>n>0);
+      const avg = nums.length ? (nums.reduce((a,b)=>a+b,0)/nums.length) : null;
+      qs('#avgRating').textContent = avg ? avg.toFixed(1) : '—';
+    }
+
+    function setStatusTab(target){
+      currentStatus = target || 'all';
+      statusTabs.forEach(t=>t.classList.toggle('active', t.dataset.filter===currentStatus));
+      applyFilters();
+    }
+
+    /* ============= ADD MOVIE ============= */
+    (function initAdd(){
+      const form = qs('#addMovieForm');
+      const titleEl = qs('#movieTitle');
+      const descEl = qs('#movieDesc');
+      const statusEl = qs('#movieStatus');
+      const ratingEl = qs('#movieRating');
+      const addBtn = qs('#addMovieBtn');
+
+      function validate(){
+        const t = (titleEl.value||'').trim();
+        const n = parseInt(ratingEl.value,10);
+        let ok = true;
+        titleEl.classList.remove('is-invalid');
+        ratingEl.classList.remove('is-invalid');
+        if (t.length<2 || t.length>120){ titleEl.classList.add('is-invalid'); ok=false; }
+        if (Number.isNaN(n) || n<0 || n>5){ ratingEl.classList.add('is-invalid'); ok=false; }
+        return ok;
+      }
+
+      addBtn.addEventListener('click', async ()=>{
+        form.classList.add('was-validated');
+        if (!validate()) return;
+
+        const title = titleEl.value.trim();
+        const body = {
+          title,
+          description: (descEl.value||'').trim(),
+          status: statusEl.value,
+          rating: parseInt(ratingEl.value,10)||0,
+          poster_url: `https://via.placeholder.com/640x400/252846/94a3b8?text=${encodeURIComponent(title)}`
+        };
+
+        try{
+          const res = await api('/api/watchlist', { method:'POST', body: JSON.stringify(body) });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || 'Failed to add movie');
+
+          const ts = Math.floor(Date.now()/1000);
+          const newItem = { id:data.id, ts, ...body };
+          MOVIES.unshift(newItem);
+          render(MOVIES);
+          applyFilters();
+
+          const modal = bootstrap.Modal.getOrCreateInstance(qs('#addMovieModal'));
+          modal.hide(); form.reset(); form.classList.remove('was-validated');
+        }catch(err){ alert('Could not add movie: ' + err.message); }
+      });
+    })();
+
+    /* ============= EDIT MOVIE ============= */
+    document.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-action="edit"]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const m = MOVIES.find(x=>String(x.id)===String(id));
+      if (!m) return;
+
+      qs('#editMovieId').value = m.id;
+      qs('#editMovieTitle').value = m.title || '';
+      qs('#editMovieDesc').value = m.description || '';
+      qs('#editMovieStatus').value = m.status || 'to-watch';
+      qs('#editMovieRating').value = String(m.rating||0);
+
+      bootstrap.Modal.getOrCreateInstance(qs('#editMovieModal')).show();
     });
 
-    // Demo submit
-    document.getElementById('profileForm')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const payload = {
-        displayName: document.getElementById('displayName').value.trim(),
-        username: document.getElementById('username').value.trim(),
-        bio: document.getElementById('bio').value.trim(),
-        location: document.getElementById('location').value.trim(),
-        website: document.getElementById('website').value.trim(),
-        isPublic: document.getElementById('privacySwitch').checked,
-      };
-      console.log('Profile payload →', payload);
-      // TODO: POST to your backend API e.g. fetch(`${API}/api/profile`, { method:'PUT', body: JSON.stringify(payload) ... })
-      const toast = document.createElement('div');
-      toast.className = 'position-fixed bottom-0 end-0 m-3 wb-card p-3';
-      toast.textContent = 'Profile saved (demo)';
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 1600);
+    qs('#saveEditBtn').addEventListener('click', async ()=>{
+      const id = qs('#editMovieId').value;
+      const title = qs('#editMovieTitle').value.trim();
+      const description = qs('#editMovieDesc').value.trim();
+      const status = qs('#editMovieStatus').value;
+      const rating = parseInt(qs('#editMovieRating').value,10)||0;
+
+      try{
+        const res = await api(`/api/watchlist/${id}`, { method:'PUT', body: JSON.stringify({ title, description, status, rating }) });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Update failed');
+
+        const i = MOVIES.findIndex(m=>String(m.id)===String(id));
+        if (i>=0){ MOVIES[i] = { ...MOVIES[i], title, description, status, rating }; render(MOVIES); applyFilters(); }
+        bootstrap.Modal.getInstance(qs('#editMovieModal')).hide();
+
+        // toast
+        const t = document.createElement('div');
+        t.className = 'toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-3';
+        t.setAttribute('role','alert');
+        t.innerHTML = `<div class="d-flex"><div class="toast-body">Movie <strong>${title}</strong> updated ✅</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+        document.body.appendChild(t);
+        const bsT = new bootstrap.Toast(t, { delay:3000 }); bsT.show();
+        t.addEventListener('hidden.bs.toast', ()=>t.remove());
+      }catch(err){ alert('Could not save changes: ' + err.message); }
     });
+
+    /* ============= REVIEWS ============= */
+    document.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-action="review"]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const m = MOVIES.find(x=>String(x.id)===String(id));
+      if (!m) return;
+
+      qs('#reviewMovieId').value = m.id;
+      qs('#reviewRating').value = String(m.rating||0);
+      qs('#reviewText').value = m.review || '';
+
+      bootstrap.Modal.getOrCreateInstance(qs('#reviewModal')).show();
+    });
+
+    qs('#saveReviewBtn').addEventListener('click', async ()=>{
+      const id = qs('#reviewMovieId').value;
+      const rating = parseInt(qs('#reviewRating').value,10)||0;
+      const review = (qs('#reviewText').value||'').trim();
+
+      try{
+        const res = await api(`/api/watchlist/${id}/review`, { method:'PUT', body: JSON.stringify({ rating, review }) });
+        const raw = await res.text();
+        let data; try{ data = JSON.parse(raw); }catch{ throw new Error(`Server did not return JSON: ${raw.slice(0,200)}`); }
+        if (!data.ok) throw new Error(data.error || 'Failed to save review');
+
+        const i = MOVIES.findIndex(m=>String(m.id)===String(id));
+        if (i>=0){ MOVIES[i] = { ...MOVIES[i], rating, review }; render(MOVIES); applyFilters(); }
+        bootstrap.Modal.getInstance(qs('#reviewModal')).hide();
+      }catch(err){ alert('Could not save review: ' + err.message); }
+    });
+
+    function starsHTML(n=0){
+      n = Math.max(0, Math.min(5, parseInt(n,10)||0));
+      return `${'<i class="bi bi-star-fill"></i>'.repeat(n)}${'<i class="bi bi-star"></i>'.repeat(5-n)}`;
+    }
+
+    document.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-action="view-review"]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const m = MOVIES.find(x=>String(x.id)===String(id));
+      if (!m) return;
+
+      qs('#viewReviewTitle').textContent = m.title || 'Review';
+      qs('#viewReviewStars').innerHTML = starsHTML(m.rating||0);
+      qs('#viewReviewText').textContent = (m.review||'').trim();
+      qs('#editFromViewBtn').dataset.id = id;
+
+      bootstrap.Modal.getOrCreateInstance(qs('#viewReviewModal')).show();
+    });
+
+    qs('#editFromViewBtn').addEventListener('click', ()=>{
+      const id = qs('#editFromViewBtn').dataset.id;
+      const m = MOVIES.find(x=>String(x.id)===String(id));
+      if (!m) return;
+
+      bootstrap.Modal.getInstance(qs('#viewReviewModal')).hide();
+      qs('#reviewMovieId').value = m.id;
+      qs('#reviewRating').value = String(m.rating||0);
+      qs('#reviewText').value = m.review || '';
+      bootstrap.Modal.getOrCreateInstance(qs('#reviewModal')).show();
+    });
+
+    /* ============= STATUS CHANGES ============= */
+    document.addEventListener('click', async e=>{
+      const btn = e.target.closest('[data-action="mark-watching"]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const i = MOVIES.findIndex(x=>String(x.id)===String(id));
+      if (i<0) return;
+
+      try{
+        const m = MOVIES[i];
+        const res = await api(`/api/watchlist/${id}`, { method:'PUT', body: JSON.stringify({ title:m.title, description:m.description||'', status:'watching', rating:m.rating||0, poster_url:m.poster_url||null }) });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Update failed');
+        MOVIES[i] = { ...m, status:'watching' };
+        render(MOVIES); applyFilters();
+      }catch(err){ alert('Could not mark as Watching: ' + err.message); }
+    });
+
+    document.addEventListener('click', async e=>{
+      const btn = e.target.closest('[data-action="mark-completed"]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const i = MOVIES.findIndex(x=>String(x.id)===String(id));
+      if (i<0) return;
+
+      try{
+        const m = MOVIES[i];
+        const res = await api(`/api/watchlist/${id}`, { method:'PUT', body: JSON.stringify({ title:m.title, description:m.description||'', status:'completed', rating:m.rating||0, poster_url:m.poster_url||null }) });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Update failed');
+
+        MOVIES[i] = { ...m, status:'completed' };
+        render(MOVIES); applyFilters();
+
+        // prompt review
+        qs('#reviewMovieId').value = MOVIES[i].id;
+        qs('#reviewRating').value = String(MOVIES[i].rating||0);
+        qs('#reviewText').value = MOVIES[i].review || '';
+        bootstrap.Modal.getOrCreateInstance(qs('#reviewModal')).show();
+      }catch(err){ alert('Could not mark as Completed: ' + err.message); }
+    });
+
+    /* ============= DELETE ============= */
+    let movieToDelete = null;
+    document.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-action="delete"]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      movieToDelete = MOVIES.find(x=>String(x.id)===String(id));
+      if (!movieToDelete) return;
+
+      qs('#deleteMovieTitle').textContent = movieToDelete.title || 'this movie';
+      bootstrap.Modal.getOrCreateInstance(qs('#deleteConfirmModal')).show();
+    });
+
+    qs('#confirmDeleteBtn').addEventListener('click', async ()=>{
+      if (!movieToDelete) return;
+      const id = movieToDelete.id;
+      try{
+        const res = await api(`/api/watchlist/${id}`, { method:'DELETE' });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Delete failed');
+
+        const idx = MOVIES.findIndex(m=>String(m.id)===String(id));
+        if (idx>=0) MOVIES.splice(idx,1);
+        render(MOVIES); applyFilters();
+        bootstrap.Modal.getInstance(qs('#deleteConfirmModal')).hide();
+      }catch(err){ alert('Could not delete: ' + err.message); }
+    });
+
+    /* ============= UI EVENTS / INIT ============= */
+    function initUI(){
+      // tabs
+      statusTabs.forEach(tab=>{
+        tab.addEventListener('click', ()=>{
+          statusTabs.forEach(t=>t.classList.remove('active'));
+          tab.classList.add('active');
+          setStatusTab(tab.dataset.filter);
+        });
+      });
+
+      // stat cards → filter
+      statCards.forEach(card=>{
+        card.addEventListener('click', ()=>{
+          const f = card.dataset.filter;
+          if (!f) return;
+          setStatusTab(f);
+          // also activate tab button UI
+          statusTabs.forEach(t=>t.classList.toggle('active', t.dataset.filter===f));
+        });
+        card.addEventListener('keydown', (e)=>{
+          if (e.key!=='Enter') return;
+          card.click();
+        });
+      });
+
+      // search/sort
+      searchInput.addEventListener('input', debounce(applyFilters, 200));
+      sortSelect.addEventListener('change', applyFilters);
+    }
+
+    (async function boot(){
+      try{
+        initUI();
+        await fetchWatchlist();
+      }catch(e){
+        console.error(e);
+        // optional: show empty state on failure
+        emptyState.classList.remove('d-none');
+      }
+    })();
   </script>
 </body>
 </html>

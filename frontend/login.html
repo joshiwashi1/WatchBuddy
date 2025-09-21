@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,115 +7,434 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Orbitron:wght@700&display=swap"
-    rel="stylesheet">
 
   <style>
-    /* ===== Navbar (shared) ===== */
+    /* ===== Enhanced Color Palette ===== */
+    :root {
+      color-scheme: dark;
+      --wb-primary-dark: #0c0d1b;
+      --wb-primary-navy: #151829;
+      --wb-accent-blue: #2563eb;
+      --wb-accent-purple: #7c3aed;
+      --wb-surface-elevated: #1e2139;
+      --wb-surface-card: #252846;
+      --wb-border-subtle: #2d3348;
+      --wb-text-primary: #ffffff;
+      --wb-text-secondary: #a1a8c3;
+      --wb-text-muted: #6b7280;
+      --wb-success: #10b981;
+      --wb-warning: #f59e0b;
+      --wb-danger: #ef4444;
+    }
+
+    body { 
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--wb-primary-dark) 0%, var(--wb-primary-navy) 100%);
+      color: var(--wb-text-primary);
+      font-weight: 300;
+    }
+
+    /* ===== Enhanced Navbar ===== */
     .wb-navbar {
-      background: rgba(10, 14, 26, 0.95) !important;
+      background: rgba(21, 24, 41, 0.8) !important;
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(45, 55, 72, 0.3);
-      transition: all .2s ease;
+      border-bottom: 1px solid var(--wb-border-subtle);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       min-height: 72px;
-    }
-
-    .wb-navbar.navbar-shadow {
-      background: rgba(10, 14, 26, 0.98) !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
-      border-bottom-color: rgba(45, 55, 72, 0.6);
-    }
-
-    .navbar-brand {
-      font-weight: 700;
-      font-size: 1.4rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-    }
-
-    .navbar-brand img {
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
-      transition: all .2s ease;
-    }
-
-    .navbar-brand:hover img {
-      transform: scale(1.05);
-    }
-
-    .navbar-dark .navbar-toggler {
-      border-color: rgba(255, 255, 255, .25);
-    }
-
-    .navbar-dark .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-
-    .nav-link {
-      color: var(--wb-text-muted, #94a3b8) !important;
-      font-weight: 500;
-      padding: 0.75rem 1rem !important;
-      border-radius: 10px;
-      margin: 0 0.25rem;
-      transition: all .2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-    }
-
-    .nav-link:hover {
-      color: var(--wb-text, #fff) !important;
-      background: rgba(59, 130, 246, 0.1);
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      color: var(--wb-accent, #0EA5E9) !important;
-      background: rgba(6, 182, 212, 0.15);
-      position: relative;
-    }
-
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 30px;
-      height: 2px;
-      background: var(--wb-accent, #0EA5E9);
-      border-radius: 1px;
-    }
-
-    /* Dropdown look like Home */
-    .dropdown-menu {
-      background: var(--wb-panel, #1E293B) !important;
-      border: 1px solid var(--wb-border, rgba(148, 163, 184, .25)) !important;
-      border-radius: 12px;
-      box-shadow: 0 18px 60px rgba(0, 0, 0, .45);
       padding: 0.75rem 0;
     }
 
-    .dropdown-item {
-      color: var(--wb-text, #fff) !important;
-      padding: 0.75rem 1.25rem;
-      font-weight: 500;
-      transition: all .12s ease;
-      display: flex;
-      align-items: center;
-      gap: .75rem;
+    .wb-navbar.navbar-shadow { 
+      background: rgba(21, 24, 41, 0.95) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border-bottom-color: var(--wb-accent-blue);
     }
 
-    .dropdown-item:hover {
-      background: rgba(59, 130, 246, 0.1) !important;
-      color: var(--wb-text, #fff) !important;
-      transform: translateX(4px);
+    .navbar-brand {
+      font-family: 'Orbitron', sans-serif !important;
+      font-weight: 700;
+      font-size: 1.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: translateY(-1px);
+    }
+
+    .navbar-brand img { 
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand:hover img { 
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    }
+
+    .nav-link {
+      color: var(--wb-text-secondary) !important;
+      font-weight: 500;
+      padding: 0.75rem 1rem !important;
+      border-radius: 12px;
+      margin: 0 0.25rem;
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.5rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .nav-link:hover { 
+      color: var(--wb-text-primary) !important; 
+      background: rgba(37, 99, 235, 0.1); 
+      transform: translateY(-2px); 
+    }
+
+    .nav-link.active {
+      color: var(--wb-text-primary) !important;
+      background: rgba(37, 99, 235, 0.15);
+      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.3);
+    }
+
+    .nav-link.active::after {
+      content: ''; 
+      position: absolute; 
+      bottom: -0.5rem; 
+      left: 50%; 
+      transform: translateX(-50%);
+      width: 30px; 
+      height: 3px; 
+      background: linear-gradient(90deg, var(--wb-accent-blue), var(--wb-accent-purple)); 
+      border-radius: 2px;
+    }
+
+    .navbar .btn { 
+      padding: 0.5rem 1rem; 
+      border-width: 2px;
+      font-weight: 500;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline-primary {
+      border-color: var(--wb-accent-blue);
+      color: var(--wb-accent-blue);
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--wb-accent-blue);
+      border-color: var(--wb-accent-blue);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--wb-accent-blue), var(--wb-accent-purple));
+      border: none;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .navbar .nav-item + .nav-item { 
+      margin-left: 0.5rem; 
+    }
+
+    /* ===== Enhanced Dropdown ===== */
+    .dropdown-menu {
+      background: var(--wb-surface-elevated) !important;
+      border: 1px solid var(--wb-border-subtle) !important;
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+      padding: 0.75rem 0;
+      backdrop-filter: blur(20px);
+    }
+
+    .dropdown-item { 
+      color: var(--wb-text-primary) !important; 
+      padding: 0.75rem 1.25rem; 
+      font-weight: 400;
+      transition: all 0.2s ease;
+      border-radius: 8px;
+      margin: 0.125rem 0.5rem;
+    }
+
+    .dropdown-item:hover { 
+      background: rgba(37, 99, 235, 0.15) !important; 
+      color: var(--wb-text-primary) !important; 
+      transform: translateX(4px); 
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      padding: 3rem 0 2rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-weight: 600;
+      color: var(--wb-text-primary);
+    }
+
+    /* ===== Enhanced Form Card ===== */
+    .wb-card {
+      background: var(--wb-surface-card);
+      border: 1px solid var(--wb-border-subtle);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .wb-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wb-accent-blue), var(--wb-accent-purple));
+    }
+
+    .wb-card .card-body {
+      padding: 2.5rem;
+    }
+
+    /* ===== Enhanced Form Controls ===== */
+    .form-label {
+      color: var(--wb-text-primary);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+      background: var(--wb-surface-elevated);
+      border: 1px solid var(--wb-border-subtle);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: var(--wb-text-primary);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .form-control::placeholder {
+      color: var(--wb-text-muted);
+    }
+
+    .form-control:focus, .form-select:focus {
+      background: var(--wb-surface-elevated);
+      border-color: var(--wb-accent-blue);
+      color: var(--wb-text-primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      outline: none;
+    }
+
+    .form-control.is-invalid {
+      border-color: var(--wb-danger);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+    }
+
+    /* ===== Enhanced Input Groups ===== */
+    .input-group .btn {
+      background: var(--wb-surface-elevated);
+      border: 1px solid var(--wb-border-subtle);
+      border-left: none;
+      color: var(--wb-text-secondary);
+      transition: all 0.2s ease;
+    }
+
+    .input-group .btn:hover {
+      background: var(--wb-accent-blue);
+      border-color: var(--wb-accent-blue);
+      color: white;
+    }
+
+    .input-group .form-control {
+      border-right: none;
+    }
+
+    .input-group .form-control:focus + .btn {
+      border-color: var(--wb-accent-blue);
+    }
+
+    /* ===== Enhanced Form Check ===== */
+    .form-check-input {
+      background-color: var(--wb-surface-elevated);
+      border: 1px solid var(--wb-border-subtle);
+      border-radius: 6px;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--wb-accent-blue);
+      border-color: var(--wb-accent-blue);
+    }
+
+    .form-check-input:focus {
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .form-check-label {
+      color: var(--wb-text-primary);
+      font-weight: 400;
+    }
+
+    /* ===== Enhanced Buttons ===== */
+    .btn {
+      font-weight: 500;
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--wb-accent-blue), var(--wb-accent-purple));
+      border: none;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ===== Enhanced Alerts ===== */
+    .alert {
+      border-radius: 12px;
+      border: none;
+      padding: 1rem 1.25rem;
+    }
+
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.1);
+      color: #fca5a5;
+      border-left: 4px solid var(--wb-danger);
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: #86efac;
+      border-left: 4px solid var(--wb-success);
+    }
+
+    /* ===== Enhanced Links ===== */
+    a {
+      color: var(--wb-accent-blue);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--wb-accent-purple);
+      text-decoration: none;
+    }
+
+    .text-muted a {
+      color: var(--wb-text-secondary);
+    }
+
+    .text-muted a:hover {
+      color: var(--wb-text-primary);
+    }
+
+    /* ===== Footer Enhancement ===== */
+    footer {
+      border-top: 1px solid var(--wb-border-subtle);
+      background: var(--wb-surface-elevated);
+      margin-top: 2rem;
+    }
+
+    .footer-small {
+      color: var(--wb-text-muted);
+    }
+
+    /* ===== Loading Animation ===== */
+    .spinner-border-sm {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    /* ===== Responsive Improvements ===== */
+    @media (max-width: 768px) {
+      .wb-card .card-body {
+        padding: 2rem 1.5rem;
+      }
+      
+      .hero {
+        padding: 2rem 0 1.5rem;
+      }
+      
+      .btn {
+        padding: 0.625rem 1.25rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .wb-card .card-body {
+        padding: 1.5rem 1rem;
+      }
+      
+      .form-control {
+        padding: 0.625rem 0.75rem;
+      }
+    }
+
+    /* ===== Focus States ===== */
+    .btn:focus-visible,
+    .nav-link:focus-visible {
+      outline: 2px solid var(--wb-accent-blue);
+      outline-offset: 3px;
+    }
+
+    /* ===== Smooth Animations ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .wb-card {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
     }
   </style>
-
 </head>
 
 <body data-page="login" class="d-flex flex-column min-vh-100">
@@ -127,6 +445,7 @@
         <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
         WatchBuddy
       </a>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
         aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -134,20 +453,16 @@
 
       <div id="mainNav" class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto align-items-lg-center">
-          <!-- Home (Index) -->
           <li class="nav-item">
-            <a class="nav-link" href="index.html"><i class="bi bi-house-door me-1"></i>Home</a>
+            <a id="navHome" class="nav-link" href="index.html"><i class="bi bi-house-door me-1"></i>Home</a>
           </li>
-
-          <!-- Register -->
           <li class="nav-item">
-            <a class="nav-link" href="register.html"><i class="bi bi-person-plus me-1"></i>Register</a>
+            <a id="navRegister" class="nav-link" href="register.html"><i class="bi bi-person-plus me-1"></i>Register</a>
           </li>
-
-          <!-- Login (button-style) -->
           <li class="nav-item ms-lg-2">
-            <a class="btn btn-outline-primary px-3" href="login.html"><i
-                class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+            <a id="loginBtn" class="btn btn-outline-primary px-3" href="login.html">
+              <i class="bi bi-box-arrow-in-right me-1"></i>Login
+            </a>
           </li>
         </ul>
       </div>
@@ -155,9 +470,12 @@
   </nav>
 
   <!-- Header -->
-  <header class="py-4 hero">
+  <header class="hero">
     <div class="container">
-      <h1 class="h3 fw-bold mb-0"><i class="bi bi-box-arrow-in-right me-2"></i>Login</h1>
+      <h1 class="h3 fw-bold mb-0">
+        <i class="bi bi-box-arrow-in-right me-2" style="color: var(--wb-accent-blue);"></i>
+        Welcome back
+      </h1>
     </div>
   </header>
 
@@ -178,8 +496,7 @@
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
-                  <input id="password" name="password" type="password" class="form-control" required
-                    autocomplete="current-password">
+                  <input id="password" name="password" type="password" class="form-control" required autocomplete="current-password">
                   <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                     <i class="bi bi-eye" id="eyeIcon"></i>
                   </button>
@@ -189,9 +506,11 @@
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="form-check">
                   <input id="remember" class="form-check-input" type="checkbox">
-                  <label for="remember" class="form-check-label text-light">Remember me</label>
+                  <label for="remember" class="form-check-label">Remember me</label>
                 </div>
-                <a href="forgot.html" class="small"><i class="bi bi-envelope-open me-1"></i>Forgot Password?</a>
+                <a href="forgot.html" class="small">
+                  <i class="bi bi-envelope-open me-1"></i>Forgot Password?
+                </a>
               </div>
 
               <div class="d-grid">
@@ -200,178 +519,217 @@
                 </button>
               </div>
             </form>
-            <p class="mt-3 text-muted">Don’t have an account? <a href="register.html">Register</a></p>
+            <p class="mt-3 text-muted text-center">
+              Don't have an account? <a href="register.html">Register</a>
+            </p>
           </div>
         </div>
-      </div>
+      </div>  
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="border-top py-4 mt-auto">
+  <footer class="py-4 mt-auto">
     <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center">
-      <span class="text-muted footer-small">© <span id="year"></span> WatchBuddy</span>
+      <span class="footer-small">© <span id="year"></span> WatchBuddy</span>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
   <script>
-
-    // Year + navbar shadow
     document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Enhanced navbar scroll effect
     (function () {
       const nav = document.querySelector('.wb-navbar');
       if (!nav) return;
-      const onScroll = () => nav.classList.toggle('navbar-shadow', window.scrollY > 8);
-      onScroll(); window.addEventListener('scroll', onScroll);
+      const onScroll = () => nav.classList.toggle('navbar-shadow', window.scrollY > 12);
+      onScroll(); 
+      window.addEventListener('scroll', onScroll, { passive: true });
     })();
 
-    // Active nav styling
+    // Navigation active state
     (function () {
-      const page = document.body.dataset.page;
-      if (page === "home") document.getElementById("navHome")?.classList.add("active");
-      if (page === "register") document.getElementById("navRegister")?.classList.add("active");
-      const loginBtn = document.getElementById("loginBtn");
-      if (loginBtn) {
-        if (page === "login") {
-          loginBtn.classList.remove("btn-outline-primary");
-          loginBtn.classList.add("btn-primary", "active");
+      const path = location.pathname.split("/").pop() || "index.html";
+
+      document.querySelectorAll(".navbar .nav-link, .navbar .btn").forEach(link => {
+        const href = link.getAttribute("href");
+        if (!href) return;
+
+        const target = href.split("/").pop();
+
+        if (target === path) {
+          link.classList.add("active");
+
+          if (link.classList.contains("btn")) {
+            link.classList.remove("btn-outline-primary");
+            link.classList.add("btn-primary");
+          }
         } else {
-          loginBtn.classList.remove("btn-primary", "active");
-          loginBtn.classList.add("btn-outline-primary");
+          link.classList.remove("active");
+          if (link.classList.contains("btn")) {
+            link.classList.remove("btn-primary");
+            link.classList.add("btn-outline-primary");
+          }
         }
-      }
-    })();
-  </script>
-<script>
-  (function () {
-    // highlight current nav
-    const path = location.pathname.split("/").pop() || "index.html";
-    document.querySelectorAll(".navbar .nav-link, .navbar .btn").forEach(link => {
-      const href = link.getAttribute("href"); if (!href) return;
-      const target = href.split("/").pop();
-      if (target === path) {
-        link.classList.add("active");
-        if (link.classList.contains("btn")) {
-          link.classList.remove("btn-outline-primary");
-          link.classList.add("btn-primary");
-        }
-      } else {
-        link.classList.remove("active");
-      }
-    });
-  })();
-
-  (function () {
-    // ✅ dynamic API base — works on localhost and on your phone (192.168.1.3)
-    const API_BASE = `${location.protocol}//${location.host}/watchbuddy/backend/public`;
-
-    const form = document.getElementById('loginForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const togglePassword = document.getElementById('togglePassword');
-    const eyeIcon = document.getElementById('eyeIcon');
-    const remember = document.getElementById('remember');
-    const alertBox = document.getElementById('formAlert');
-
-    // Show success message if redirected from registration
-    (function showRegisteredMessage() {
-      const justRegistered = new URLSearchParams(location.search).get('registered') === '1'
-        || sessionStorage.getItem('registrationSuccess') === 'true';
-      if (justRegistered) {
-        setAlert('Account created successfully. You can log in now 🎉', 'success');
-        sessionStorage.removeItem('registrationSuccess');
-      }
-    })();
-
-    // Toggle password visibility
-    if (togglePassword && eyeIcon) {
-      togglePassword.addEventListener('click', function () {
-        const type = password.type === 'password' ? 'text' : 'password';
-        password.type = type;
-        eyeIcon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
       });
-    }
+    })();
 
-    function setAlert(message, type = 'danger') {
-      alertBox.className = `alert alert-${type} mb-3`;
-      alertBox.textContent = message;
-    }
-    function clearAlert() {
-      alertBox.className = 'd-none';
-      alertBox.textContent = '';
-    }
-    function validate() {
-      const errs = {};
-      const emailVal = (email.value || '').trim().toLowerCase();
-      const passVal = password.value || '';
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailVal) errs.email = 'Email is required';
-      else if (!emailRe.test(emailVal)) errs.email = 'Please enter a valid email';
-      if (!passVal) errs.password = 'Password is required';
-      return errs;
-    }
+    // Login functionality
+    (function () {
+      const API_BASE = `${location.protocol}//${location.host}/watchbuddy/backend/public`;
+      const USER_DASHBOARD = 'dashboard.html';
+      const ADMIN_DASHBOARD = 'admin/dashboard.php';
 
-    async function onSubmit(e) {
-      e.preventDefault();
-      clearAlert();
+      const form = document.getElementById('loginForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+      const togglePassword = document.getElementById('togglePassword');
+      const eyeIcon = document.getElementById('eyeIcon');
+      const remember = document.getElementById('remember');
+      const alertBox = document.getElementById('formAlert');
 
-      const errs = validate();
-      email.classList.toggle('is-invalid', !!errs.email);
-      password.classList.toggle('is-invalid', !!errs.password);
-      if (errs.email || errs.password) {
-        setAlert(errs.email || errs.password);
-        return;
+      // Show success message if redirected from registration
+      (function showRegisteredMessage() {
+        const justRegistered = new URLSearchParams(location.search).get('registered') === '1'
+          || sessionStorage.getItem('registrationSuccess') === 'true';
+        if (justRegistered) {
+          setAlert('Account created successfully. You can log in now!', 'success');
+          sessionStorage.removeItem('registrationSuccess');
+        }
+      })();
+
+      // Enhanced password toggle
+      if (togglePassword && eyeIcon) {
+        togglePassword.addEventListener('click', function () {
+          const type = password.type === 'password' ? 'text' : 'password';
+          password.type = type;
+          eyeIcon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+          
+          // Add visual feedback
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => this.style.transform = 'scale(1)', 150);
+        });
       }
 
-      const original = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Logging in...`;
+      function setAlert(message, type = 'danger') {
+        alertBox.className = `alert alert-${type} mb-3`;
+        alertBox.textContent = message;
+        alertBox.style.animation = 'fadeInUp 0.3s ease';
+      }
 
-      try {
-        const res = await fetch(`${API_BASE}/api/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          credentials: 'include', // keep cookies!
-          body: JSON.stringify({
-            email: (email.value || '').trim().toLowerCase(),
-            password: password.value || ''
-          })
+      function clearAlert() {
+        alertBox.className = 'd-none';
+        alertBox.textContent = '';
+      }
+
+      function validate() {
+        const errs = {};
+        const emailVal = (email.value || '').trim().toLowerCase();
+        const passVal = password.value || '';
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailVal) errs.email = 'Email is required';
+        else if (!emailRe.test(emailVal)) errs.email = 'Please enter a valid email';
+        if (!passVal) errs.password = 'Password is required';
+        return errs;
+      }
+
+      // Enhanced input focus effects
+      [email, password].forEach(input => {
+        if (!input) return;
+        
+        input.addEventListener('focus', function () {
+          this.style.transform = 'translateY(-1px)';
+          this.style.boxShadow = '0 4px 12px rgba(37, 99, 235, 0.15)';
         });
 
-        const raw = await res.text();
-        let data; try { data = JSON.parse(raw); } catch { data = { ok:false, error:`Non-JSON: ${raw.slice(0,200)}` }; }
+        input.addEventListener('blur', function () {
+          this.style.transform = 'translateY(0)';
+          this.style.boxShadow = '';
+        });
+      });
 
-        if (!res.ok || data?.ok === false) {
-          setAlert(data?.error || data?.message || `Login failed (${res.status})`);
+      async function onSubmit(e) {
+        e.preventDefault();
+        clearAlert();
+
+        const errs = validate();
+        email.classList.toggle('is-invalid', !!errs.email);
+        password.classList.toggle('is-invalid', !!errs.password);
+        if (errs.email || errs.password) {
+          setAlert(errs.email || errs.password);
           return;
         }
 
-        // "Remember me" flag (session itself is in PHP cookie)
-        if (remember.checked) localStorage.setItem('wbRemember', '1');
-        else localStorage.removeItem('wbRemember');
+        const original = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Logging in...`;
 
-        // Verify session
-        const meRes = await fetch(`${API_BASE}/api/me`, { credentials: 'include' });
-        const me = await meRes.json().catch(() => null);
-        if (me?.ok && me.user) sessionStorage.setItem('wbUser', JSON.stringify(me.user));
+        try {
+          // 1) Login
+          const res = await fetch(`${API_BASE}/api/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              email: (email.value || '').trim().toLowerCase(),
+              password: password.value || ''
+            })
+          });
 
-        setAlert('Login successful! Redirecting...', 'success');
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+          const raw = await res.text();
+          let data; 
+          try { 
+            data = JSON.parse(raw); 
+          } catch { 
+            data = { ok: false, error: `Non-JSON: ${raw.slice(0, 200)}` }; 
+          }
 
-      } catch (err) {
-        console.error(err);
-        setAlert('Network error. Please try again.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = original;
+          if (!res.ok || data?.ok === false) {
+            setAlert(data?.error || data?.message || `Login failed (${res.status})`);
+            return;
+          }
+
+          // 2) Remember flag
+          if (remember.checked) localStorage.setItem('wbRemember', '1');
+          else localStorage.removeItem('wbRemember');
+
+          // 3) Fetch current user to get role
+          const meRes = await fetch(`${API_BASE}/api/me`, { credentials: 'include' });
+          const me = await meRes.json().catch(() => null);
+
+          if (!me?.ok || !me.user) {
+            setAlert('Could not fetch profile after login.');
+            return;
+          }
+
+          // Store for UI use
+          sessionStorage.setItem('wbUser', JSON.stringify(me.user));
+          sessionStorage.setItem('wbRole', me.user.role || 'user');
+
+          // 4) Redirect based on role
+          const role = (me.user.role || 'user').toLowerCase();
+          const target = role === 'admin' ? 'usermanagement.html' : 'dashboard.html';
+
+          setAlert(`Welcome ${role === 'admin' ? 'Admin' : ''}! Redirecting...`, 'success');
+          setTimeout(() => { 
+            window.location.href = target; 
+          }, 800);
+
+        } catch (err) {
+          console.error(err);
+          setAlert('Network error. Please check your connection and try again.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = original;
+        }
       }
-    }
 
-    form.addEventListener('submit', onSubmit);
-  })();
-</script>
+      form.addEventListener('submit', onSubmit);
+    })();
+  </script>
 
 </body>
 

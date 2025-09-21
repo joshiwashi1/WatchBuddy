@@ -4,27 +4,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WatchBuddy | Profile</title>
+  <title>WatchBuddy | Dashboard</title>
 
   <!-- Icons & Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Orbitron:wght@700&display=swap"
+    rel="stylesheet">
 
   <!-- Site stylesheet -->
   <link rel="stylesheet" href="assets/css/styles.css">
 
-  <!-- Inline tweaks to mirror your dashboard look/feel -->
+  <!-- Small overrides to ensure white form text/labels/placeholders -->
   <style>
+    /* ===== Dark theme selects/inputs ===== */
     :root {
       color-scheme: dark;
+
+      /* Stronger hover/active shades for navbar */
       --wb-hover-bg: rgba(14, 165, 233, .28);
       --wb-hover-text: #ffffff;
       --wb-active-bg: rgba(14, 165, 233, .38);
     }
 
+    /* ===== Navbar (shared) ===== */
     .wb-navbar {
       background: rgba(10, 14, 26, 0.95) !important;
       backdrop-filter: blur(20px);
@@ -39,31 +44,283 @@
       border-bottom-color: rgba(45, 55, 72, 0.6);
     }
 
-    .nav-link { color: var(--wb-text-muted, #94a3b8) !important; font-weight: 500; padding: 0.75rem 1rem !important; border-radius: 10px; margin: 0 0.25rem; transition: all .2s ease; display: inline-flex; align-items: center; gap: .5rem; }
-    .nav-link:hover, .nav-link:focus-visible { color: var(--wb-hover-text) !important; background: var(--wb-hover-bg) !important; transform: translateY(-1px); outline: none; }
-    .nav-link.active { color: var(--wb-hover-text) !important; background: var(--wb-active-bg) !important; position: relative; box-shadow: inset 0 0 0 1px rgba(14, 165, 233, .55); }
-    .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 30px; height: 2px; background: var(--wb-accent, #0EA5E9); border-radius: 1px; }
+    .navbar-brand {
+      font-family: 'Orbitron', sans-serif !important;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
 
-    .navbar-shadow { box-shadow: 0 10px 24px rgba(0,0,0,.15); }
+    .navbar-brand img {
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+      transition: all .2s ease;
+    }
 
-    /* Cards/inputs match dashboard */
-    .card, .wb-panel { background: var(--wb-panel); border: 1px solid var(--wb-border); }
-    .form-control, .form-select { background-color: var(--wb-surface); color: var(--wb-text); border-color: var(--wb-border); }
-    .form-control:focus, .form-select:focus { background-color: var(--wb-surface); color: var(--wb-text); border-color: var(--wb-accent); box-shadow: 0 0 0 .25rem rgba(14,165,233,.25); }
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
 
-    /* Avatar */
-    .avatar-lg { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,.18); background:#0b1220; }
-    .cover { position: relative; border-radius: .75rem; overflow: hidden; background: linear-gradient(180deg, rgba(14,165,233,.15), rgba(23,37,84,.5)), url('assets/img/cover.jpg') center/cover no-repeat; min-height: 180px; }
+    .navbar-dark .navbar-toggler {
+      border-color: rgba(255, 255, 255, .25);
+    }
 
-    /* Stats icons (reuse dashboard styles) */
-    .stats-icon { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 1.25rem; background: var(--wb-surface); }
-    .stats-icon.to-watch { background: rgba(14,165,233,.2); color:#7dd3fc; }
-    .stats-icon.watching { background: rgba(180,83,9,.2); color:#fdba74; }
-    .stats-icon.completed { background: rgba(34,197,94,.2); color:#86efac; }
+    .navbar-dark .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .navbar-dark .navbar-toggler:hover,
+    .navbar-dark .navbar-toggler:focus-visible {
+      border-color: rgba(255, 255, 255, .6);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, .35);
+    }
+
+    .nav-link {
+      color: var(--wb-text-muted, #94a3b8) !important;
+      font-weight: 500;
+      padding: 0.75rem 1rem !important;
+      border-radius: 10px;
+      margin: 0 0.25rem;
+      transition: all .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--wb-hover-text) !important;
+      background: var(--wb-hover-bg) !important;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .nav-link.active {
+      color: var(--wb-hover-text) !important;
+      background: var(--wb-active-bg) !important;
+      position: relative;
+      box-shadow: inset 0 0 0 1px rgba(14, 165, 233, .55);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 2px;
+      background: var(--wb-accent, #0EA5E9);
+      border-radius: 1px;
+    }
+
+    /* Helps native controls choose dark styling */
+    .form-control,
+    .form-select {
+      background-color: var(--wb-surface);
+      color: var(--wb-text);
+      border-color: var(--wb-border);
+    }
+
+    /* Force white/gray text on dark cards */
+    .card-title {
+      color: var(--wb-text) !important;
+    }
+
+    .card-text {
+      color: var(--wb-text-dark, #cbd5e1) !important;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      background-color: var(--wb-surface);
+      color: var(--wb-text);
+      border-color: var(--wb-accent);
+      box-shadow: 0 0 0 .25rem rgba(14, 165, 233, .25);
+    }
+
+    /* Options inside native <select> menus */
+    .form-select option {
+      background-color: var(--wb-surface);
+      color: var(--wb-text);
+    }
+
+    /* ===== Dropdown menus (three-dots & navbar) ===== */
+    .dropdown-menu {
+      background: var(--wb-panel);
+      border: 1px solid var(--wb-border);
+      border-radius: 12px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .45);
+      padding: .75rem 0;
+    }
+
+    .dropdown-item {
+      color: var(--wb-text);
+      padding: .75rem 1.25rem;
+      font-weight: 500;
+      transition: all .12s ease;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:focus-visible {
+      background: rgba(14, 165, 233, .22) !important;
+      color: #fff !important;
+      transform: translateX(4px);
+      outline: none;
+    }
+
+    /* ===== Poster frame & placeholder ===== */
+    .poster-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      max-height: 320px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #0b1220, #111827);
+      border-top-left-radius: .5rem;
+      border-top-right-radius: .5rem;
+      border-bottom: 1px solid var(--wb-border);
+      overflow: hidden;
+    }
+
+    .poster-frame img.movie-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .poster-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      color: #94a3b8;
+      opacity: .9;
+    }
+
+    label {
+      color: var(--wb-text);
+    }
+
+    .form-control,
+    .form-select {
+      color: var(--wb-text);
+    }
+
+    .form-control::placeholder {
+      color: var(--wb-text);
+      opacity: 0.8;
+    }
+
+    .navbar-shadow {
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .15);
+    }
+
+    .movie-poster {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-top-left-radius: .5rem;
+      border-top-right-radius: .5rem;
+    }
+
+    .stats-card,
+    .movie-card {
+      background: var(--wb-panel);
+      border: 1px solid var(--wb-border);
+    }
+
+    .stats-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      background: var(--wb-surface);
+    }
+
+    .stats-icon.to-watch {
+      background: rgba(14, 165, 233, .2);
+      color: #7dd3fc;
+    }
+
+    .stats-icon.watching {
+      background: rgba(180, 83, 9, .2);
+      color: #fdba74;
+    }
+
+    .stats-icon.completed {
+      background: rgba(34, 197, 94, .2);
+      color: #86efac;
+    }
+
+    .status-badge {
+      position: absolute;
+      top: .5rem;
+      left: .5rem;
+      padding: .25rem .5rem;
+      border-radius: 999px;
+      font-size: .75rem;
+    }
+
+    .badge-to-watch {
+      background: rgba(14, 165, 233, .2);
+      color: #7dd3fc;
+    }
+
+    .badge-watching {
+      background: rgba(180, 83, 9, .2);
+      color: #fdba74;
+    }
+
+    .badge-completed {
+      background: rgba(34, 197, 94, .2);
+      color: #86efac;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      border: 1px dashed var(--wb-border);
+      border-radius: .75rem;
+    }
+
+    .empty-state-icon {
+      font-size: 2.5rem;
+      margin-bottom: .75rem;
+      opacity: .8;
+    }
+
+    .quick-actions .fab {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--wb-primary);
+      color: #fff;
+      border: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+    }
+    
   </style>
+
+
 </head>
 
-<body data-page="profile">
+<body data-page="dashboard">
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
     <div class="container">
@@ -71,21 +328,27 @@
         <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
         WatchBuddy
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div id="mainNav" class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto align-items-lg-center">
-          <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-house-door me-1"></i>Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link active" href="profile.html"><i class="bi bi-person me-1"></i>Profile</a></li>
+          <li class="nav-item">
+            <a class="nav-link active" href="dashboard.html"><i class="bi bi-house-door me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person me-1"></i>Profile</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-circle fs-5"></i><span id="userName">—</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="profile.html">Profile Settings</a></li>
-              <li><hr class="dropdown-divider"></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
               <li><button class="dropdown-item" id="logoutBtn" type="button">Logout</button></li>
             </ul>
           </li>
@@ -96,255 +359,354 @@
 
   <!-- Main -->
   <main class="container-fluid py-4">
-    <!-- Header -->
-    <section class="cover mb-5">
-      <div class="container py-4 position-relative" style="min-height: 180px;">
-        <div class="d-flex flex-column flex-md-row align-items-md-end gap-3">
-          <div>
-            <img id="avatarImg" src="assets/img/default-avatar.png" alt="Avatar" class="avatar-lg">
+    <!-- Welcome -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <h1 class="h3 fw-bold mb-1">Welcome back, <span id="welcomeName">—</span>! 🎬</h1>
+        <p class="text-muted">Manage your movie watchlist and discover your next favorite film.</p>
+      </div>
+    </div>
+
+    <!-- Stats (clickable) -->
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100 js-status-link" role="button" tabindex="0" data-status-target="to-watch"
+          aria-label="Filter: To Watch">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon to-watch mx-auto"><i class="bi bi-bookmark-plus"></i></div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="toWatchCount">0</div>
+              <div class="text-muted small">To Watch</div>
+            </div>
           </div>
-          <div class="mb-2">
-            <h1 class="h3 fw-bold mb-1" id="displayNameHead">—</h1>
-            <div class="text-muted"><span id="usernameHead">@—</span> · <span id="locationHead">—</span></div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100 js-status-link" role="button" tabindex="0" data-status-target="watching"
+          aria-label="Filter: Watching">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon watching mx-auto"><i class="bi bi-play-circle"></i></div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="watchingCount">0</div>
+              <div class="text-muted small">Watching</div>
+            </div>
           </div>
-          <div class="ms-auto d-flex gap-2">
-            <label class="btn btn-outline-primary btn-sm mb-0">
-              <i class="bi bi-image me-1"></i> Change Avatar
-              <input id="avatarInput" type="file" accept="image/*" hidden>
-            </label>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-              <i class="bi bi-pencil-square me-1"></i> Edit Profile
-            </button>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100 js-status-link" role="button" tabindex="0" data-status-target="completed"
+          aria-label="Filter: Completed">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon completed mx-auto"><i class="bi bi-check-circle"></i></div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="completedCount">0</div>
+              <div class="text-muted small">Completed</div>
+            </div>
           </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card stats-card h-100">
+          <div class="card-body text-center d-grid gap-2">
+            <div class="stats-icon mx-auto"
+              style="background: linear-gradient(135deg, var(--wb-primary), var(--wb-accent));">
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <div>
+              <div class="h4 fw-bold mb-0" id="avgRating">—</div>
+              <div class="text-muted small">Avg Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <section class="mb-4">
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="searchInput" class="form-label">Search Movies</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by title…">
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <label for="statusFilter" class="form-label">Status</label>
+          <select id="statusFilter" class="form-select">
+            <option value="">All Status</option>
+            <option value="to-watch">To Watch</option>
+            <option value="watching">Watching</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <label for="sortFilter" class="form-label">Sort By</label>
+          <select id="sortFilter" class="form-select">
+            <option value="recent">Recently Added</option>
+            <option value="title">Title (A–Z)</option>
+            <option value="rating">Rating (High–Low)</option>
+          </select>
+        </div>
+        <div class="col-12 col-lg-4 d-flex gap-2 justify-content-lg-end">
+          <button class="btn btn-outline-primary" id="resetBtn"><i class="bi bi-arrow-clockwise me-1"></i>Reset</button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
+            <i class="bi bi-plus-lg me-1"></i>Add Movie
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- Content -->
-    <section class="container">
-      <div class="row g-4">
-        <!-- Left: About + Stats + Recent Activity -->
-        <div class="col-12 col-xl-8">
-          <!-- About -->
-          <div class="card mb-4">
-            <div class="card-body">
-              <h2 class="h5 fw-bold mb-3">About</h2>
-              <p id="bioText" class="mb-2 text-body-secondary">—</p>
-              <div class="d-flex flex-wrap gap-2" id="tagsWrap"></div>
-            </div>
-          </div>
+    <!-- Movies Grid -->
+    <section aria-live="polite">
+      <div class="row g-4" id="moviesContainer">
 
-          <!-- Stats (matches dashboard style) -->
-          <div class="row g-3 mb-4">
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="card h-100">
-                <div class="card-body text-center d-grid gap-2">
-                  <div class="stats-icon to-watch mx-auto"><i class="bi bi-bookmark-plus"></i></div>
-                  <div>
-                    <div class="h4 fw-bold mb-0" id="statToWatch">0</div>
-                    <div class="text-muted small">To Watch</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="card h-100">
-                <div class="card-body text-center d-grid gap-2">
-                  <div class="stats-icon watching mx-auto"><i class="bi bi-play-circle"></i></div>
-                  <div>
-                    <div class="h4 fw-bold mb-0" id="statWatching">0</div>
-                    <div class="text-muted small">Watching</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="card h-100">
-                <div class="card-body text-center d-grid gap-2">
-                  <div class="stats-icon completed mx-auto"><i class="bi bi-check-circle"></i></div>
-                  <div>
-                    <div class="h4 fw-bold mb-0" id="statCompleted">0</div>
-                    <div class="text-muted small">Completed</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Recent Reviews -->
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="h5 fw-bold mb-0">Recent Reviews</h2>
-                <a href="dashboard.html" class="btn btn-outline-primary btn-sm"><i class="bi bi-collection me-1"></i>Go to Watchlist</a>
-              </div>
-              <div id="reviewsList" class="vstack gap-3">
-                <!-- Filled by JS -->
-              </div>
-              <div id="reviewsEmpty" class="text-center py-4 d-none text-muted">No reviews yet.</div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Right: Settings quick form -->
-        <div class="col-12 col-xl-4">
-          <div class="card">
-            <div class="card-body">
-              <h2 class="h5 fw-bold mb-3">Quick Settings</h2>
-              <form id="quickForm" novalidate>
-                <div class="mb-3">
-                  <label class="form-label" for="displayName">Display Name</label>
-                  <input id="displayName" type="text" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="username">Username</label>
-                  <div class="input-group">
-                    <span class="input-group-text">@</span>
-                    <input id="username" type="text" class="form-control" required>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="location">Location</label>
-                  <input id="location" type="text" class="form-control" placeholder="City, Country">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="website">Website</label>
-                  <input id="website" type="url" class="form-control" placeholder="https://">
-                </div>
-                <div class="form-check form-switch mb-3">
-                  <input class="form-check-input" type="checkbox" id="isPublic">
-                  <label class="form-check-label" for="isPublic">Make profile public</label>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-outline-secondary" type="button" id="resetQuick">Reset</button>
-                  <button class="btn btn-primary" type="submit"><i class="bi bi-save me-1"></i>Save</button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div class="card mt-3">
-            <div class="card-body">
-              <h2 class="h6 fw-bold mb-3">Account</h2>
-              <button class="btn btn-outline-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#passwordModal"><i class="bi bi-shield-lock me-1"></i> Change Password</button>
-              <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash me-1"></i> Delete Account</button>
-            </div>
-          </div>
-        </div>
+      </div>
+      <!-- Empty state -->
+      <div id="emptyState" class="empty-state d-none">
+        <div class="empty-state-icon"><i class="bi bi-film"></i></div>
+        <h3 class="h5 fw-bold mb-1">No movies found</h3>
+        <p class="text-muted mb-3">Try adjusting your filters or add your first movie to get started.</p>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
+          <i class="bi bi-plus-lg me-2"></i>Add Your First Movie
+        </button>
       </div>
     </section>
   </main>
 
-  <!-- Edit Profile Modal (full form) -->
-  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+  <!-- Add Movie Modal -->
+  <div class="modal fade" id="addMovieModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
         <div class="modal-header border-secondary">
-          <h5 class="modal-title">Edit Profile</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          <h5 class="modal-title">Add New Movie</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="editForm" novalidate>
+          <form id="addMovieForm" novalidate>
             <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label" for="fullName">Full Name</label>
-                <input id="fullName" type="text" class="form-control">
-              </div>
-              <div class="col-md-6">
-                <label class="form-label" for="email">Email</label>
-                <input id="email" type="email" class="form-control" disabled>
+              <div class="col-12">
+                <label class="form-label" for="movieTitle">Movie Title</label>
+                <input type="text" id="movieTitle" class="form-control" placeholder="Enter movie title" required>
+                <div class="invalid-feedback">Please enter a title.</div>
               </div>
               <div class="col-12">
-                <label class="form-label" for="bio">Bio</label>
-                <textarea id="bio" class="form-control" rows="3" placeholder="Tell us about you…"></textarea>
+                <label class="form-label" for="movieDesc">Description</label>
+                <textarea id="movieDesc" class="form-control" rows="3"
+                  placeholder="Brief description (optional)"></textarea>
               </div>
               <div class="col-md-6">
-                <label class="form-label" for="tags">Interests / Tags (comma separated)</label>
-                <input id="tags" type="text" class="form-control" placeholder="e.g., Ghibli, Heist, Thriller">
+                <label class="form-label" for="movieStatus">Status</label>
+                <select id="movieStatus" class="form-select" required>
+                  <option value="to-watch">To Watch</option>
+                  <option value="watching">Watching</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <div class="invalid-feedback">Please choose a valid status.</div>
               </div>
               <div class="col-md-6">
-                <label class="form-label" for="timezone">Timezone</label>
-                <input id="timezone" type="text" class="form-control" placeholder="Asia/Kuching">
+                <label class="form-label" for="movieRating">Rating</label>
+                <select id="movieRating" class="form-select">
+                  <option value="0" selected>Not rated</option>
+                  <option value="1">★☆☆☆☆ (1)</option>
+                  <option value="2">★★☆☆☆ (2)</option>
+                  <option value="3">★★★☆☆ (3)</option>
+                  <option value="4">★★★★☆ (4)</option>
+                  <option value="5">★★★★★ (5)</option>
+                </select>
+                <div class="invalid-feedback">Rating must be between 0 and 5.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="moviePoster">Poster Image (optional)</label>
+                <input type="file" id="moviePoster" class="form-control" accept="image/*">
+                <div class="invalid-feedback">Please select a valid image (max 2 MB).</div>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer border-secondary">
-          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button class="btn btn-primary" id="saveEditBtn"><i class="bi bi-save me-1"></i>Save Changes</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="addMovieBtn" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add
+            Movie</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Edit Movie Modal -->
+  <div class="modal fade" id="editMovieModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Edit Movie</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editMovieForm" novalidate>
+            <input type="hidden" id="editMovieId">
+            <div class="mb-3">
+              <label for="editMovieTitle" class="form-label">Movie Title</label>
+              <input type="text" id="editMovieTitle" class="form-control" required>
+              <div class="invalid-feedback">Please enter a title.</div>
+            </div>
+            <div class="mb-3">
+              <label for="editMovieDesc" class="form-label">Description</label>
+              <textarea id="editMovieDesc" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="editMovieStatus" class="form-label">Status</label>
+                <select id="editMovieStatus" class="form-select" required>
+                  <option value="to-watch">To Watch</option>
+                  <option value="watching">Watching</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <div class="invalid-feedback">Please choose a valid status.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="editMovieRating" class="form-label">Rating</label>
+                <select id="editMovieRating" class="form-select">
+                  <option value="0">Not rated</option>
+                  <option value="1">★☆☆☆☆ (1)</option>
+                  <option value="2">★★☆☆☆ (2)</option>
+                  <option value="3">★★★☆☆ (3)</option>
+                  <option value="4">★★★★☆ (4)</option>
+                  <option value="5">★★★★★ (5)</option>
+                </select>
+                <div class="invalid-feedback">Rating must be between 0 and 5.</div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="saveEditBtn" class="btn btn-primary"><i class="bi bi-save me-1"></i>Save
+            Changes</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Change Password Modal -->
-  <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
+  <!-- Review Modal -->
+  <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
         <div class="modal-header border-secondary">
-          <h5 class="modal-title">Change Password</h5>
+          <h5 class="modal-title">Add / Edit Review</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form id="passwordForm" novalidate>
-            <div class="mb-3">
-              <label class="form-label" for="currentPass">Current Password</label>
-              <input id="currentPass" type="password" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="newPass">New Password</label>
-              <input id="newPass" type="password" class="form-control" minlength="6" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="confirmPass">Confirm New Password</label>
-              <input id="confirmPass" type="password" class="form-control" minlength="6" required>
-            </div>
-          </form>
+          <input type="hidden" id="reviewMovieId">
+          <div class="mb-3">
+            <label class="form-label" for="reviewRating">Rating</label>
+            <select id="reviewRating" class="form-select">
+              <option value="0">Not rated</option>
+              <option value="1">★☆☆☆☆ (1)</option>
+              <option value="2">★★☆☆☆ (2)</option>
+              <option value="3">★★★☆☆ (3)</option>
+              <option value="4">★★★★☆ (4)</option>
+              <option value="5">★★★★★ (5)</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="reviewText">Your Review</label>
+            <textarea id="reviewText" class="form-control" rows="5" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="text-muted small">Reviews are only allowed for movies marked as <strong>Completed</strong>.</div>
         </div>
         <div class="modal-footer border-secondary">
           <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button class="btn btn-primary" id="savePassBtn"><i class="bi bi-shield-lock me-1"></i>Update Password</button>
+          <button class="btn btn-primary" id="saveReviewBtn"><i class="bi bi-save me-1"></i>Save Review</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Delete Account Modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <!-- View Review Modal -->
+  <div class="modal fade" id="viewReviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title"><span id="viewReviewTitle">Review</span></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div id="viewReviewStars" class="text-warning" aria-label="Rating"></div>
+            <span class="badge bg-success-subtle text-success" id="viewReviewStatus">Completed</span>
+          </div>
+          <div id="viewReviewText" class="card-text" style="white-space:pre-wrap;"></div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary" id="editFromViewBtn">
+            <i class="bi bi-pencil me-1"></i>Edit Review
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="background: var(--wb-panel); border:1px solid var(--wb-border);">
         <div class="modal-header border-secondary">
-          <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete Account</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p class="mb-0">Are you sure you want to permanently delete your account?</p>
+          <p class="mb-0">Are you sure you want to delete <strong id="deleteMovieTitle">this movie</strong> from your
+            watchlist?</p>
           <p class="small text-muted mb-0">This action cannot be undone.</p>
         </div>
         <div class="modal-footer border-secondary">
-          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button class="btn btn-danger" id="confirmDeleteAccount"><i class="bi bi-trash me-1"></i>Delete</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+            <i class="bi bi-trash me-1"></i>Delete
+          </button>
         </div>
       </div>
     </div>
   </div>
+  <!-- Footer -->
+  <footer class="wb-footer py-4 mt-auto">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+      <div class="small">Made with ❤️ for movie lovers</div>
+      <div class="small">© <span id="year"></span> WatchBuddy</div>
+    </div>
+  </footer>
 
+  <!-- FAB -->
+  <div class="quick-actions">
+    <button class="fab" data-bs-toggle="modal" data-bs-target="#addMovieModal" title="Add Movie"><i
+        class="bi bi-plus-lg"></i></button>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
     /* ================= CONFIG ================= */
     const API_BASE = `${location.origin}/watchbuddy/backend/public`;
 
-    /* ================= UTILITIES (copied from dashboard style) ================= */
+    /* ================= UTILITIES ================= */
     function qs(sel, root = document) { return root.querySelector(sel); }
     function qsa(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
+    function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
+    /* Handle 401 → redirect to login */
     async function api(path, options = {}) {
       const res = await fetch(`${API_BASE}${path}`, {
         credentials: 'include',
         headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
         ...options,
       });
-      if (res.status === 401) { location.href = 'login.html?expired=1'; throw new Error('Unauthorized'); }
+      if (res.status === 401) {
+        location.href = 'login.html?expired=1';
+        throw new Error('Unauthorized');
+      }
       return res;
     }
 
@@ -352,208 +714,629 @@
     async function loadCurrentUser() {
       const r = await api('/api/me', { method: 'GET' });
       const data = await r.json();
-      if (!data?.ok || !data?.user) { location.href = 'login.html'; return null; }
+      if (!data?.ok || !data?.user) {
+        location.href = 'login.html';
+        return null;
+      }
 
-      const user = data.user;
-      const first = user.firstName || (user.fullName ? user.fullName.split(' ')[0] : '') || (user.email ? user.email.split('@')[0] : 'User');
-      qs('#userName').textContent = first;
+      // Use only the first name
+      const first = data.user.firstName ||
+        (data.user.fullName ? data.user.fullName.split(' ')[0] : '') ||
+        (data.user.email ? data.user.email.split('@')[0] : 'User');
 
-      // Populate heads
-      qs('#displayNameHead').textContent = user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim() || first;
-      qs('#usernameHead').textContent = `@${user.username || (user.email ? user.email.split('@')[0] : first.toLowerCase())}`;
-      qs('#locationHead').textContent = user.location || '—';
+      const nav = qs('#userName');
+      if (nav) nav.textContent = first;
 
-      // Quick form
-      qs('#displayName').value = user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim() || '';
-      qs('#username').value = user.username || (user.email ? user.email.split('@')[0] : '');
-      qs('#location').value = user.location || '';
-      qs('#website').value  = user.website || '';
-      qs('#isPublic').checked = !!user.isPublic;
+      const welcome = qs('#welcomeName');
+      if (welcome) welcome.textContent = first;
 
-      // Edit form
-      qs('#fullName').value = user.fullName || '';
-      qs('#email').value = user.email || '';
-      qs('#bio').value = user.bio || '';
-      qs('#tags').value = (user.tags || []).join(', ');
-      qs('#timezone').value = user.timezone || '';
-
-      // About card
-      qs('#bioText').textContent = user.bio || 'No bio yet.';
-      renderTags(user.tags || []);
-
-      return user;
+      return data.user;
     }
+
 
     function attachLogout() {
       const btn = qs('#logoutBtn');
-      btn?.addEventListener('click', async () => { try { await api('/api/logout', { method: 'POST' }); } catch (_) {} location.href = 'login.html'; });
+      if (!btn) return;
+      btn.addEventListener('click', async () => {
+        try { await api('/api/logout', { method: 'POST' }); } catch (_) { }
+        location.href = 'login.html';
+      });
     }
 
-    /* ================= TAGS RENDER ================= */
-    function renderTags(tags) {
-      const wrap = qs('#tagsWrap');
-      wrap.innerHTML = '';
-      if (!tags || !tags.length) return;
-      for (const t of tags) {
-        const span = document.createElement('span');
-        span.className = 'badge rounded-pill text-bg-secondary';
-        span.textContent = t;
-        wrap.appendChild(span);
-      }
-    }
+    /* ================= WATCHLIST: FETCH & RENDER ================= */
+    const moviesContainer = qs('#moviesContainer');
+    const emptyState = qs('#emptyState');
 
-    /* ================= WATCHLIST STATS + RECENT REVIEWS ================= */
-    async function loadWatchStatsAndReviews() {
-      // Fetch a generous page to calculate counts + show a few reviews (client-side like dashboard)
-      const res = await api('/api/watchlist?page=1&limit=200', { method: 'GET' });
-      const data = await res.json();
-      if (!data?.ok) return;
-      const items = data.items || [];
+    const searchInput = qs('#searchInput');
+    const statusFilter = qs('#statusFilter');
+    const sortFilter = qs('#sortFilter');
+    const resetBtn = qs('#resetBtn');
 
-      const toWatch = items.filter(x => x.status === 'to-watch').length;
-      const watching = items.filter(x => x.status === 'watching').length;
-      const completed = items.filter(x => x.status === 'completed').length;
+    /* Keep an in-memory copy of the list from backend so filters/sorting are client-side */
+    let MOVIES = [];
 
-      qs('#statToWatch').textContent = toWatch;
-      qs('#statWatching').textContent = watching;
-      qs('#statCompleted').textContent = completed;
+    /* Convert an item from backend to a DOM card */
+    function movieCard(item) {
+      const status = item.status; // 'to-watch' | 'watching' | 'completed'
+      const rating = Number(item.rating || 0);
+      const title = item.title;
+      const desc = item.description || '';
+      const poster = item.poster_url || `https://via.placeholder.com/480x720/1e293b/94a3b8?text=${encodeURIComponent(title)}`;
+      const ts = Number(item.ts || Math.floor(Date.now() / 1000));
+      const id = Number(item.id);
 
-      // Recent reviews (latest 5 by ts, with non-empty review)
-      const reviews = items.filter(x => (x.status === 'completed') && (x.review && x.review.trim()))
-                           .sort((a,b) => (b.ts||0) - (a.ts||0))
-                           .slice(0,5);
+      const badgeClass = status === 'completed' ? 'badge-completed'
+        : status === 'watching' ? 'badge-watching'
+          : 'badge-to-watch';
 
-      const list = qs('#reviewsList');
-      list.innerHTML = '';
-      if (!reviews.length) { qs('#reviewsEmpty').classList.remove('d-none'); return; }
-      qs('#reviewsEmpty').classList.add('d-none');
+      const ratingHTML = rating > 0
+        ? `<div class="rating-stars text-warning" aria-label="Rating: ${rating} out of 5">
+         ${'<i class="bi bi-star-fill"></i>'.repeat(rating)}${'<i class="bi bi-star"></i>'.repeat(5 - rating)}
+       </div>`
+        : `<span class="text-muted small">Not rated yet</span>`;
 
-      for (const r of reviews) {
-        const card = document.createElement('div');
-        card.className = 'd-flex gap-3 align-items-start';
-        const stars = (n=0)=>`${'<i class=\"bi bi-star-fill\"></i>'.repeat(n)}${'<i class=\"bi bi-star\"></i>'.repeat(5-n)}`;
-        card.innerHTML = `
-          <div style="width:54px;height:80px;border-radius:.25rem;overflow:hidden;border:1px solid var(--wb-border)">
-            <img src="${r.poster_url || 'https://via.placeholder.com/160x240/1e293b/94a3b8?text=Poster'}" alt="poster" style="width:100%;height:100%;object-fit:cover" />
+      const card = document.createElement('div');
+      card.className = 'col-12 col-sm-6 col-lg-4 col-xl-3 movie-item';
+      card.dataset.status = status;
+      card.dataset.title = title.toLowerCase();
+      card.dataset.rating = String(rating);
+      card.dataset.ts = String(ts);
+      card.dataset.id = String(id);
+      const hasPoster = !!poster; // you can refine this if you want to detect real vs placeholder URLs
+
+      card.innerHTML = `
+    <div class="card movie-card h-100">
+      <div class="position-relative">
+        <div class="poster-frame">
+          ${hasPoster
+          ? `<img src="${poster}" alt="${title} poster" class="movie-poster" />`
+          : `<div class="poster-placeholder"><i class="bi bi-image"></i></div>`
+        }
+        </div>
+        <span class="status-badge ${badgeClass} js-status-link" role="button" tabindex="0" data-status-target="${status}">
+          ${status === 'completed' ? 'Completed' : status === 'watching' ? 'Watching' : 'To Watch'}
+        </span>
+      </div>
+      <div class="card-body d-flex flex-column">
+        <h6 class="card-title fw-bold mb-2">${title}</h6>
+        ${desc ? `<p class="card-text small mb-3">${desc}</p>` : `<p class="card-text small mb-3 text-muted">No description provided.</p>`}
+        <div class="mt-auto d-flex align-items-center justify-content-between">
+          ${ratingHTML}
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Card actions">
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <button class="dropdown-item" type="button" data-action="edit" data-id="${id}">
+                  <i class="bi bi-pencil me-2"></i>Edit
+                </button>
+              </li>
+
+              ${status === 'to-watch' ? `
+                <li>
+                  <button class="dropdown-item" type="button" data-action="mark-watching" data-id="${id}">
+                    <i class="bi bi-play-circle me-2"></i>Mark as Watching
+                  </button>
+                </li>` : ''}
+
+              ${status === 'watching' ? `
+                <li>
+                  <button class="dropdown-item" type="button" data-action="mark-completed" data-id="${id}">
+                    <i class="bi bi-check2-circle me-2"></i>Mark as Completed
+                  </button>
+                </li>` : ''}
+
+              ${status === 'completed' ? `
+                ${item.review && item.review.trim() ? `
+                  <li>
+                    <button class="dropdown-item" type="button" data-action="view-review" data-id="${id}">
+                      <i class="bi bi-chat-left-quote me-2"></i>View Review
+                    </button>
+                  </li>` : `
+                  <li>
+                    <button class="dropdown-item" type="button" data-action="review" data-id="${id}">
+                      <i class="bi bi-chat-square-text me-2"></i>Add Review
+                    </button>
+                  </li>`
+          }` : ''}
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <button class="dropdown-item text-danger" type="button" data-action="delete" data-id="${id}">
+                  <i class="bi bi-trash me-2"></i>Delete
+                </button>
+              </li>
+            </ul>
           </div>
-          <div>
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-              <strong>${r.title || 'Untitled'}</strong>
-              <span class="small text-warning">${stars(Math.max(0, Math.min(5, parseInt(r.rating||0))))}</span>
-            </div>
-            <p class="small mb-1">${(r.review||'').replace(/</g,'&lt;')}</p>
-            <div class="text-muted small">Reviewed ${new Date((r.ts||Date.now())*1000).toLocaleString()}</div>
-          </div>`;
-        list.appendChild(card);
-      }
+        </div>
+      </div>
+    </div>`;
+      return card;
     }
 
-    /* ================= AVATAR PREVIEW (client-side only) ================= */
-    (function initAvatarPreview(){
-      const input = qs('#avatarInput');
-      const img = qs('#avatarImg');
-      input?.addEventListener('change', e => {
-        const file = e.target.files?.[0]; if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => { img.src = reader.result; };
-        reader.readAsDataURL(file);
-        // TODO: upload via /api/profile/avatar if your backend supports it.
+    function renderMovies(list) {
+      moviesContainer.innerHTML = '';
+      list.forEach(item => moviesContainer.appendChild(movieCard(item)));
+    }
+
+    async function fetchWatchlist(page = 1, limit = 50) {
+      const res = await api(`/api/watchlist?page=${page}&limit=${limit}`, { method: 'GET' });
+      const data = await res.json();
+      if (!data?.ok) throw new Error(data?.error || 'Failed to load watchlist');
+      // Expect: { ok: true, items: [...], page, limit }
+      MOVIES = data.items || [];
+      renderMovies(MOVIES);
+      applyFilters(); // compute stats/avg/empty state after render
+    }
+
+    /* ================= FILTERS / SORT / STATS ================= */
+    function currentCards() { return qsa('.movie-item', moviesContainer); }
+
+    function applyFilters() {
+      const q = (searchInput.value || '').toLowerCase().trim();
+      const s = statusFilter.value;
+      const sort = sortFilter.value;
+
+      let cards = currentCards();
+      let visible = [];
+
+      // Filter
+      cards.forEach(c => {
+        const title = c.dataset.title || '';
+        const status = c.dataset.status || '';
+        const match = (!q || title.includes(q)) && (!s || s === status);
+        c.style.display = match ? '' : 'none';
+        if (match) visible.push(c);
+      });
+
+      // Sort
+      if (sort === 'title') {
+        visible.sort((a, b) => (a.dataset.title || '').localeCompare(b.dataset.title || ''));
+      } else if (sort === 'rating') {
+        visible.sort((a, b) => parseInt(b.dataset.rating || '0', 10) - parseInt(a.dataset.rating || '0', 10));
+      } else {
+        // recent (ts descending)
+        visible.sort((a, b) => parseInt(b.dataset.ts || '0', 10) - parseInt(a.dataset.ts || '0', 10));
+      }
+      visible.forEach(v => moviesContainer.appendChild(v));
+
+      // Toggle empty state
+      const has = visible.length > 0;
+      emptyState.classList.toggle('d-none', has);
+      moviesContainer.classList.toggle('d-none', !has);
+
+      // Stats
+      updateStats();
+      updateAverageRating();
+    }
+
+    function updateStats() {
+      const count = st => MOVIES.filter(m => (m.status || '') === st).length;
+      qs('#toWatchCount').textContent = count('to-watch');
+      qs('#watchingCount').textContent = count('watching');
+      qs('#completedCount').textContent = count('completed');
+    }
+
+
+    function updateAverageRating() {
+      const vis = currentCards().filter(el => el.style.display !== 'none');
+      const nums = vis.map(el => parseInt(el.dataset.rating || '0', 10)).filter(n => n > 0);
+      const avg = nums.length ? (nums.reduce((a, b) => a + b, 0) / nums.length) : null;
+      qs('#avgRating').textContent = avg ? avg.toFixed(1) : '—';
+    }
+
+    /* URL <-> Filter (status) */
+    function syncURLStatus(value) {
+      const url = new URL(window.location.href);
+      if (value) url.searchParams.set('status', value);
+      else url.searchParams.delete('status');
+      history.replaceState({}, '', url);
+    }
+    function setStatusFilter(value, push = true) {
+      statusFilter.value = value || '';
+      if (push) syncURLStatus(statusFilter.value);
+      applyFilters();
+    }
+
+    /* ================= ADD MOVIE (POST to backend) ================= */
+    /* Your backend POST /api/watchlist accepts:
+       { title, description, status('to-watch'|'watching'|'completed'), rating(0..5), poster_url? }
+       It does NOT handle file upload here; we’ll ignore the file for now or
+       use a placeholder URL as shown.
+    */
+    (function initAddMovie() {
+      const form = qs('#addMovieForm');
+      const titleEl = qs('#movieTitle');
+      const descEl = qs('#movieDesc');
+      const statusEl = qs('#movieStatus');
+      const ratingEl = qs('#movieRating');
+      const fileEl = qs('#moviePoster'); // not uploaded to backend in this route
+      const addBtn = qs('#addMovieBtn');
+
+      const TITLE_MIN = 2, TITLE_MAX = 120;
+
+      function setInvalid(el, message) {
+        el.classList.add('is-invalid');
+        const fb = el.nextElementSibling;
+        if (fb?.classList.contains('invalid-feedback')) fb.textContent = message;
+      }
+      function clearInvalid(el) {
+        el.classList.remove('is-invalid');
+        const fb = el.nextElementSibling;
+        if (fb?.classList.contains('invalid-feedback')) fb.textContent = '';
+      }
+      function validate() {
+        let ok = true;
+        clearInvalid(titleEl);
+        const v = (titleEl.value || '').trim();
+        if (v.length < TITLE_MIN || v.length > TITLE_MAX) { setInvalid(titleEl, `Title must be ${TITLE_MIN}–${TITLE_MAX} characters.`); ok = false; }
+        const n = parseInt(ratingEl.value, 10);
+        if (Number.isNaN(n) || n < 0 || n > 5) { setInvalid(ratingEl, 'Rating must be between 0 and 5.'); ok = false; }
+        return ok;
+      }
+
+      addBtn?.addEventListener('click', async () => {
+        form.classList.add('was-validated');
+        if (!validate()) return;
+
+        const title = titleEl.value.trim();
+        const body = {
+          title,
+          description: (descEl.value || '').trim(),
+          status: statusEl.value,
+          rating: parseInt(ratingEl.value, 10) || 0,
+          poster_url: `https://via.placeholder.com/480x720/1e293b/94a3b8?text=${encodeURIComponent(title)}`
+        };
+
+        try {
+          const res = await api('/api/watchlist', { method: 'POST', body: JSON.stringify(body) });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || 'Failed to add movie');
+
+          // Optimistically add to local list and re-render filters/stats
+          const ts = Math.floor(Date.now() / 1000);
+          MOVIES.unshift({
+            id: data.id,
+            title: body.title,
+            description: body.description,
+            status: body.status,
+            rating: body.rating,
+            poster_url: body.poster_url,
+            ts
+          });
+
+          // Add to DOM
+          moviesContainer.prepend(movieCard(MOVIES[0]));
+          applyFilters();
+
+          // Close modal + reset form
+          const modalEl = qs('#addMovieModal');
+          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.hide();
+          form.reset();
+          form.classList.remove('was-validated');
+        } catch (e) {
+          console.error(e);
+          alert('Could not add movie. Please try again.');
+        }
       });
     })();
+    /* ================= EDIT MOVIE ================= */
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-action="edit"]');
+      if (!btn) return;
 
-    /* ================= SAVE HANDLERS ================= */
-    qs('#quickForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const payload = {
-        fullName: qs('#displayName').value.trim(),
-        username: qs('#username').value.trim(),
-        location: qs('#location').value.trim(),
-        website: qs('#website').value.trim(),
-        isPublic: qs('#isPublic').checked,
-      };
-      try {
-        const res = await api('/api/profile', { method: 'PUT', body: JSON.stringify(payload) });
-        const data = await res.json();
-        if (!data.ok) throw new Error(data.error || 'Save failed');
-        // Refresh head fields
-        await loadCurrentUser();
-        toast('Profile updated ✅');
-      } catch (err) { alert('Could not save: ' + err.message); }
+      const id = btn.getAttribute('data-id');
+      const movie = MOVIES.find(m => String(m.id) === id);
+      if (!movie) return;
+
+      // Fill modal fields
+      qs('#editMovieId').value = movie.id;
+      qs('#editMovieTitle').value = movie.title;
+      qs('#editMovieDesc').value = movie.description || '';
+      qs('#editMovieStatus').value = movie.status;
+      qs('#editMovieRating').value = movie.rating || 0;
+
+      bootstrap.Modal.getOrCreateInstance(qs('#editMovieModal')).show();
     });
-
-    qs('#resetQuick').addEventListener('click', () => loadCurrentUser());
 
     qs('#saveEditBtn').addEventListener('click', async () => {
-      const payload = {
-        fullName: qs('#fullName').value.trim(),
-        bio: qs('#bio').value.trim(),
-        tags: qs('#tags').value.split(',').map(s => s.trim()).filter(Boolean),
-        timezone: qs('#timezone').value.trim(),
-      };
+      const id = qs('#editMovieId').value;
+      const title = qs('#editMovieTitle').value.trim();
+      const desc = qs('#editMovieDesc').value.trim();
+      const status = qs('#editMovieStatus').value;
+      const rating = parseInt(qs('#editMovieRating').value, 10) || 0;
+
       try {
-        const res = await api('/api/profile', { method: 'PUT', body: JSON.stringify(payload) });
+        const res = await api(`/api/watchlist/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ title, description: desc, status, rating })
+        });
         const data = await res.json();
-        if (!data.ok) throw new Error(data.error || 'Save failed');
-        await loadCurrentUser();
-        bootstrap.Modal.getInstance(qs('#editProfileModal')).hide();
-        toast('Changes saved ✅');
-      } catch (err) { alert('Could not save: ' + err.message); }
+        if (!data.ok) throw new Error(data.error || 'Update failed');
+
+        // Update in-memory + re-render
+        const i = MOVIES.findIndex(m => String(m.id) === String(id));
+        if (i >= 0) {
+          MOVIES[i] = { ...MOVIES[i], title, description: desc, status, rating };
+          renderMovies(MOVIES);
+          applyFilters();
+        }
+
+        bootstrap.Modal.getInstance(qs('#editMovieModal')).hide();
+
+        // ✅ Show success message
+        const toast = document.createElement('div');
+        toast.className = 'toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-3';
+        toast.setAttribute('role', 'alert');
+        toast.innerHTML = `
+      <div class="d-flex">
+        <div class="toast-body">
+          Movie <strong>${title}</strong> updated successfully ✅
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    `;
+        document.body.appendChild(toast);
+        const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+        bsToast.show();
+        toast.addEventListener('hidden.bs.toast', () => toast.remove());
+
+      } catch (err) {
+        alert('Could not save changes: ' + err.message);
+      }
     });
 
-    qs('#savePassBtn').addEventListener('click', async () => {
-      const current = qs('#currentPass').value;
-      const next = qs('#newPass').value;
-      const confirm = qs('#confirmPass').value;
-      if (next !== confirm) { alert('New passwords do not match.'); return; }
-      try {
-        const res = await api('/api/profile/password', { method: 'PUT', body: JSON.stringify({ current, next }) });
-        const data = await res.json();
-        if (!data.ok) throw new Error(data.error || 'Password update failed');
-        bootstrap.Modal.getInstance(qs('#passwordModal')).hide();
-        toast('Password updated ✅');
-      } catch (err) { alert('Could not update password: ' + err.message); }
+
+    // Open Review modal
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-action="review"]');
+      if (!btn) return;
+
+      const id = btn.getAttribute('data-id');
+      const movie = MOVIES.find(m => String(m.id) === String(id));
+      if (!movie) return;
+
+      qs('#reviewMovieId').value = movie.id;
+      qs('#reviewRating').value = String(movie.rating || 0);
+      qs('#reviewText').value = movie.review || '';
+
+      bootstrap.Modal.getOrCreateInstance(qs('#reviewModal')).show();
     });
 
-    qs('#confirmDeleteAccount').addEventListener('click', async () => {
-      if (!confirm('This will permanently delete your account. Continue?')) return;
+    // Save Review
+    qs('#saveReviewBtn').addEventListener('click', async () => {
+      const id = qs('#reviewMovieId').value;
+      const rating = parseInt(qs('#reviewRating').value, 10) || 0;
+      const review = (qs('#reviewText').value || '').trim();
+
       try {
-        const res = await api('/api/profile', { method: 'DELETE' });
+        const res = await api(`/api/watchlist/${id}/review`, {
+          method: 'PUT',
+          body: JSON.stringify({ rating, review })
+        });
+
+        const raw = await res.text();
+        let data;
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          throw new Error(`Server did not return JSON: ${raw.slice(0, 200)}`);
+        }
+
+        if (!data.ok) throw new Error(data.error || 'Failed to save review');
+
+        // Update local
+        const i = MOVIES.findIndex(m => String(m.id) === String(id));
+        if (i >= 0) {
+          MOVIES[i] = { ...MOVIES[i], rating, review };
+          renderMovies(MOVIES);
+          applyFilters();
+        }
+        bootstrap.Modal.getInstance(qs('#reviewModal')).hide();
+      } catch (err) {
+        alert('Could not save review: ' + err.message);
+      }
+
+    });
+
+    function starsHTML(n = 0) {
+      n = Math.max(0, Math.min(5, parseInt(n, 10) || 0));
+      return `${'<i class="bi bi-star-fill"></i>'.repeat(n)}${'<i class="bi bi-star"></i>'.repeat(5 - n)}`;
+    }
+
+    // Open View Review
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action="view-review"]');
+      if (!btn) return;
+
+      const id = btn.getAttribute('data-id');
+      const movie = MOVIES.find(m => String(m.id) === String(id));
+      if (!movie) return;
+
+      // Fill modal
+      qs('#viewReviewTitle').textContent = movie.title || 'Review';
+      qs('#viewReviewStars').innerHTML = starsHTML(movie.rating || 0);
+      qs('#viewReviewText').textContent = (movie.review || '').trim();
+      qs('#editFromViewBtn').dataset.id = id; // pass id to the edit button
+
+      bootstrap.Modal.getOrCreateInstance(qs('#viewReviewModal')).show();
+    });
+
+    // Inside View Review → Edit Review
+    qs('#editFromViewBtn').addEventListener('click', () => {
+      const id = qs('#editFromViewBtn').dataset.id;
+      const movie = MOVIES.find(m => String(m.id) === String(id));
+      if (!movie) return;
+
+      // Close the view modal
+      bootstrap.Modal.getInstance(qs('#viewReviewModal')).hide();
+
+      // Prefill and open the existing Review modal
+      qs('#reviewMovieId').value = movie.id;
+      qs('#reviewRating').value = String(movie.rating || 0);
+      qs('#reviewText').value = movie.review || '';
+
+      bootstrap.Modal.getOrCreateInstance(qs('#reviewModal')).show();
+    });
+
+
+    // Mark as Watching (from To Watch)
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-action="mark-watching"]');
+      if (!btn) return;
+
+      const id = btn.getAttribute('data-id');
+      const idx = MOVIES.findIndex(m => String(m.id) === String(id));
+      if (idx < 0) return;
+
+      try {
+        const res = await api(`/api/watchlist/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            title: MOVIES[idx].title,
+            description: MOVIES[idx].description || '',
+            status: 'watching',
+            rating: MOVIES[idx].rating || 0,
+            poster_url: MOVIES[idx].poster_url || null   // keep poster
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Update failed');
+
+        MOVIES[idx] = { ...MOVIES[idx], status: 'watching' };
+        renderMovies(MOVIES);
+        applyFilters();
+      } catch (err) {
+        alert('Could not mark as Watching: ' + err.message);
+      }
+    });
+
+
+    // Mark as Completed → then prompt review
+    document.addEventListener('click', async e => {
+      const btn = e.target.closest('[data-action="mark-completed"]');
+      if (!btn) return;
+
+      const id = btn.getAttribute('data-id');
+      const i = MOVIES.findIndex(m => String(m.id) === String(id));
+      if (i < 0) return;
+
+      try {
+        const res = await api(`/api/watchlist/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            title: MOVIES[i].title,
+            description: MOVIES[i].description || '',
+            status: 'completed',
+            rating: MOVIES[i].rating || 0,
+            poster_url: MOVIES[i].poster_url || null
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Update failed');
+
+        MOVIES[i] = { ...MOVIES[i], status: 'completed' };
+        renderMovies(MOVIES);
+        applyFilters();
+
+        // Show review modal right away (optional)
+        qs('#reviewMovieId').value = MOVIES[i].id;
+        qs('#reviewRating').value = String(MOVIES[i].rating || 0);
+        qs('#reviewText').value = MOVIES[i].review || '';
+        bootstrap.Modal.getOrCreateInstance(qs('#reviewModal')).show();
+      } catch (err) {
+        alert('Could not mark as completed: ' + err.message);
+      }
+    });
+
+    // Delete movie (frontend -> backend)
+    let movieToDelete = null; // store movie temporarily
+
+    // Open modal when clicking delete
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action="delete"]');
+      if (!btn) return;
+
+      const id = btn.getAttribute('data-id');
+      movieToDelete = MOVIES.find(m => String(m.id) === String(id));
+      if (!movieToDelete) return;
+
+      qs('#deleteMovieTitle').textContent = movieToDelete.title || 'this movie';
+
+      bootstrap.Modal.getOrCreateInstance(qs('#deleteConfirmModal')).show();
+    });
+
+    // Confirm delete when user clicks the red button
+    qs('#confirmDeleteBtn').addEventListener('click', async () => {
+      if (!movieToDelete) return;
+
+      const id = movieToDelete.id;
+      try {
+        const res = await api(`/api/watchlist/${id}`, { method: 'DELETE' });
         const data = await res.json();
         if (!data.ok) throw new Error(data.error || 'Delete failed');
-        location.href = 'register.html';
-      } catch (err) { alert('Could not delete account: ' + err.message); }
+
+        // Remove locally
+        const idx = MOVIES.findIndex(m => String(m.id) === String(id));
+        if (idx >= 0) MOVIES.splice(idx, 1);
+        renderMovies(MOVIES);
+        applyFilters();
+
+        // Close modal
+        bootstrap.Modal.getInstance(qs('#deleteConfirmModal')).hide();
+
+      } catch (err) {
+        alert('Could not delete: ' + err.message);
+      }
     });
 
-    /* ================= TOAST HELPER (like dashboard success) ================= */
-    function toast(message) {
-      const t = document.createElement('div');
-      t.className = 'toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-3';
-      t.setAttribute('role', 'alert');
-      t.innerHTML = `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
-      document.body.appendChild(t);
-      const bs = new bootstrap.Toast(t, { delay: 2800 });
-      bs.show();
-      t.addEventListener('hidden.bs.toast', () => t.remove());
-    }
 
-    /* ================= INIT ================= */
-    function initUIChrome(){
+
+    /* ================= EVENTS & INIT ================= */
+    function initUIEvents() {
+      const debounced = debounce(applyFilters, 200);
+      searchInput.addEventListener('input', debounced);
+      statusFilter.addEventListener('change', () => { syncURLStatus(statusFilter.value); applyFilters(); });
+      sortFilter.addEventListener('change', applyFilters);
+      resetBtn.addEventListener('click', e => { e.preventDefault(); searchInput.value = ''; statusFilter.value = ''; sortFilter.value = 'recent'; syncURLStatus(''); applyFilters(); });
+
+      // Click/Enter on status badges or stats cards → filter
+      document.addEventListener('click', e => {
+        const el = e.target.closest('.js-status-link');
+        if (!el) return;
+        const target = el.getAttribute('data-status-target') || '';
+        setStatusFilter(target);
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        const el = e.target.closest('.js-status-link');
+        if (!el) return;
+        const target = el.getAttribute('data-status-target') || '';
+        setStatusFilter(target);
+      });
+
+      // Navbar shadow
       const nav = qs('.wb-navbar');
-      const onScroll = () => nav?.classList.toggle('navbar-shadow', window.scrollY > 8);
-      onScroll(); window.addEventListener('scroll', onScroll);
+      if (nav) {
+        const onScroll = () => nav.classList.toggle('navbar-shadow', window.scrollY > 8);
+        onScroll(); window.addEventListener('scroll', onScroll);
+      }
     }
 
-    (async function boot(){
+    (async function boot() {
       try {
-        await loadCurrentUser();
+        await loadCurrentUser();     // redirects if not logged in
         attachLogout();
-        initUIChrome();
-        await loadWatchStatsAndReviews();
+        initUIEvents();
+        await fetchWatchlist();      // render items from backend
       } catch (e) {
         console.error(e);
+        // If something unexpected, go to login as a safe fallback.
         location.href = 'login.html';
       }
     })();
   </script>
 </body>
+
 </html>

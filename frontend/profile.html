@@ -11,365 +11,188 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Orbitron:wght@700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== CONSISTENT COLOR SYSTEM ===== */
+    /* ===== COLOR SYSTEM (copied from Reviews + mapped to wb-*) ===== */
     :root {
-      color-scheme: dark;
+      /* Reviews tokens */
+      --primary-dark: #0c0d1b;
+      --primary-navy: #151829;
+      --accent-blue: #2563eb;
+      --accent-purple: #7c3aed;
+      --text-primary: #ffffff;
+      --text-secondary: #a1a8c3;
+      --text-muted: #6b7280;
+      --surface-elevated: #1e2139;
+      --surface-card: #252846;
+      --border-subtle: #2d3348;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
 
-      /* Primary Colors */
-      --wb-bg: #0f172a;
-      --wb-surface: #1e293b;
-      --wb-panel: #334155;
-      --wb-border: #475569;
-      --wb-accent: #0ea5e9;
-
-      /* Text Colors - Improved Contrast */
-      --wb-text: #f1f5f9;
-      --wb-text-muted: #94a3b8;
+      /* map compatibility tokens */
+      --wb-bg: var(--primary-dark);
+      --wb-surface: #1e293b; /* slight depth for inputs */
+      --wb-panel: var(--surface-card);
+      --wb-border: var(--border-subtle);
+      --wb-accent: var(--accent-blue);
+      --wb-text: var(--text-primary);
+      --wb-text-muted: var(--text-secondary);
       --wb-text-dark: #64748b;
-
-      /* Interactive States */
-      --wb-hover-bg: rgba(14, 165, 233, 0.15);
+      --wb-hover-bg: rgba(37, 99, 235, 0.15);
       --wb-hover-text: #ffffff;
-      --wb-active-bg: rgba(14, 165, 233, 0.25);
-      --wb-focus-shadow: rgba(14, 165, 233, 0.25);
-
-      /* Status Colors */
-      --wb-success: #22c55e;
-      --wb-warning: #f59e0b;
+      --wb-active-bg: rgba(37, 99, 235, 0.25);
+      --wb-focus-shadow: rgba(37, 99, 235, 0.25);
+      --wb-success: var(--success);
+      --wb-warning: var(--warning);
       --wb-info: #06b6d4;
-      --wb-danger: #ef4444;
+      --wb-danger: var(--danger);
     }
 
+    * { box-sizing: border-box }
     body {
-      background: var(--wb-bg);
-      color: var(--wb-text);
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-navy) 100%);
+      color: var(--text-primary);
       font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
     }
 
-    /* ===== NAVBAR ===== */
-    .wb-navbar {
-      background: rgba(15, 23, 42, 0.95) !important;
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--wb-border);
-      transition: all 0.3s ease;
-      min-height: 72px;
-    }
-
-    .wb-navbar.navbar-shadow {
-      background: rgba(15, 23, 42, 0.98) !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      border-bottom-color: var(--wb-accent);
-    }
-
+    /* ===== Navbar (EXACT from Reviews) ===== */
     .navbar-brand {
-      color: var(--wb-text) !important;
+      font-family: 'Orbitron', sans-serif !important;
       font-weight: 700;
       font-size: 1.25rem;
-    }
-
-    .nav-link {
-      color: var(--wb-text-muted) !important;
-      font-weight: 500;
-      padding: 0.75rem 1rem !important;
-      border-radius: 10px;
-      margin: 0 0.25rem;
+      text-decoration: none;
+      color: var(--text-primary);
       transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+    }
+    .navbar-brand:hover { color: var(--text-primary); transform: translateY(-1px); }
+    .navbar-brand img {
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      transition: all 0.3s ease;
+    }
+    .navbar-brand:hover img { transform: scale(1.05); box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4); }
+
+    .header {
+      background: rgba(21, 24, 41, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem 0;
+      position: sticky; top: 0; z-index: 100;
+      transition: background .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .header.navbar-shadow {
+      background: rgba(21, 24, 41, 0.92);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      border-bottom-color: rgba(45,55,72,.6);
     }
 
-    .nav-link:hover,
-    .nav-link:focus-visible {
-      color: var(--wb-hover-text) !important;
-      background: var(--wb-hover-bg) !important;
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      color: var(--wb-accent) !important;
-      background: var(--wb-active-bg) !important;
+    .nav { display: flex; align-items: center; justify-content: space-between; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 400;
+      padding: .5rem 0;
       position: relative;
-      box-shadow: inset 0 0 0 1px rgba(14, 165, 233, 0.3);
+      transition: color .2s;
     }
-
+    .nav-link:hover, .nav-link.active { color: var(--text-primary); }
     .nav-link.active::after {
-      content: "";
-      position: absolute;
-      bottom: -2px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 30px;
-      height: 2px;
-      background: var(--wb-accent);
-      border-radius: 1px;
+      content: '';
+      position: absolute; bottom: -1rem; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
     }
 
-    /* ===== DROPDOWN MENU ===== */
-    .dropdown-menu {
-      background-color: var(--wb-panel);
-      border: 1px solid var(--wb-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    .user-profile { display: flex; align-items: center; gap: .75rem; color: var(--text-secondary); }
+    .user-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 500; font-size: .9rem;
     }
 
-    .dropdown-item {
-      color: var(--wb-text);
-    }
+    /* Dark dropdown (from Reviews) */
+    .dropdown-menu { background: #1e2139; border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; }
+    .dropdown-item { color: #e5e7eb; }
+    .dropdown-item:hover { background: rgba(37,99,235,.25); color: #fff; }
+    .dropdown-divider { border-color: var(--border-subtle); }
 
-    .dropdown-item:hover,
-    .dropdown-item:focus {
-      background-color: var(--wb-hover-bg);
-      color: var(--wb-hover-text);
-    }
+    /* ===== Cards / Controls: palette only (no size changes) ===== */
+    .card { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+    .card-title { color: var(--text-primary); font-weight: 600; }
+    .card-text { color: var(--text-secondary); }
+    .form-label { color: var(--text-primary); font-weight: 500; }
+    .form-control, .form-select { background: var(--surface-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); border-radius: 12px; }
+    .form-control::placeholder { color: var(--text-muted); }
+    .form-control:focus, .form-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 .25rem rgba(37,99,235,.25); }
+    .btn-primary { background: var(--accent-blue); border-color: var(--accent-blue); }
+    .btn-primary:hover { background: #1d4ed8; border-color: #1d4ed8; }
+    .btn-outline-primary { color: var(--accent-blue); border-color: var(--accent-blue); }
+    .btn-outline-primary:hover { background: var(--accent-blue); color: #fff; }
 
-    .dropdown-divider {
-      border-color: var(--wb-border);
-    }
-
-    /* ===== CARDS ===== */
-    .card {
-      background: var(--wb-panel);
-      border: 1px solid var(--wb-border);
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-title {
-      color: var(--wb-text);
-      font-weight: 600;
-    }
-
-    .card-text {
-      color: var(--wb-text-muted);
-      line-height: 1.6;
-    }
-
-    /* ===== FORM CONTROLS ===== */
-    .form-label {
-      color: var(--wb-text);
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-
-    .form-control,
-    .form-select {
-      background-color: var(--wb-surface);
-      color: var(--wb-text);
-      border: 1px solid var(--wb-border);
-      border-radius: 8px;
-      padding: 0.75rem;
-    }
-
-    .form-control::placeholder {
-      color: var(--wb-text-dark);
-      opacity: 0.8;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-      background-color: var(--wb-surface);
-      color: var(--wb-text);
-      border-color: var(--wb-accent);
-      box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
-    }
-
-    .input-group-text {
-      background-color: var(--wb-surface);
-      border-color: var(--wb-border);
-      color: var(--wb-text-muted);
-    }
-
-    /* ===== BUTTONS ===== */
-    .btn-primary {
-      background-color: var(--wb-accent);
-      border-color: var(--wb-accent);
-      color: white;
-      font-weight: 500;
-      border-radius: 8px;
-      padding: 0.75rem 1.5rem;
-    }
-
-    .btn-primary:hover,
-    .btn-primary:focus {
-      background-color: #0284c7;
-      border-color: #0284c7;
-      box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
-    }
-
-    .btn-outline-primary {
-      color: var(--wb-accent);
-      border-color: var(--wb-accent);
-      background-color: transparent;
-      font-weight: 500;
-      border-radius: 8px;
-    }
-
-    .btn-outline-primary:hover,
-    .btn-outline-primary:focus {
-      background-color: var(--wb-accent);
-      border-color: var(--wb-accent);
-      color: white;
-    }
-
-    /* ===== STATS ICONS ===== */
-    .stats-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 1.25rem;
-      background: var(--wb-surface);
-      margin-bottom: 0.75rem;
-    }
-
-    .stats-icon.to-watch {
-      background: rgba(6, 182, 212, 0.2);
-      color: #67e8f9;
-    }
-
-    .stats-icon.watching {
-      background: rgba(245, 158, 11, 0.2);
-      color: #fbbf24;
-    }
-
-    .stats-icon.completed {
-      background: rgba(34, 197, 94, 0.2);
-      color: #4ade80;
-    }
-
-    /* ===== PROFILE HEADER ===== */
+    /* ===== Profile header surfaces ===== */
     .cover {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(30, 41, 59, 0.8)),
-        linear-gradient(45deg, #1e293b, #334155);
-      min-height: 200px;
-      border: 1px solid var(--wb-border);
+      position: relative; border-radius: 16px; overflow: hidden;
+      background: linear-gradient(135deg, rgba(37,99,235,.2), rgba(21,24,41,.85)), linear-gradient(45deg, #1e2139, #252846);
+      min-height: 200px; border: 1px solid var(--border-subtle);
     }
-
     .avatar-lg {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid rgba(14, 165, 233, 0.3);
-      background: var(--wb-surface);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+      border: 4px solid rgba(37,99,235,.35);
+      background: var(--surface-elevated); box-shadow: 0 8px 20px rgba(0,0,0,.35);
     }
 
-    /* ===== BADGES ===== */
-    .badge {
-      background-color: var(--wb-surface) !important;
-      color: var(--wb-text-muted);
-      border: 1px solid var(--wb-border);
-      font-weight: 500;
-      padding: 0.5rem 0.75rem;
-      border-radius: 20px;
-    }
+    .stats-icon { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 1.25rem; background: var(--surface-elevated); margin-bottom: .75rem; }
+    .stats-icon.to-watch { background: rgba(6,182,212,.2); color: #67e8f9; }
+    .stats-icon.watching { background: rgba(245,158,11,.2); color: #fbbf24; }
+    .stats-icon.completed { background: rgba(34,197,94,.2); color: #4ade80; }
 
-    /* ===== FORM SWITCHES ===== */
-    .form-check-input:checked {
-      background-color: var(--wb-accent);
-      border-color: var(--wb-accent);
-    }
+    .review-item { padding: 1rem; border-radius: 12px; background: var(--surface-elevated); border: 1px solid var(--border-subtle); margin-bottom: 1rem; }
+    .review-item:last-child { margin-bottom: 0; }
+    .text-warning { color: var(--warning) !important; }
 
-    .form-check-input:focus {
-      box-shadow: 0 0 0 0.25rem var(--wb-focus-shadow);
-    }
+    footer.wb-footer { background: var(--surface-card); border-top: 1px solid var(--border-subtle); color: var(--text-secondary); }
 
-    .form-check-label {
-      color: var(--wb-text);
-    }
-
-    /* ===== FOOTER ===== */
-    footer.wb-footer {
-      background: var(--wb-panel);
-      border-top: 1px solid var(--wb-border);
-      color: var(--wb-text-muted);
-      margin-top: 4rem;
-    }
-
-    /* ===== REVIEW ITEMS ===== */
-    .review-item {
-      padding: 1rem;
-      border-radius: 8px;
-      background: var(--wb-surface);
-      border: 1px solid var(--wb-border);
-      margin-bottom: 1rem;
-    }
-
-    .review-item:last-child {
-      margin-bottom: 0;
-    }
-
-    /* ===== STAR RATINGS ===== */
-    .text-warning {
-      color: var(--wb-warning) !important;
-    }
-
-    /* ===== RESPONSIVE IMPROVEMENTS ===== */
     @media (max-width: 768px) {
-      .cover {
-        min-height: 160px;
-      }
-
-      .avatar-lg {
-        width: 80px;
-        height: 80px;
-      }
-
-      .stats-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.1rem;
-      }
+      .cover { min-height: 160px; }
+      .avatar-lg { width: 84px; height: 84px; }
+      .stats-icon { width: 48px; height: 48px; font-size: 1.1rem; }
     }
   </style>
 </head>
 
 <body data-page="profile">
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg wb-navbar sticky-top navbar-dark">
-    <div class="container">
+  <!-- Navbar (EXACT copy from Reviews) -->
+  <header class="header">
+    <nav class="nav container">
       <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.html">
-        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="52" height="52" class="me-2 rounded-3">
+        <img src="assets/img/logo.png" alt="WatchBuddy Logo" width="36" height="36" class="me-2 rounded-2">
         WatchBuddy
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="movies.html" class="nav-link">Movies</a></li>
+        <li><a href="reviews.html" class="nav-link">Reviews</a></li>
+      </ul>
 
-      <div id="mainNav" class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto align-items-lg-center">
-          <li class="nav-item">
-            <a class="nav-link" href="dashboard.html"><i class="bi bi-house-door me-1"></i>Dashboard</a>
-          </li>
-          <li class="nav-item"><a class="nav-link active" href="profile.html"><i
-                class="bi bi-person me-1"></i>Profile</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-person-circle fs-5"></i><span id="userName">test</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="profile.html">Profile Settings</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><button class="dropdown-item" id="logoutBtn" type="button">Logout</button></li>
-            </ul>
-          </li>
+      <!-- User menu (exact structure) -->
+      <div class="dropdown">
+        <button class="user-profile dropdown-toggle" id="userMenuBtn" data-bs-toggle="dropdown" aria-expanded="false" style="background:none;border:0;">
+          <span id="userFirst">User</span>
+          <div class="user-avatar" id="userAvatar">U</div>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="profile.html"><i class="bi bi-gear me-2"></i>Profile Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item" id="logoutBtn" type="button"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
         </ul>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <!-- Main -->
   <main class="container-fluid py-4">
@@ -380,17 +203,11 @@
           <img src="https://ui-avatars.com/api/?name=Test&background=0D8ABC&color=fff&size=120" alt="Avatar" class="avatar-lg">
           <div class="mb-2">
             <h1 class="h2 fw-bold mb-2 text-white">Test</h1>
-            <div class="text-light opacity-75 mb-2">
-              <span>test@gmail.com</span> · <span>Cebu, Philippines</span>
-            </div>
+            <div class="text-light opacity-75 mb-2"><span>test@gmail.com</span> · <span>Cebu, Philippines</span></div>
           </div>
           <div class="ms-md-auto d-flex gap-2">
-            <button class="btn btn-outline-primary btn-sm">
-              <i class="bi bi-image me-1"></i>Change Avatar
-            </button>
-            <button class="btn btn-primary btn-sm">
-              <i class="bi bi-pencil-square me-1"></i>Edit Profile
-            </button>
+            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-image me-1"></i>Change Avatar</button>
+            <button class="btn btn-primary btn-sm"><i class="bi bi-pencil-square me-1"></i>Edit Profile</button>
           </div>
         </div>
       </div>
@@ -405,8 +222,7 @@
           <div class="card mb-4">
             <div class="card-body">
               <h2 class="h5 fw-bold mb-3 text-white">About</h2>
-              <p class="card-text mb-3">Movie night curator. Loves heist films,
-                slow-burn series, and anything Studio Ghibli inspired ✨</p>
+              <p class="card-text mb-3">Movie night curator. Loves heist films, slow-burn series, and anything Studio Ghibli inspired ✨</p>
             </div>
           </div>
 
@@ -434,29 +250,24 @@
               </div>
             </div>
           </div>
+
           <!-- Recent Reviews -->
           <div class="card mb-4">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="h5 fw-bold mb-0 text-light">Recent Reviews</h2>
-                <a class="btn btn-outline-primary btn-sm" href="dashboard.html">
-                  <i class="bi bi-collection me-1"></i>Go to Watchlist
-                </a>
+                <a class="btn btn-outline-primary btn-sm" href="dashboard.html"><i class="bi bi-collection me-1"></i>Go to Watchlist</a>
               </div>
 
               <div class="review-item">
                 <div class="d-flex gap-3">
-                  <img src="assets/img/posters/poster-01.jpg" alt="La La Land Poster" width="54" height="80"
-                    class="rounded">
+                  <img src="assets/img/posters/poster-01.jpg" alt="La La Land Poster" width="54" height="80" class="rounded">
                   <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                       <strong class="text-white">La La Land</strong>
-                      <span class="text-warning">
-                        <i class="bi bi-star-fill"></i> 4.5
-                      </span>
+                      <span class="text-warning"><i class="bi bi-star-fill"></i> 4.5</span>
                     </div>
-                    <p class="small mb-2 text-light">Whimsical, heartbreaking, and gorgeous. The score lives rent-free
-                      in my head.</p>
+                    <p class="small mb-2 text-light">Whimsical, heartbreaking, and gorgeous. The score lives rent-free in my head.</p>
                     <div class="small text-light">Reviewed on Sep 10, 2025</div>
                   </div>
                 </div>
@@ -464,20 +275,18 @@
 
               <div class="review-item">
                 <div class="d-flex gap-3">
-                  <img src="assets/img/posters/poster-02.jpg" alt="Inception Poster" width="54" height="80"
-                    class="rounded">
+                  <img src="assets/img/posters/poster-02.jpg" alt="Inception Poster" width="54" height="80" class="rounded">
                   <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                       <strong class="text-white">Inception</strong>
-                      <span class="text-warning">
-                        <i class="bi bi-star-fill"></i> 5.0
-                      </span>
+                      <span class="text-warning"><i class="bi bi-star-fill"></i> 5.0</span>
                     </div>
                     <p class="small mb-2 text-light">Mind-bending and brilliant. Nolan at his best.</p>
                     <div class="text-light small">Reviewed on Sep 8, 2025</div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -510,35 +319,52 @@
           </div>
         </div>
 
-
-
+      </div>
     </section>
   </main>
 
-<!-- Footer -->
-<footer class="wb-footer py-4 mt-auto">
-  <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
-    <div class="small">Made with ❤️ for movie lovers</div>
-    <div class="small">© <span id="year"></span> WatchBuddy</div>
-  </div>
-</footer>
-
+  <!-- Footer -->
+  <footer class="wb-footer py-4 mt-auto">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+      <div class="small">Made with ❤️ for movie lovers</div>
+      <div class="small">© <span id="year"></span> WatchBuddy</div>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Year + navbar shadow behavior
-    document.getElementById('year').textContent = new Date().getFullYear();
+  // Show current year
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-    const nav = document.querySelector('.wb-navbar');
-    const onScroll = () => {
-      if (nav) {
-        nav.classList.toggle('navbar-shadow', window.scrollY > 8);
+  // Navbar shadow behavior
+  const headerEl = document.querySelector('.header');
+  const onScroll = () => { if (headerEl) headerEl.classList.toggle('navbar-shadow', window.scrollY > 8); };
+  onScroll();
+  window.addEventListener('scroll', onScroll);
+
+  // Load current logged-in user
+  async function loadUser() {
+    try {
+      const res = await fetch('/watchbuddy/backend/public/api/me', { credentials: 'include' });
+      const data = await res.json();
+      if (data?.ok && data.user) {
+        const first = data.user.first_name || data.user.name || (data.user.email || 'User').split('@')[0];
+        document.getElementById('userFirst').textContent = first;
+        document.getElementById('userAvatar').textContent = first[0].toUpperCase();
       }
-    };
+    } catch (err) {
+      console.error('Failed to load user:', err);
+    }
+  }
+  loadUser();  
 
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-  </script>
+  // Logout handler
+  document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+    try { await fetch('/watchbuddy/backend/public/api/logout', { method: 'POST', credentials: 'include' }); } catch(_) {}
+    location.href = 'login.html';
+  });
+</script>
+
 </body>
 
 </html>
